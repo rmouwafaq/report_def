@@ -1,0 +1,19 @@
+
+<templates>
+
+<div t-name="report_viewer_template.action" class="oe_web_example oe_web_example_stopped">
+<meta http-equiv="pragma" content="no-cache" />
+	<style type="text/css">
+		
+		
+	</style>
+	
+	
+	
+	<div class="oe_leftbar"></div>
+	<div class="banner_printer" style="opacity:0.3;width:173px;position:absolute;top:32px;right:0px;background-color:#333;border-bottom-right-radius: 30px;border-bottom-left-radius: 30px;" ><center><img id="to_pdf" style="cursor:pointer" src="report_def/static/src/img/save_pdf.png" /><img id="to_print"  src="report_def/static/src/img/printer.png" style="cursor:pointer;width:50px;height:50px;margin-left:20px" /></center></div>
+    <div id="viewer" style="">	
+    
+    </div>
+</div>
+</templates>

@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<openerp>
+    <data>
+        <record model="ir.actions.client" id="action_client_example">
+            <field name="name">Report Viewer Action</field>
+            <field name="tag">report.viewer.action</field>
+        </record>
+      
+    </data>
+</openerp>

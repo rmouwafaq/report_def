@@ -1,0 +1,19 @@
+.openerp .oe_web_example {
+    /*background-color: black;*/
+    height: 100%;
+    /*width:75%;*/
+}
+.openerp .oe_web_example h4 {
+    margin: 0;
+    font-size: 200%;
+}
+.openerp .oe_web_example.oe_web_example_started .oe_web_example_start button,
+.openerp .oe_web_example.oe_web_example_stopped .oe_web_example_stop button {
+    display: none
+}
+.menu_rap td{
+    padding-left:10px;
+}
+.banner_printer:hover{
+	opacity:1;
+}
