@@ -64,9 +64,10 @@
 				<form version="7.0" string="Reports">
 					<group col="2">
 						<group>
-						<field name="name"/>
-						<field name="title"/>
-						<field name="format"/>
+							<field name="name"/>
+							<field name="title"/>
+							<field name="format"/>
+							<field name="type"/>
 						</group>
 						
 						<group>

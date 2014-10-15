@@ -97,6 +97,7 @@ class res_partner(osv.osv):
             return dict_partner
 
 class report_def(osv.osv):
+    
     _name = "report.def"
     _description = "Agilorg report Definition"
     _columns = { 
@@ -120,14 +121,17 @@ class report_def(osv.osv):
     
     def to_dict(self,cr,uid,name=None,id=None):
         
-        dict_report={}
+        dict_report = {}
         if name:
-            id = self.search(cr,uid, [('name','=',name)])
+            print 'recherche par Nom',name
+            ids = self.search(cr,uid, [('name','=',name)])
         else:
-            id = self.search(cr,uid, [('id','=',id)])
-        
-        if id:
-            report = self.browse(cr,uid, id)[0]  
+            print 'recherche par id',id
+            ids = self.search(cr,uid, [('id','=',id)])
+            
+        if ids:
+            print "Id trouve de defreport",ids
+            report = self.browse(cr,uid, ids)[0]  
             dict_report['id']=report.id
             dict_report['name']=report.name
             dict_report['title']=report.title
