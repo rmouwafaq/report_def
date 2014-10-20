@@ -68,6 +68,7 @@ class report_api():
         self.total_record_list=0
         self.total_record_all_list=len(self.result)
 #======================================================
+        comp_rec=0
         list_records=[]
         key_name=""
         if(self.cur_report.field_key_group):
@@ -75,21 +76,20 @@ class report_api():
             first_record=self.result[0]
             key_value_change = first_record[key_name]
             for record in self.result:
+                comp_rec+=1
                 if record[key_name]==key_value_change:
                     list_records.append(record)
+                    if(comp_rec==len(self.result)):
+                        self.print_report(list_records)
                 else:
-                    print list_records
+                    
                     self.print_report(list_records)
                     list_records=[]
                     list_records.append(record)
-                    print "------------------------------"
                     key_value_change=record[key_name]
         else:
             self.print_report(self.result)
-        
-#        if (self.cur_report.page_number>0):
-#            self.cur_report.bloc_number = 1 
-#            self.cur_report.end_page(record)
+
 #======================================================
         
             
@@ -109,10 +109,10 @@ class report_api():
         if(nbr_records_list<self.max_bloc_details):
             self.max_bloc_details=nbr_records_list
         
-        self.total_record_list+=len(list_record)
+        
         
         for record in list_record:
-            
+            self.total_record_list+=1
             # process Heard first time
             if self.cur_report.page_number == 0:
                 # create a new page
@@ -124,13 +124,14 @@ class report_api():
         
             # process footer only after the last bloc  
             #FIXME
-            if self.cur_report.bloc_number >  self.max_bloc_details:
-                self.cur_report.bloc_number = 1 
+            if self.cur_report.bloc_number-1 >=  self.max_bloc_details:
+                self.cur_report.bloc_number = 1
                 # end of page
                 self.cur_report.end_page(record)
                 # Create a next page
                 if(self.total_record_list<self.total_record_all_list):
                     self.cur_report.new_page(record)
+#               
             
                 
         self.max_bloc_details=max_bloc_temp
@@ -219,34 +220,30 @@ class report_api():
   
             
     
-    #===========================================================================
-    # def list_to_preview(self,template,res_pool):
-    #    file_source = self.src_template + template
-    #    if self.create_folder(self.trg_template):
-    #        file_target = self.trg_template + template
-    #        page = self.open_template(file_source)
-    #        str_start = '<label id="'
-    #        str_end = '">'
-    #        dict_fields = self.page_parse(page,str_start,str_end)
-    #        dict_fields = self.load_values(dict_fields,res_pool)
-    #        self.replace_values(page,dict_fields,file_target)
-    #===========================================================================
+    def list_to_preview(self,template,res_pool):
+        file_source = self.src_template + template
+        if self.create_folder(self.trg_template):
+            file_target = self.trg_template + template
+            page = self.open_template(file_source)
+            str_start = '<label id="'
+            str_end = '">'
+            dict_fields = self.page_parse(page,str_start,str_end)
+            dict_fields = self.load_values(dict_fields,res_pool)
+            self.replace_values(page,dict_fields,file_target)
     
     
-    #===========================================================================
-    # def load_values(self,dict_fields,res_pool):
-    #    for field_id in dict_fields.values():
-    #        ref_field = field_id['ref_field']
-    #        field_id_resu = res_pool.get_field_result(ref_field)
-    #        for index in field_id_resu.keys():
-    #            value = field_id_resu[index]
-    #            if value <> None:
-    #                field_id['amount'] = value
-    #                field_id['str_value'] = ' '
-    #                dict_fields[field_id['ref_field']] = field_id 
-    #    return dict_fields
-    # 
-    #===========================================================================
+    def load_values(self,dict_fields,res_pool):
+        for field_id in dict_fields.values():
+            ref_field = field_id['ref_field']
+            field_id_resu = res_pool.get_field_result(ref_field)
+            for index in field_id_resu.keys():
+                value = field_id_resu[index]
+                if value <> None:
+                    field_id['amount'] = value
+                    field_id['str_value'] = ' '
+                    dict_fields[field_id['ref_field']] = field_id 
+        return dict_fields
+    
 
 
 
