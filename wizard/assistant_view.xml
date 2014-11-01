@@ -2,7 +2,6 @@
 <openerp>
     <data>
         <!--   pos.details -->
-
         <record id="view_assistant_report" model="ir.ui.view">
             <field name="name">assistant Report</field>
             <field name="model">report_def.assistant_report</field>
@@ -21,19 +20,6 @@
                 </form>
             </field>
         </record>
-
-
-        <record id="action_assistant_report" model="ir.actions.act_window">
-            <field name="name">assistant Report</field>
-            <field name="type">ir.actions.act_window</field>
-            <field name="res_model">report_def.assistant_report</field>
-            <field name="view_type">form</field>
-            <field name="view_mode">form</field>
-            <field name="target">new</field>
-        </record>
-        
-        <!-- <menuitem name="assistant" id="config_assist" parent="rep_config" sequence="1" action="action_assistant_report" /> -->
-
 
     </data>
 </openerp>

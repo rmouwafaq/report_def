@@ -1,3 +1,2 @@
-import Template
 import assistant
-import report_api
+import assistant_export_xml

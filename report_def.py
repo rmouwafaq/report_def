@@ -1,14 +1,3 @@
-
-from openerp.osv import fields, osv
-import ho.pisa as pisa
-import os
-import time
-import netsvc
-import datetime
-from tools.translate import _
-
-    
-    
 # -*- coding: utf-8 -*-
 ##############################################################################
 #
@@ -31,10 +20,13 @@ from tools.translate import _
 ##############################################################################
 
 from openerp.osv import fields, osv
+import ho.pisa as pisa
+import os
 import time
 import netsvc
 import datetime
 from tools.translate import _
+
 
 class ir_module(osv.osv):
     _inherit = "ir.module.module"
@@ -109,8 +101,10 @@ class report_def(osv.osv):
                                            ('Landscape','Landscape')],
                                            'Format'),
                 'type':fields.selection([('normal', 'Normal'),
-                                           ('form','Formulary')],
+                                         ('user', 'User'),
+                                         ('form','Formulary')],
                                            'Type'),  
+                
                 'template_html':fields.text('HTML script'),  
                 'template_file_name': fields.char('Template File Name', size=128, required=True, select=True),
                 'json_file_name': fields.char('JSON File Name', size=128, required=True, select=True),

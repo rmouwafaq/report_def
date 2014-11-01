@@ -28,12 +28,15 @@
     "description": """
      Report Tools.
     """,
-    "website": ["http://www.agilorg.com", "http://www.openerp.com"],
+    "website": ["http://www.agilorg.com"],
     "depends" : ["base","report_def_store"],
     "init_xml" : [],
     "demo" : [],
-    "data" : ["report_viewer.xml","def_report_view.xml",
-              "wizard/assistant_view.xml"
+    "data" : ["report_viewer.xml",
+              "def_report_view.xml",
+              "wizard/assistant_view.xml",
+              "wizard/export_rep_def_view.xml",
+              "menu_action.xml",
               ],
     "js": ["static/lib/engine_report.js","static/src/js/web_example.js"],
     "css":["static/src/css/web_example.css"],

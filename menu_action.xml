@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<openerp>
+
+	<data> 
+		<record model="ir.actions.act_window" id ="action_report_def">
+			<field name="name">Define Report</field>
+			<field name="res_model">report.def</field>
+			<field name="view_mode">tree,form</field>
+			<field name="view_id" ref="report_def_form"/>
+		</record>
+       	<record id="action_report_def_tree" model="ir.actions.act_window.view">
+			<field name="view_mode">tree</field>
+			<field name="view_id" ref="report_def_tree"/>
+			<field name="act_window_id" ref="action_report_def"/>
+		</record>
+		<record id="action_report_def_form" model="ir.actions.act_window.view">
+			<field name="view_mode">form</field>
+			<field name="view_id" ref="report_def_form"/>
+			<field name="act_window_id" ref="action_report_def"/>
+		</record>
+
+
+		
+        <record id="action_assistant_report" model="ir.actions.act_window">
+            <field name="name">assistant Report</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="res_model">report_def.assistant_report</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">form</field>
+            <field name="target">new</field>
+        </record>
+		
+		<record id="action_wiz_export_report" model="ir.actions.act_window">
+            <field name="name">Assistant Export Report Definition</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="res_model">rdef.export.wizard</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">form</field>
+            <field name="target">new</field>
+        </record>
+		
+		
+		<!-- menu -->
+		<menuitem id="report_def_root" name="Gestion Rapports"/>
+		<menuitem id="rep_config" name="Configuration " sequence="0" parent="report_def_root"/>
+		<menuitem id="config_rap" name="rapport" sequence="100" parent="rep_config" action="action_report_def"/>
+		<menuitem id="export_wiz" name="Export XML Report Definition" sequence="120" parent="rep_config" action="action_wiz_export_report"/>
+		
+				
+
+	</data>
+
+</openerp>

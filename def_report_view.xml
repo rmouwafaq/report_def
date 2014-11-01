@@ -183,28 +183,6 @@
 		
 		</record>
 		
-		
-		
-		<!-- actions -->
-		<record model="ir.actions.act_window" id="action_report_def">
-			<field name="name">Define Reports </field>
-			<field name="res_model">report.def</field>
-			<field name="view_mode">tree,form</field>
-		</record>
-		
-		
-		<record model="ir.actions.act_window" id="action_report_def_field">
-			<field name="name">Define fields</field>
-			<field name="res_model">report.def.field</field>
-			<field name="view_mode">form,tree</field>
-		</record>
-
-		
-		<!-- menu -->
-		<menuitem id="report_def_root" name="Gestion Rapports"/>
-		<menuitem id="rep_config" name="Configuration " sequence="0" parent="report_def_root"/>
-		<menuitem id="config_rap" name="rapport" sequence="0" parent="rep_config" action="action_report_def"/>
-
 	</data>
 
 </openerp>
