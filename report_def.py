@@ -26,7 +26,10 @@ import time
 import netsvc
 import datetime
 from tools.translate import _
-
+from Agil_Template import Template
+from checkbox.lib.transport import create_connection
+from mock import self
+from asyncore import write
 
 class ir_module(osv.osv):
     _inherit = "ir.module.module"
@@ -111,7 +114,56 @@ class report_def(osv.osv):
                 'field_ids':fields.one2many('report.def.field','report_id','Report Fields'),
                 'total_ids':fields.one2many('report.def.field.total','report_id','Report Totals'),
                 'section_bloc_ids':fields.one2many('report.section.bloc','report_id','Sections'),
-                } 
+                'auto_generate':fields.boolean("Auto generate data")
+                }
+    
+    def create(self,cr,uid,vals,context=None):
+        print "**************"
+        print vals['module_id']
+        print "***************"
+        id_rep_def=super(report_def,self).create(cr, uid, vals, context)
+        if(vals['auto_generate']):
+            self.auto_create_fields(cr, uid,"/home/dev/Bureau/TODOS/modele_tmp/bulletin_paie.html",id_rep_def,context)
+        return id_rep_def
+    
+    def auto_create_fields(self,cr,uid,template_dir,id_rep_def,context):
+        sections=['Report_header','Page_header','Details','Page_footer','Report_footer']
+        temp=Template()
+        temp.read(template_dir)
+        template_def={}
+        for section_name in sections:
+            template_def[section_name]={'max_bloc':temp.get_max_bloc_section(section_name),'fields':{}}
+            
+            section=temp.get_section(section_name)
+            if(section.find(attrs={'class':'Bloc1'})):
+                bloc=section.find(attrs={'class':'Bloc1'})
+                template_def[section_name]['fields']=dict(temp.get_ids_bloc(bloc))
+        
+        
+        self.write(cr, uid, id_rep_def,{'template_html':temp.content_html}, context)        
+        sequence_field=0
+        for sect_key,sect_val in template_def.iteritems():
+            section=self.pool.get('report.section.bloc')
+            val_section={}
+            val_section['report_id']=id_rep_def
+            val_section['section']=sect_key
+            val_section['max_bloc_number']=sect_val['max_bloc']
+            
+            section.create(cr,uid,val_section,context)
+            for field_key,field_val in sect_val['fields'].iteritems():  
+                sequence_field+=1      
+                field=self.pool.get('report.def.field')
+                val_field={}
+                val_field['report_id']=id_rep_def
+                val_field['template_id']=field_key
+                val_field['name']=field_key
+                val_field['sequence']=sequence_field
+                val_field['section']=sect_key
+                val_field['source_data']=field_val['source_data']
+                val_field['field_type']=field_val['type']
+                
+                field.create(cr,uid,val_field,context)
+    
     
     def to_dict(self,cr,uid,name=None,id=None):
         
