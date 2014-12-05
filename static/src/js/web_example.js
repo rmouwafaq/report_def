@@ -39,30 +39,26 @@ openerp.report_def = function (instance) {
 	    $(".banner_printer").css({'opacity':'0.3','border':'none'});	
 	},
        getData:function(){
+        		var template_path_name="";
         		
-        		var json_file;
 			var query_string=document.location.href.split("#")[1];
 			query_string=query_string.split("&");
-			var json_file_id=query_string[0].split("=")[1];
 			var report_id=query_string[1].split("=")[1];
-			this.fetch("report.def.json_files",['name'],[['id','=',json_file_id]]).then(function(filesname){
-	        		_.each(filesname,function(jsonfile){
-	        				json_file=jsonfile.name;
-	        			});
-        		});
-        		this.fetch("report.def",['name','template_html','json_file_name','module_id'],[['id','=',report_id]]).then(function(reports){
+
+			
+        		this.fetch("report.def",['name','module_id','template_file_name'],[['id','=',report_id]]).then(function(reports){
 				
 	        		_.each(reports,function(report){
 						
 	        				var module_name=report.module_id[1];
-	        				$("#viewer").html(report.template_html);
-	        				json_file=_reports_link+module_name+"/"+report.name+"/"+json_file;
+						template_path_name=_reports_link+module_name+"/"+report.name+"/HTML/"+report.template_file_name
+	        				
 	        				
 	        			});
 				
 				
         		}).then(function(){
-        			engine_report(json_file,"#Report");
+        			engine_report(template_path_name,"#Report");
         			format_rapport=$("#Report").attr("format");
   			  	page_format(format_rapport);
         		});
