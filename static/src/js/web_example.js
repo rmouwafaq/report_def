@@ -1,5 +1,6 @@
 openerp.report_def = function (instance) {
 	var _reports_link="report_def_store/static/reports/";
+	var zoom=100;
     instance.web.client_actions.add('report.viewer.action', 'instance.report_def.Action');
     instance.report_def.Action = instance.web.Widget.extend({
         template: 'report_viewer_template.action',
@@ -8,6 +9,8 @@ openerp.report_def = function (instance) {
 	    'mouseout .banner_printer': 'opacity_mouse_out',
 	    'click #to_pdf': 'to_pdf',
 	    'click #to_print': 'to_print',
+	    'click #zoom_back': 'zoom_back',
+	    'click #zoom_forward': 'zoom_forward',
         },
         init: function () {
             this._super.apply(this, arguments);
@@ -31,6 +34,18 @@ openerp.report_def = function (instance) {
 		    console.log(datas);
 		});
 		
+	},
+	zoom_back:function(){
+	  if(zoom>25){  
+	    zoom=zoom-25;
+	    $("#Report").css('zoom',zoom+'%');	
+	  }
+	},
+	zoom_forward:function(){
+	  if(zoom<200){  
+	    zoom=zoom+25;
+	    $("#Report").css('zoom',zoom+'%');	
+	  }
 	},
 	opacity_mouse_in:function(){
 	    $(".banner_printer").css({'opacity':'1','border':'1px solid rgb(254,29,63)','border-top':'none'});	

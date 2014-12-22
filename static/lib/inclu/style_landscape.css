@@ -1,9 +1,9 @@
+@import url("style_zone_text.css");
 #viewer {
 	background-color: rgb(69,68,68);
 	height: 100%;
-	
 }
-#viewer .Page_container {
+.Page_container {
 	background-color: #fff;
 	width: 1010px;
 	height: 750px;
@@ -11,18 +11,18 @@
 	padding: auto;
 	box-shadow: -1px -1px 15px #fff
 }
-#viewer .Page tbody td {
+.Page tbody td {
 	padding-left: 5px;
 }
 
-#viewer .Page {
+.Page {
 	height: 700px;
 	width: 900px;
 	margin: auto;
 	background-color: #fff;
 }
 
-#viewer .Report_header {
+.Report_header {
 	padding-top: 50px;
 }
 
@@ -32,10 +32,9 @@
 		margin: 0;
 	}
 	.Page_container {
-		
+		display: block;
 		margin: 0;
-		padding: 0;
-	        font-family :calibri;
+		padding: 0 font-family :calibri;
 		border: initial;
 		border-radius: initial;
 		width: initial;
@@ -43,7 +42,7 @@
 		min-height: 19.6cm;
 		box-shadow: initial;
 		page-break-after: always;
-		background-color: #f0f;
+		background-color: #fff;
 		border: none;
 	}
 	.Report {
@@ -52,8 +51,7 @@
 	}
 	.Page {
 		margin: auto;
-		/*height: 19cm;*/
-
+		height: 19cm;
 	}
 
 	.banner_printer {
@@ -68,15 +66,10 @@
 	.Page_container + br {
 		display: none;
 	}
-	#Report{
-	border:none;
-	}
 
 }
 
-/*--------------------*/
-
-#viewer .company_name {
+.company_name {
 
 	max-width: 200px;
 
@@ -88,7 +81,7 @@
 
 /* style de fieldset central (Titre de document) */
 
-#viewer .doc_title {
+.doc_title {
 
 	width: 400px;
 
@@ -98,13 +91,13 @@
 
 }
 
-#viewer .doc_title legend {
+.doc_title legend {
 
 	text-align: center;
 
 }
 
-#viewer .doc_title div {
+.doc_title div {
 
 	text-align: center;
 
@@ -118,13 +111,13 @@
 
 /* le tableau */
 
-#viewer .tableau0{
+.tableau0{
 
 	border:none;
 
 }
 
-#viewer .tableau0 thead td,#viewer .tableau0 thead th{
+.tableau0 thead td,.tableau0 thead th{
 
 	border:none;
 
@@ -132,7 +125,7 @@
 
 }
 
-#viewer .tableau0 tbody td{
+.tableau0 tbody td{
 
 	background-color:#fff;
 
@@ -142,39 +135,13 @@
 
 /*************************/
 
-/* le tableau */
-
-#viewer .tableau0{
-
-	border:none;
-
-}
-
-#viewer .tableau0 thead td,#viewer .tableau0 thead th{
-
-	border:none;
-
-	font-weight:bolder;
-
-}
-
-#viewer .tableau0 tbody td{
-
-	background-color:#fff;
-
-	border:none;
-
-}
-
-/*************************/
-
-#viewer .tableau1{
+.tableau1{
 
 	border-color:#aaa;
-	
+
 }
 
-#viewer .tableau1 thead td,#viewer .tableau1 thead th{
+.tableau1 thead td,.tableau1 thead th{
 
 	background-color:#ddd;
 
@@ -186,7 +153,7 @@
 
 }
 
-#viewer .tableau1 tbody td{
+.tableau1 tbody td{
 
 	background-color:#fff;
 
@@ -200,13 +167,13 @@
 
 /****************************/
 
-#viewer .tableau2{
+.tableau2{
 
 	border-color:#aaa;
 
 }
 
-#viewer .tableau2 thead td,#viewer .tableau2 thead th{
+.tableau2 thead td,.tableau2 thead th{
 
 	background-color:#ddd;
 
@@ -218,7 +185,7 @@
 
 }
 
-#viewer .tableau2 tbody td{
+.tableau2 tbody td{
 
 	background-color:#fff;
 
@@ -232,13 +199,13 @@
 
 
 
-#viewer .tableau3{
+.tableau3{
 
 	border-color:#aaa;
 
 }
 
-#viewer .tableau3 thead td,#viewer .tableau3 thead th{
+.tableau3 thead td,.tableau3 thead th{
 
 	background-color:#ddd;
 
@@ -252,7 +219,7 @@
 
 }
 
-#viewer .tableau3 tbody td{
+.tableau3 tbody td{
 
 	
 
@@ -262,7 +229,7 @@
 
 }
 
-#viewer .tableau3 tbody tr{
+.tableau3 tbody tr:nth-child(odd){
 
 	background-color:#eee;
 
@@ -270,44 +237,7 @@
 
 /******************************/
 
-#viewer .tableau4{
-
-	border-color:#aaa;
-
-}
-
-#viewer .tableau4 thead td,#viewer .tableau4 thead th{
-
-	background-color:#ddd;
-
-	border:none;
-	border-left:1px solid #ccc;
-	border-bottom:1px double #ccc
-
-	font-weight:bolder;
-
-	border-color:#aaa;
-
-}
-
-#viewer .tableau4 tbody td,#viewer .tableau4 tfoot td{
-
-	
-
-	border:none;
-
-	border-color:#aaa;
-
-}
-
-#viewer .tableau4 tbody tr{
-
-	background-color:#eee;
-
-}
-/******************************/
-
-#viewer table {
+table {
 
 	margin: 0;
 
@@ -321,33 +251,27 @@
 
 }
 
-#viewer table thead td,#viewer table thead th {
+table thead td,table thead th {
 
 	border: 1px solid #000;
 
-	background-color:#fff;
+	font-size: 12px;
 
 	padding-left: 5px;
 
 }
 
-#viewer table tbody td,#viewer table tfoot td {
-l
+table tbody td,table tfoot td {
+
+	font-size: 12px;
+
 	padding-left: 5px;
 
 	border: 1px solid #000;
 
 }
-#viewer table thead{
-	font-size: 12px;
-}
-#viewer table tbody{
-	font-size: 12px;
-}
-#viewer table tfoot{
-	font-size: 12px;
-}
-#viewer table tbody td ul{
+
+table tbody td ul{
 
 	
 
@@ -359,13 +283,13 @@ l
 
 
 
-#viewer .size_24 td{
+.size_24 td{
 
 	height:24px;
 
 }
 
-#viewer .entete_tab {
+.entete_tab {
 
 	font-weight: bold;
 
@@ -379,7 +303,7 @@ l
 
 }
 
-#viewer .cell_txt1 {
+.cell_txt1 {
 
 	text-decoration: underline;
 
@@ -387,7 +311,7 @@ l
 
 }
 
-#viewer .cell_txt2 {
+.cell_txt2 {
 
 	text-decoration: none;
 
@@ -395,7 +319,7 @@ l
 
 }
 
-#viewer .cell_title {
+.cell_title {
 
 	text-decoration: none;
 
@@ -407,35 +331,43 @@ l
 
 
 
+/*.cell_numerique{
 
+ text-decoration:none;
+
+ text-align:right;
+
+
+
+ }*/
 
 /* fusionnement des cellules   */
 
-#viewer .fus_haut {
+.fus_haut {
 
 	border-top: none;
 
 }
 
-#viewer .fus_droit {
+.fus_droit {
 
 	border-right: none;
 
 }
 
-#viewer .fus_bas {
+.fus_bas {
 
 	border-bottom: none;
 
 }
 
-#viewer .fus_gauche {
+.fus_gauche {
 
 	border-left: none;
 
 }
 
-#viewer .fus_bas_haut {
+.fus_bas_haut {
 
 	border-bottom: none;
 
@@ -443,7 +375,7 @@ l
 
 }
 
-#viewer .fus_droit_gauche {
+.fus_droit_gauche {
 
 	border-right: none;
 
@@ -451,39 +383,39 @@ l
 
 }
 
-/* bordure */
+/* affectation du bordure */
 
-#viewer .bord_haut {
+.bord_haut {
 
 	border-top: 1px solid #000;
 
 }
 
-#viewer .bord_droit {
+.bord_droit {
 
 	border-right: 1px solid #000;
 
 }
 
-#viewer .bord_bas {
+.bord_bas {
 
 	border-bottom: 1px solid #000;
 
 }
 
-#viewer .bord_bas_dot {
+.bord_bas_dot {
 
 	border-bottom: 1px dotted #000;
 
 }
 
-#viewer .bord_gauche {
+.bord_gauche {
 
 	border-left: 1px solid #000;
 
 }
 
-#viewer .bord_haut_bas {
+.bord_haut_bas {
 
 	border-top: 1px solid #000;
 
@@ -491,15 +423,15 @@ l
 
 }
 
-#viewer .bord_droit_gauche {
+.bord_droit_gauche {
 
-	border-right: 1px solid #000;
+	border-left: 1px solid #000;
 
 	border-right: 1px solid #000;
 
 }
 
-#viewer .bord_haut_bas_gras {
+.bord_haut_bas_gras {
 
 	border-top: 1px solid #000;
 
@@ -509,16 +441,51 @@ l
 
 }
 
-#viewer .table_style1{
+.table_style1{
 
 border:1px solid #000;	
 
 }
 
-#viewer .table_style1 td{
+.table_style1 td{
 
 border-bottom:none;
 
 border-top:none;	
 
 }
+
+
+.size-niv-4, .size-niv-4 td{
+		     font-size:4px;
+  }
+  .size-niv-5, .size-niv-5 td{
+     font-size:5px;
+  }
+  .size-niv-6, .size-niv-6 td{
+     font-size:6px;
+  }
+  .size-niv-7, .size-niv-7 td{
+     font-size:7px;
+  }
+  .size-niv-8, .size-niv-8 td{
+     font-size:8px;
+  }
+  .size-niv-9, .size-niv-9 td{
+     font-size:9px;
+  }
+  .size-niv-10, .size-niv-10 td{
+     font-size:10px;
+  }
+  .size-niv-11, .size-niv-11 td{
+     font-size:11px;
+  }
+  .size-niv-12, .size-niv-12 td{
+     font-size:12px;
+  }
+  .size-niv-13, .size-niv-13 td{
+     font-size:13px;
+  }
+  .size-niv-14, .size-niv-14 td{
+     font-size:14px;
+  }
