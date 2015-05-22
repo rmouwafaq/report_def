@@ -61,13 +61,18 @@ openerp.report_def = function (instance) {
 			var report_id=query_string[1].split("=")[1];
 
 			
-        		this.fetch("report.def",['name','module_id','template_file_name'],[['id','=',report_id]]).then(function(reports){
+        		this.fetch("report.def",['name','module_id','template_file_name','out_template_file_name'],[['id','=',report_id]]).then(function(reports){
 				
 	        		_.each(reports,function(report){
 						
 	        				var module_name=report.module_id[1];
-						template_path_name=_reports_link+module_name+"/"+report.name+"/HTML/"+report.template_file_name
-	        				
+						var file_name=""
+						if(report.out_template_file_name==undefined ){
+							file_name=report.template_file_name
+						}else{
+							file_name=report.out_template_file_name
+						}
+						template_path_name=_reports_link+module_name+"/"+report.name+"/HTML/"+file_name
 	        				
 	        			});
 				

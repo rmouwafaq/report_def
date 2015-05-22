@@ -115,7 +115,8 @@ class report_def(osv.osv):
                 'field_ids':fields.one2many('report.def.field','report_id','Report Fields'),
                 'total_ids':fields.one2many('report.def.field.total','report_id','Report Totals'),
                 'section_bloc_ids':fields.one2many('report.section.bloc','report_id','Sections'),
-                'auto_generate':fields.boolean("Auto generate data")
+                'auto_generate':fields.boolean("Auto generate data"),
+                'out_template_file_name':fields.char('Output template file name',size=80)
                 }
     
     def create(self,cr,uid,vals,context=None):
