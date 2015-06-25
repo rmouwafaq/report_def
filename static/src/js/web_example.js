@@ -1,5 +1,5 @@
 openerp.report_def = function (instance) {
-	var _reports_link="report_def_store/static/reports/";
+	var _reports_link = "report_def/static/reports/";
 	var zoom=100;
     instance.web.client_actions.add('report.viewer.action', 'instance.report_def.Action');
     instance.report_def.Action = instance.web.Widget.extend({
