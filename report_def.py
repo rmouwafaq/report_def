@@ -110,13 +110,15 @@ class report_def(osv.osv):
                                            'Type'),  
                 
                 'template_html':fields.text('HTML script'),  
-                'template_file_name': fields.char('Template File Name', size=128, required=True, select=True),
-                'json_file_name': fields.char('JSON File Name', size=128, required=True, select=True),
+                'template_file_name': fields.char('Template File Name', size=128, required=True),
+                'json_file_name': fields.char('JSON File Name', size=128, required=True),
                 'field_ids':fields.one2many('report.def.field','report_id','Report Fields'),
                 'total_ids':fields.one2many('report.def.field.total','report_id','Report Totals'),
                 'section_bloc_ids':fields.one2many('report.section.bloc','report_id','Sections'),
                 'auto_generate':fields.boolean("Auto generate data"),
-                'out_template_file_name':fields.char('Output template file name',size=80)
+                'out_template_file_name':fields.char('Output template file name',size=80),
+                'xml_file_name': fields.char('Xml File Name', size=128)
+                
                 }
     
     def create(self,cr,uid,vals,context=None):
@@ -210,9 +212,6 @@ class report_def(osv.osv):
         else:
             return dict_report         
 
-    
-    
-    
 report_def()
         
 

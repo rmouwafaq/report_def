@@ -67,10 +67,9 @@ class report_to_xml(osv.osv_memory):
         for report_id in report_ids: 
             report = pool_rep.browse(cr,uid, report_id) 
             print 'Nom du rapport ',report.name
-            my_xml = xml_gen_model(self.pool,cr,uid,report.name)
+            my_xml = xml_gen_model(self.pool,cr,uid,report.xml_file_name)
             my_xml.add_model('report.def','report')
             print my_xml.xml_gen_basic('report.def',report)
-         
          
 report_to_xml()    
 
@@ -98,7 +97,7 @@ class xml_gen_model(object):
     
     def xml_gen_basic(self,model,obj_value):
         self.xml += self.xml_generate(model,obj_value)
-        # genrate childs models
+        # generate childs models
         self.scan_field_one2many(model)
         self.xml_terminate()
         self.xml_to_file(self.path_file_name)
@@ -111,7 +110,7 @@ class xml_gen_model(object):
         std_temp = ''
         std_temp = self.standard_template(model,std_temp)
         std_temp = self.xml_end_record(std_temp)
-        return self.xml_model_template_(model,std_temp)
+        return self.xml_model_template(model,std_temp)
     
     def xml_terminate(self):
         self.xml = self.xml_footer(self.xml)
@@ -135,7 +134,7 @@ class xml_gen_model(object):
         return std_temp
     
         
-    def xml_model_template_(self,model,str_temp):
+    def xml_model_template(self,model,str_temp):
         my_model = self.get_model(model)
         model_name = my_model['name'] 
         for field_name,value in my_model['desc'].iteritems():
@@ -157,7 +156,6 @@ class xml_gen_model(object):
                     #str_temp = str_temp.replace('@'+self.obj_name, self.obj_name)
                 else:
                     str_temp = str_temp.replace('@'+rel_model+'@', '')
-                    
                     
         return str_temp
     
@@ -195,8 +193,6 @@ class xml_gen_model(object):
         ofi = open(filename, 'w')
         ofi.write(self.xml)
         ofi.close
-    
-    
-
+ 
 
 # vim:expandtab:smartindent:tabstop=4:softtabstop=4:shiftwidth=4:

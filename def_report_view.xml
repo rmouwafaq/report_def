@@ -74,6 +74,7 @@
 							<field name="module_id"/>
 							<field name="template_file_name"/>
 							<field name="json_file_name"/>
+							<field name="xml_file_name"/>
 							<field name="auto_generate" />
 						</group>
 					</group>
