@@ -26,6 +26,7 @@ import os
 from report_api import report_api
 
 from openerp.osv import osv, fields
+from openerp.addons.ao_basic_module.ao_register import CD_ODOO_ADDONS
 
 class report_to_xml(osv.osv_memory):
     _name = 'rdef.export.wizard'
@@ -100,7 +101,9 @@ class xml_gen_model(object):
         # generate childs models
         self.scan_field_one2many(model)
         self.xml_terminate()
-        self.xml_to_file(self.path_file_name)
+        
+        module_name=obj_value.module_id.shortdesc
+        self.xml_to_file(self.path_file_name,module_name)
         
         return self.xml 
     
@@ -189,10 +192,23 @@ class xml_gen_model(object):
                 for elet in obj_field:
                     self.xml += self.xml_generate(rel_model,elet)
     
-    def xml_to_file(self,filename):
-        ofi = open(filename, 'w')
+    def xml_to_file(self,filename,modulename):
+        path_folder=CD_ODOO_ADDONS+modulename+"/Report_def/"
+        if self.create_folder(path_folder):
+            pass
+        
+        path_file_name=path_folder+filename
+        print "path_file_name=",path_file_name
+        ofi = open(path_file_name, 'w')
         ofi.write(self.xml)
         ofi.close
- 
+        
+    def create_folder(self, path_target):
+        try:
+            os.mkdir(path_target)
+            return True
+        except OSError:
+            pass
+            return True
 
 # vim:expandtab:smartindent:tabstop=4:softtabstop=4:shiftwidth=4:
