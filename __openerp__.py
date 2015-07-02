@@ -29,7 +29,7 @@
      Report Tools.
     """,
     "website": ["http://www.agilorg.com"],
-    "depends" : ["base","report_def_store"],
+    "depends" : ["base"],
     "init_xml" : [],
     "demo" : [],
     "data" : ["report_viewer.xml",
