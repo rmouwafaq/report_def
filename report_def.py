@@ -124,12 +124,10 @@ class report_def(osv.osv):
     def create(self,cr,uid,vals,context=None):
         module_rep=self.pool.get("ir.module.module").browse(cr,uid,vals['module_id'],context)
         id_rep_def=super(report_def,self).create(cr, uid, vals, context)
-        module_folder_name=""
-        if(ao_register.ao_modules_folder_name.has_key(module_rep.shortdesc)):
-            module_folder_name=ao_register.ao_modules_folder_name[module_rep.shortdesc]
-        if(vals['auto_generate']):
+        module_folder_name=module_rep.name
+        if(vals['auto_generate']==True):
             if(module_folder_name!="" and vals['template_file_name']!=""):
-                self.auto_create_fields(cr, uid,os.getcwd()+"/openerp/addons/payroll_reporting/templates/"+vals['template_file_name'],id_rep_def,context)
+                self.auto_create_fields(cr, uid,os.getcwd()+"/openerp/addons/payroll_reporting/templates/"+vals['template_file_name']+".html",id_rep_def,context)
         return id_rep_def
     
     def auto_create_fields(self,cr,uid,template_dir,id_rep_def,context):
