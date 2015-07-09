@@ -121,15 +121,18 @@ class report_def(osv.osv):
                 
                 }
     
+    def get_path_template_name(self,cr,uid,report_id,template_name,context=None):
+        module_rep = self.pool.get("ir.module.module").browse(cr,uid,report_id,context) 
+        module_folder_name  = ao_register.CD_ODOO_ADDONS + module_rep.name + '/templates/'
+        if not template_name.endswith('.html'):
+            template_name = template_name + '.html'
+        return module_folder_name + template_name
+            
     def create(self,cr,uid,vals,context=None):
-        module_rep=self.pool.get("ir.module.module").browse(cr,uid,vals['module_id'],context)
-        id_rep_def=super(report_def,self).create(cr, uid, vals, context)
-        module_folder_name=""
-        if(ao_register.ao_modules_folder_name.has_key(module_rep.shortdesc)):
-            module_folder_name=ao_register.ao_modules_folder_name[module_rep.shortdesc]
-        if(vals['auto_generate']):
-            if(module_folder_name!="" and vals['template_file_name']!=""):
-                self.auto_create_fields(cr, uid,os.getcwd()+"/openerp/addons/payroll_reporting/templates/"+vals['template_file_name'],id_rep_def,context)
+        id_rep_def = super(report_def,self).create(cr, uid, vals, context)
+        path_template = self.get_path_template_name(cr,uid,vals['module_id'],vals['template_file_name'],context=None)
+        if(vals['auto_generate']) and path_template:
+            self.auto_create_fields(cr, uid,path_template,id_rep_def,context)
         return id_rep_def
     
     def auto_create_fields(self,cr,uid,template_dir,id_rep_def,context):
@@ -374,7 +377,7 @@ class report_def_json_files(osv.osv):
     _name = "report.def.json_files"
     _description="Agilorg - Report definition files name json"
     _columns ={
-               'name':fields.char('Json Name',size=100,required=True),
+               'name':fields.char('Json Name',size=128,required=True),
                'report_id':fields.many2one('report.def','Report Definition'),
                }
 
