@@ -125,14 +125,21 @@ class xml_gen_model(object):
     def standard_template(self,model,std_temp):
         my_model = self.get_model(model)
         model_name = my_model['name']
+        record_id=my_model['model']
+        record_id=record_id.replace('.','_')
+        record_id=record_id+'_'+str(getattr(my_model['value'], 'id'))
         ##update## std_temp += '        <record id="'+'@'+ model_name + '.name'+ '" model="' + my_model['model'] + '">' + '\n' 
-        std_temp += '        <record id="'+'@'+ model_name + '.id'+ '" model="' + my_model['model'] + '">' + '\n' 
+        std_temp += '        <record id="'+ record_id + '" model="' + my_model['model'] + '">' + '\n' 
         for field_name,value in my_model['desc'].iteritems():
             if value['type'] not in ['one2many','many2one','many2many']:
                std_temp = std_temp  + '            <field name="' + field_name + '">'+'@'+ model_name + '.'+field_name + '</field>' + '\n' 
             
             if value['type'] == 'many2one':
-               rel_model = value['relation'] 
+               rel_model = value['relation']
+               rel_model=rel_model.replace('.','_')
+               if(rel_model in ["ir_module_module","report_def"]):
+                   print rel_model+"::::"
+                   print value 
                std_temp = std_temp  + '            <field name="'+field_name+ '" ref="@'+rel_model+'@"/>'+ '\n' 
     
         return std_temp
@@ -149,15 +156,11 @@ class xml_gen_model(object):
                     str_value = ''
                 str_search = '@'+model_name +'.' + str(field_name)
                 str_temp = str_temp.replace(str_search, str_value)
-                if(field_value):
-                    print "field_value===",field_value
-                    print "getattr==",str(getattr(field_value, 'id'))
-                    record_id=model_name.replace('.','_')
-                    str_record_id_search='@'+record_id+'.id'
-                    str_temp=str_temp.replace(str_record_id_search,record_id+str(getattr(field_value, 'id')))    
+                    
                     
             if value['type'] == 'many2one':
                 rel_model = value['relation'] 
+                rel_model=rel_model.replace('.','_')
                 field_value = getattr(my_model['value'], field_name)
                 if field_value:
                     str_value = rel_model + '_' + str(getattr(field_value, 'id'))
@@ -197,6 +200,8 @@ class xml_gen_model(object):
                 self.add_model(rel_model,'field_name')
                 for elet in obj_field:
                     self.xml += self.xml_generate(rel_model,elet)
+                
+                    
     
     def xml_to_file(self,filename,modulename):
         path_folder=CD_ODOO_ADDONS+modulename+"/Report_def/"
