@@ -221,7 +221,8 @@ report_def()
 class report_section_bloc(osv.osv):
     _name = "report.section.bloc"
     _description = "DefReport section Bloc"
-    _columns = { 
+    _columns = {
+                'name':fields.char('name',size=64), 
                 'report_id':fields.many2one('report.def', 'Report Definition'),
                 'section' : fields.selection([('Report_header', 'Report_header'),
                                            ('Page_header', 'Page_header'),
@@ -234,6 +235,12 @@ class report_section_bloc(osv.osv):
                 }
     
     _defaults = {'max_bloc_number': 1 }
+    
+    def onchange_section(self,cr,uid,ids,selected_section,context=None):
+        res={}
+        print  selected_section
+        res['value']={'name':selected_section}
+        return res
     
     def to_dict(self,cr,uid,id=None):
         

@@ -111,7 +111,8 @@
 			<field name="model">report.section.bloc</field>
 			<field name="arch" type="xml">
 				<form string="Section">
-					<field name="section"/>
+					<field name="name" invisible="1" />
+					<field name="section" on_change="onchange_section(section)"/>
 					<field name="max_bloc_number"/>
 				</form>
 		

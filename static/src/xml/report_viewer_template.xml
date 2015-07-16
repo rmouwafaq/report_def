@@ -6,7 +6,7 @@
 	<style type="text/css">
 		#viewer{
 			width:1049px;
-			overflow-x:auto;
+			
 		}
 	</style>
 	
