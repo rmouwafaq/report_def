@@ -14,9 +14,9 @@
 				<form version="7.0" string="Field">
 					<group col="2">
 						<group>
+							<field name="sequence"/>
 							<field name="template_id"/>
 							<field name="name"/>
-							<field name="sequence"/>
 							<field name="group"/>
 						</group>
 						<group>
@@ -141,12 +141,13 @@
 			<field name="model">report.def.field</field>
 			<field name="arch" type="xml">
 				<tree string="Definition champs">
+					<field name="sequence"/>
 					<field name="template_id"/>
 					<field name="name"/>
-					<field name="sequence"/>
 					<field name="section"/>
 					<field name="source_data"/>
 					<field name="field_type"/>
+					<field name="expression"/>
 					<field name="total_id"/>
 				</tree>
 		
