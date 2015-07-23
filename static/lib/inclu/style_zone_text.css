@@ -1,3 +1,73 @@
+	#viewer .style-x{
+	    background-color:#f00;
+	    color:#00f;
+	}	
+	
+	.py_col_header{
+	   height:50px;
+	   min-width:60px;
+	   max-width:60px;
+	}
+	.py_matricule_header{
+	   height:50px;
+	   min-width:40px;
+	   max-width:40px;
+	}	
+	
+	.py_name_header{
+	   height:50px;
+	   min-width:70px;
+	   max-width:70px;
+	}	
+		
+	
+	.py_col_mont{
+	   height:20px;
+	   min-width:60px;
+	   max-width:60px;
+	}	
+	
+	.py_col_footer{
+	   height:20px;
+	   min-width:60px;
+	   max-width:60px;
+	}	
+
+	.report_title{
+	   height:50px;
+	   min-width:60px;
+	   max-width:160px;
+	   text-align:center;
+	}	
+	
+	.company_name {
+	    width:"250px";
+	    vertical-align: top;
+	    font-weight: bold; 
+	}
+	.py_lab_title{
+	  margin-left:50px;
+	  font-weight: bold;
+
+	}	
+
+	.py_matricule{
+	   height:20px;
+	   min-width:40px;
+	   max-width:40px;
+	}	
+	.py_name{
+	   height:20px;
+	   min-width:80px;
+	   max-width:80px;
+	}	
+	.py_str_total {	
+	   height:20px;
+	   min-width:120px;
+	   max-width:120px;
+	   text-align:center;
+	}
+
 	#viewer .zone_case{
 	    padding-top:5px;
 	    display:inline-block;

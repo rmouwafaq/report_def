@@ -47,6 +47,7 @@
 				<form version="7.0" string="Totals">
 					<group col="2">
 						<field name="name"/>
+						<field name="report_id"/>
 						<field name="function"/>
 						<field name="reset_after_print"/>
 						<field name="reset_repeat_section"/>
