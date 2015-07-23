@@ -121,13 +121,18 @@ class xml_gen_model(object):
     def get_model(self,model):
         if self.col_model.has_key(model):
             return self.col_model[model]
-    
+    def get_key_name(self,model_name):
+        def_model=self.pool.get(model_name).__class__.__dict__
+        if(def_model.has_key('_key_name')):
+            return def_model['_key_name']
+        return "id"
     def standard_template(self,model,std_temp):
+        key_name=self.get_key_name(model)
         my_model = self.get_model(model)
         model_name = my_model['name']
         record_id=my_model['model']
         record_id=record_id.replace('.','_')
-        record_id=record_id+'_'+str(getattr(my_model['value'], 'id'))
+        record_id=record_id+'_'+str(getattr(my_model['value'], key_name)).replace(' ','_')
         ##update## std_temp += '        <record id="'+'@'+ model_name + '.name'+ '" model="' + my_model['model'] + '">' + '\n' 
         std_temp += '        <record id="'+ record_id + '" model="' + my_model['model'] + '">' + '\n' 
         for field_name,value in my_model['desc'].iteritems():
@@ -137,10 +142,9 @@ class xml_gen_model(object):
             if value['type'] == 'many2one':
                rel_model = value['relation']
                rel_model=rel_model.replace('.','_')
-               if(rel_model in ["ir_module_module","report_def"]):
-                   print rel_model+"::::"
-                   print value 
-               std_temp = std_temp  + '            <field name="'+field_name+ '" ref="@'+rel_model+'@"/>'+ '\n' 
+#               if(rel_model in ["ir_module_module","report_def"]):
+               if(str(getattr(my_model['value'], field_name))):
+                   std_temp = std_temp  + '            <field name="'+field_name+ '" ref="@'+rel_model+'@"/>'+ '\n' 
     
         return std_temp
     
@@ -194,13 +198,18 @@ class xml_gen_model(object):
         for field_name,value in my_model['desc'].iteritems():
             if value['type'] == 'one2many':
                 rel_model = value['relation']
-                obj_field = getattr(obj_value, field_name)
-                print 'relation model',field_name,rel_model,obj_field
                 
-                self.add_model(rel_model,'field_name')
-                for elet in obj_field:
-                    self.xml += self.xml_generate(rel_model,elet)
-                
+                if(obj_value!=None):
+#                    print "obj_value==",obj_value
+#                    print "field_name==",field_name
+#                    print "rel_model==",rel_model
+                    obj_field = getattr(obj_value, field_name)
+                    print 'relation model',field_name,rel_model,obj_field
+                    
+                    self.add_model(rel_model,'field_name')
+                    for elet in obj_field:
+                        self.xml += self.xml_generate(rel_model,elet)
+                    self.scan_field_one2many(rel_model)
                     
     
     def xml_to_file(self,filename,modulename):
@@ -209,7 +218,6 @@ class xml_gen_model(object):
             pass
         
         path_file_name=path_folder+filename
-        print "path_file_name=",path_file_name
         ofi = open(path_file_name, 'w')
         ofi.write(self.xml)
         ofi.close
