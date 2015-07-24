@@ -113,7 +113,6 @@ class report_def(osv.osv):
                 'template_file_name': fields.char('Template File Name', size=128, required=True),
                 'json_file_name': fields.char('JSON File Name', size=128, required=True),
                 'field_ids':fields.one2many('report.def.field','report_id','Report Fields'),
-                'total_ids':fields.one2many('report.def.field.total','report_id','Report Totals'),
                 'section_bloc_ids':fields.one2many('report.section.bloc','report_id','Sections'),
                 'auto_generate':fields.boolean("Auto generate data"),
                 'out_template_file_name':fields.char('Output template file name',size=256),
@@ -203,9 +202,6 @@ class report_def(osv.osv):
             for field_id in report.field_ids:
                 dict_report['col_fields'].append(field_id.to_dict())
             
-            dict_report['col_totals']=[]
-            for total_id in report.total_ids:
-                dict_report['col_totals'].append(total_id.to_dict())
                 
             dict_report['col_sections']=[]
             for section_bloc_id in report.section_bloc_ids:
@@ -271,8 +267,7 @@ class report_def_field(osv.osv):
         'template_id':fields.char('Template html id', size=64, required=True, select=True),        
         'name': fields.char('Field Name', size=64, required=True, select=True),        
         'report_id':fields.many2one('report.def', 'Report Definition'),
-        'total_id':fields.many2one('report.def.field.total', 'Total field'),
-        
+       
         'sequence' : fields.integer('Sequence', size=6),
         'section' : fields.selection([('Report_header', 'Report_header'),
                                        ('Page_header', 'Page_header'),
@@ -305,7 +300,15 @@ class report_def_field(osv.osv):
                                         ('Static Image','Static Image'),
                                         ],'Field Type'),
         'expression':fields.text('Expression'),
-        'group':fields.boolean("Grouped")        
+        'formula':fields.text('formule'),
+        
+        'group':fields.boolean("Grouped"),
+        'function':fields.selection([ ('Sum', 'Sum'),
+                                      ('Average','Average'),
+                                      ('Count','Count'),
+                                      ],'Total function'),
+         'reset_after_print':fields.boolean('Reset after print'),
+         'reset_repeat_section':fields.boolean('Reset for repeated section'),        
         
     }    
     
@@ -328,10 +331,6 @@ class report_def_field(osv.osv):
             dict_report_def_field['template_id']=report_def_field.template_id
             dict_report_def_field['report_id']=report_def_field.report_id.id
             dict_report_def_field['name']=report_def_field.name
-            if report_def_field.total_id :
-                dict_report_def_field['total_id']=report_def_field.total_id.id
-            else:
-                dict_report_def_field['total_id']=0
             dict_report_def_field['sequence']=report_def_field.sequence
             dict_report_def_field['section']=report_def_field.section
             dict_report_def_field['source_data']=report_def_field.source_data
@@ -344,45 +343,8 @@ class report_def_field(osv.osv):
                  
 report_def_field()
 
-
-class report_def_field_total(osv.osv):
-    _name = "report.def.field.total"
-    _description = "Agilorg - Report Definition field Total"
-    _columns = { 
-                'name': fields.char('Total Name', size=64, required=True, select=True),
-                'report_id':fields.many2one('report.def', 'Report Definition'),
-                'function':fields.selection([ ('Sum', 'Sum'),
-                                                    ('Average','Average'),
-                                                    ('Count','Count'),
-                                                  ],'Total function'),
-                'reset_after_print':fields.boolean('Reset after print'),
-                'reset_repeat_section':fields.boolean('Reset for repeated section'),
-                'field_ids':fields.one2many('report.def.field','total_id','Total Fields'),
-    }    
     
     
-    def to_dict(self,cr,uid,id=None):
-        
-        dict_report_def_field_total={}
-        
-        id = self.search(cr,uid, [('id','=',id)])
-        
-        if id:
-            report_def_field_total = self.browse(cr,uid, id)[0]  
-            dict_report_def_field_total['id']=report_def_field_total.id
-            dict_report_def_field_total['name']=report_def_field_total.name
-            dict_report_def_field_total['report_id']=report_def_field_total.report_id.id
-            dict_report_def_field_total['function']=report_def_field_total.function
-            dict_report_def_field_total['reset_after_print']=report_def_field_total.reset_after_print
-            dict_report_def_field_total['reset_repeat_section']=report_def_field_total.reset_repeat_section
-            
-            dict_report_def_field_total['col_fields']=report_def_field_total.field_ids
-            
-            return dict_report_def_field_total
-        else:
-            return dict_report_def_field_total 
-          
-report_def_field_total()
 
 
 class report_def_json_files(osv.osv):
@@ -411,10 +373,7 @@ class report_def_json_files(osv.osv):
             dict_report['format']=report.format
             dict_report['template_html']=report.template_html
             dict_report['template_file_name']=report.template_file_name
-            #dict_report['col_fields']=
-            #dict_report['col_totals']=
-            #dict_report['section_bloc_ids']=
-            
+             
             return dict_report
         else:
             return dict_report   
