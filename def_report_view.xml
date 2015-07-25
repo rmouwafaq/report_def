@@ -23,40 +23,27 @@
 							<field name="section"/>
 							<field name="source_data"/>
 							<field name="field_type"/>
-							<field name="total_id"/>
-							
+						</group>
+						<group>
+							<field name="expression" />
+						</group>
+						<group>
+							<field name="formula" />
+						</group>
+						<group>
+							<field name="function"/>
+							<field name="reset_after_print"/>
+							<field name="reset_repeat_section"/>					
 						</group>
 						
 					</group>
-					<group>
-						<field name="expression" />
-					</group>
+					
 				</form>
 			
 			</field>
 		
 		</record>
-		
-		
-		
-		<record model="ir.ui.view" id="report_def_field_total_form">
-
-			<field name="name">report.def.field.total.form</field>
-			<field name="model">report.def.field.total</field>
-			<field name="arch" type="xml">
-				<form version="7.0" string="Totals">
-					<group col="2">
-						<field name="name"/>
-						<field name="report_id"/>
-						<field name="function"/>
-						<field name="reset_after_print"/>
-						<field name="reset_repeat_section"/>
-					</group>
-				</form>
-			</field>
-		</record>
-
-		
+			
 		
 		<record model="ir.ui.view" id="report_def_form">
 			<field name="name">report.def.form</field>
@@ -88,9 +75,6 @@
 						<page string="Sections">
 							<field name="section_bloc_ids"/>
 						</page>
-						<page string="Totals">
-							<field name="total_ids"/>
-						</page>
 						<page string="Query">
 							<field name="query"/>
 						</page>
@@ -121,20 +105,6 @@
 		
 		</record>
 		
-		<!-- views tree -->
-		
-		<record  model="ir.ui.view" id="report_def_field_total_tree">
-			<field name="name">report.def.field.total.tree</field>
-			<field name="model">report.def.field.total</field>
-			<field name="arch" type="xml">
-				<tree version="7.0" string="Total fields" >
-						<field name="name"/>
-						<field name="function"/>
-						<field name="reset_after_print"/>
-						<field name="reset_repeat_section"/>
-				</tree>
-			</field>
-		</record>
 		
 		
 		<record model="ir.ui.view" id="field_def_tree">
@@ -149,8 +119,10 @@
 					<field name="section"/>
 					<field name="source_data"/>
 					<field name="field_type"/>
+					<field name="reset_after_print"/>
+					<field name="reset_repeat_section"/>
 					<field name="expression"/>
-					<field name="total_id"/>
+					<field name="formula"/>
 				</tree>
 		
 			</field>
