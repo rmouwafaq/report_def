@@ -38,8 +38,8 @@
               "wizard/export_rep_def_view.xml",
               "menu_action.xml",
               ],
-    "js": ["static/lib/engine_report.js","static/src/js/web_example.js"],
-    "css":["static/src/css/web_example.css"],
+    "js": ["static/lib/engine_report.js","static/src/js/report_viewer_template.js"],
+    "css":[],
     "qweb":["static/src/xml/report_viewer_template.xml"],
     "auto_install": False,
     "installable": True

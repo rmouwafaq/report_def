@@ -1,9 +1,7 @@
 @import url("style_zone_text.css");
-#viewer {
-	background-color: rgb(69,68,68);
-	height: 100%;
-}
-.Page_container {
+@import url("global_style.css");
+
+#viewer .Page_container {
 	background-color: #fff;
 	width: 1010px;
 	height: 750px;
@@ -11,18 +9,18 @@
 	padding: auto;
 	box-shadow: -1px -1px 15px #fff
 }
-.Page tbody td {
+#viewer .Page tbody td {
 	padding-left: 5px;
 }
 
-.Page {
+#viewer .Page {
 	height: 700px;
 	width: 900px;
 	margin: auto;
 	background-color: #fff;
 }
 
-.Report_header {
+#viewer .Report_header {
 	padding-top: 50px;
 }
 
@@ -31,7 +29,7 @@
 		size: landscape;
 		margin: 0;
 	}
-	.Page_container {
+	#viewer .Page_container {
 		display: block;
 		margin: 0;
 		padding: 0 font-family :calibri;
@@ -45,16 +43,16 @@
 		background-color: #fff;
 		border: none;
 	}
-	.Report {
+	#viewer .Report {
 		margin: 0;
 		padding: 0;
 	}
-	.Page {
+	#viewer .Page {
 		margin: auto;
 		height: 19cm;
 	}
 
-	.banner_printer {
+	#viewer .banner_printer {
 		display: none;
 	}
 	#viewer {
@@ -63,429 +61,9 @@
 		margin: 0;
 		padding: 0;
 	}
-	.Page_container + br {
+	#viewer .Page_container + br {
 		display: none;
 	}
 
 }
 
-.company_name {
-
-	max-width: 200px;
-
-	border-radius: 10px;
-
-	float: left;
-
-}
-
-/* style de fieldset central (Titre de document) */
-
-.doc_title {
-
-	width: 400px;
-
-	border-radius: 10px;
-
-	max-width: 500px;
-
-}
-
-.doc_title legend {
-
-	text-align: center;
-
-}
-
-.doc_title div {
-
-	text-align: center;
-
-	text-decoration: underline;
-
-	font-weight: bold;
-
-	font-size: 11px;
-
-}
-
-/* le tableau */
-
-.tableau0{
-
-	border:none;
-
-}
-
-.tableau0 thead td,.tableau0 thead th{
-
-	border:none;
-
-	font-weight:bolder;
-
-}
-
-.tableau0 tbody td{
-
-	background-color:#fff;
-
-	border:none;
-
-}
-
-/*************************/
-
-.tableau1{
-
-	border-color:#aaa;
-
-}
-
-.tableau1 thead td,.tableau1 thead th{
-
-	background-color:#ddd;
-
-	border:1px double #999;
-
-	font-weight:bolder;
-
-	border-color:#aaa;
-
-}
-
-.tableau1 tbody td{
-
-	background-color:#fff;
-
-	border-bottom:none;
-
-	border-top:none;
-
-	border-color:#aaa;
-
-}
-
-/****************************/
-
-.tableau2{
-
-	border-color:#aaa;
-
-}
-
-.tableau2 thead td,.tableau2 thead th{
-
-	background-color:#ddd;
-
-	border:1px double #999;
-
-	font-weight:bolder;
-
-	border-color:#aaa;
-
-}
-
-.tableau2 tbody td{
-
-	background-color:#fff;
-
-	border:none;
-
-	border-color:#aaa;
-
-}
-
-/******************************/
-
-
-
-.tableau3{
-
-	border-color:#aaa;
-
-}
-
-.tableau3 thead td,.tableau3 thead th{
-
-	background-color:#ddd;
-
-	border:none;
-
-	border-bottom:1px double #ccc
-
-	font-weight:bolder;
-
-	border-color:#aaa;
-
-}
-
-.tableau3 tbody td{
-
-	
-
-	border:none;
-
-	border-color:#aaa;
-
-}
-
-.tableau3 tbody tr:nth-child(odd){
-
-	background-color:#eee;
-
-}
-
-/******************************/
-
-table {
-
-	margin: 0;
-
-	padding: 0;
-
-	border: 1px solid #000;
-
-	border-bottom: 1px solid #000;
-
-	/*height:100%;*/
-
-}
-
-table thead td,table thead th {
-
-	border: 1px solid #000;
-
-	font-size: 12px;
-
-	padding-left: 5px;
-
-}
-
-table tbody td,table tfoot td {
-
-	font-size: 12px;
-
-	padding-left: 5px;
-
-	border: 1px solid #000;
-
-}
-
-table tbody td ul{
-
-	
-
-	margin:0px;
-
-}
-
-
-
-
-
-.size_24 td{
-
-	height:24px;
-
-}
-
-.entete_tab {
-
-	font-weight: bold;
-
-	text-align: center;
-
-	height: 30px;
-
-	margin: 0;
-
-	padding: 0;
-
-}
-
-.cell_txt1 {
-
-	text-decoration: underline;
-
-	text-align: left;
-
-}
-
-.cell_txt2 {
-
-	text-decoration: none;
-
-	text-align: left;
-
-}
-
-.cell_title {
-
-	text-decoration: none;
-
-	text-align: left;
-
-	font-weight: bold;
-
-}
-
-
-
-/*.cell_numerique{
-
- text-decoration:none;
-
- text-align:right;
-
-
-
- }*/
-
-/* fusionnement des cellules   */
-
-.fus_haut {
-
-	border-top: none;
-
-}
-
-.fus_droit {
-
-	border-right: none;
-
-}
-
-.fus_bas {
-
-	border-bottom: none;
-
-}
-
-.fus_gauche {
-
-	border-left: none;
-
-}
-
-.fus_bas_haut {
-
-	border-bottom: none;
-
-	border-top: none;
-
-}
-
-.fus_droit_gauche {
-
-	border-right: none;
-
-	border-left: none;
-
-}
-
-/* affectation du bordure */
-
-.bord_haut {
-
-	border-top: 1px solid #000;
-
-}
-
-.bord_droit {
-
-	border-right: 1px solid #000;
-
-}
-
-.bord_bas {
-
-	border-bottom: 1px solid #000;
-
-}
-
-.bord_bas_dot {
-
-	border-bottom: 1px dotted #000;
-
-}
-
-.bord_gauche {
-
-	border-left: 1px solid #000;
-
-}
-
-.bord_haut_bas {
-
-	border-top: 1px solid #000;
-
-	border-bottom: 1px solid #000;
-
-}
-
-.bord_droit_gauche {
-
-	border-left: 1px solid #000;
-
-	border-right: 1px solid #000;
-
-}
-
-.bord_haut_bas_gras {
-
-	border-top: 1px solid #000;
-
-	border-bottom: 1px solid #000;
-
-	font-weight: bold;
-
-}
-
-.table_style1{
-
-border:1px solid #000;	
-
-}
-
-.table_style1 td{
-
-border-bottom:none;
-
-border-top:none;	
-
-}
-
-
-.size-niv-4, .size-niv-4 td{
-		     font-size:4px;
-  }
-  .size-niv-5, .size-niv-5 td{
-     font-size:5px;
-  }
-  .size-niv-6, .size-niv-6 td{
-     font-size:6px;
-  }
-  .size-niv-7, .size-niv-7 td{
-     font-size:7px;
-  }
-  .size-niv-8, .size-niv-8 td{
-     font-size:8px;
-  }
-  .size-niv-9, .size-niv-9 td{
-     font-size:9px;
-  }
-  .size-niv-10, .size-niv-10 td{
-     font-size:10px;
-  }
-  .size-niv-11, .size-niv-11 td{
-     font-size:11px;
-  }
-  .size-niv-12, .size-niv-12 td{
-     font-size:12px;
-  }
-  .size-niv-13, .size-niv-13 td{
-     font-size:13px;
-  }
-  .size-niv-14, .size-niv-14 td{
-     font-size:14px;
-  }

@@ -48,10 +48,12 @@ openerp.report_def = function (instance) {
 	  }
 	},
 	opacity_mouse_in:function(){
-	    $(".banner_printer").css({'opacity':'1','border':'1px solid rgb(254,29,63)','border-top':'none'});	
+	    $(".banner_printer").removeClass("banner_hover_out")
+	    $(".banner_printer").addClass("banner_hover_in");	
 	},
 	opacity_mouse_out:function(){
-	    $(".banner_printer").css({'opacity':'0.3','border':'none'});	
+	    $(".banner_printer").removeClass("banner_hover_in");	
+	    $(".banner_printer").addClass("banner_hover_out")
 	},
        getData:function(){
         		var template_path_name="";
