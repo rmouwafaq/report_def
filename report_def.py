@@ -31,17 +31,68 @@ from checkbox.lib.transport import create_connection
 from mock import self
 from asyncore import write
 from openerp.addons.ao_basic_module import ao_register
+from openerp.addons.ao_basic_module.ao_class import model_key
+
 
 class ir_module(osv.osv):
     _inherit = "ir.module.module"
+    _key_name = 'name'
     _columns = { 
                 'report_def_ids':fields.one2many('report.def','module_id','Reports Definition'),
                 }
+    
 ir_module()
 
-class res_company(osv.osv):  
-    _inherit="res.company" 
+class ir_model_data(osv.osv):
+
+    _inherit = "ir.model.data"
     
+    def get_key_name(self,cr,uid,model_name):
+        pool_model = self.pool.get(model_name)
+        desc  = pool_model.fields_get(cr,uid)
+        def_model = dir(pool_model)
+        if ('_key_name' in def_model):
+            key_name = model_key(pool_model._key_name,desc)
+            return key_name 
+        return "id"
+    
+        
+    def export_external_ids(self,cr,uid,rec_model,module_id):
+        module = self.pool.get('ir.module.module').browse(cr,uid,module_id)
+        pool_model = self.pool.get('ir.model')
+        pool_ir_data = self.pool.get('ir.model.data')
+        model_id = pool_model.search(cr, uid, [('model','in',[rec_model])])
+        key_name = self.get_key_name(cr,uid,rec_model)
+        
+        pool_data = self.pool.get(rec_model)
+        
+        ir_ids = pool_ir_data.search(cr,uid,[('module','in',[module.name]),
+                                             ('model','in',[rec_model])])
+        pool_ir_data.unlink(cr,uid,ir_ids,context=None)
+        
+        all_model_ids = pool_data.search(cr, uid, [])
+        result        = pool_data.read(cr, uid, all_model_ids)
+        for record in result:
+            key_value =  key_name.val_to_string(record)
+            values = {  'name': key_value,
+                        'model': rec_model,
+                        'module': module.name,
+                        'res_id': record['id'],
+                        'noupdate': False
+                        }
+            ir_id = pool_ir_data.search(cr, uid, [('name','=',key_value),('module','=',module.name)])
+            if not ir_id:
+                ir_id = pool_ir_data.create(cr,uid,values,context=None)
+                
+            print 'key_value',rec_model,key_value
+             
+ir_model_data()
+
+
+class res_company(osv.osv):  
+    
+    _inherit = "res.company" 
+
     def to_dict(self,cr,uid,id=None):
         
         dict_company={}
@@ -76,6 +127,7 @@ class res_users(osv.osv):
             return dict_user
 
 class res_partner(osv.osv):  
+    
     _inherit="res.partner" 
     
     def to_dict(self,cr,uid,id=None):
@@ -96,6 +148,7 @@ class report_def(osv.osv):
     
     _name = "report.def"
     _description = "Agilorg report Definition"
+    _key_name = 'name'
     _columns = { 
                 'name': fields.char('Report Name', size=64, required=True, select=True),
                 'title': fields.char('Title', size=128, required=True, select=True),
@@ -217,6 +270,7 @@ report_def()
 class report_section_bloc(osv.osv):
     _name = "report.section.bloc"
     _description = "DefReport section Bloc"
+    _key_name = 'section'
     _columns = {
                 'name':fields.char('name',size=64), 
                 'report_id':fields.many2one('report.def', 'Report Definition'),
@@ -263,6 +317,7 @@ class report_def_field(osv.osv):
     _name = "report.def.field"
     _description = "Agilorg Report Definition fields"
     _order =  "sequence,section"
+    _key_name = 'name'
     _columns = { 
         'template_id':fields.char('Template html id', size=64, required=True, select=True),        
         'name': fields.char('Field Name', size=64, required=True, select=True),        
@@ -351,6 +406,7 @@ class report_def_json_files(osv.osv):
 
     _name = "report.def.json_files"
     _description="Agilorg - Report definition files name json"
+    _key_name = 'name'
     _columns ={
                'name':fields.char('Json Name',size=128,required=True),
                'report_id':fields.many2one('report.def','Report Definition'),

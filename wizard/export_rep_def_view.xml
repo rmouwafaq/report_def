@@ -22,5 +22,23 @@
             </field>
         </record>
      
+     	<record id="view_xml_import_report" model="ir.ui.view">
+            <field name="name">Import Report Definition</field>
+            <field name="model">rdef.import.wizard</field>
+            <field name="arch" type="xml">
+                <form string="Import Report Definition" version="7.0">
+                    <group col="4" string="Module Reports">
+                        <field name="module_id"/>
+                    </group>
+                    
+                    <footer>
+                        <button name="xml_import_report" type="object" string="Import Report" class="oe_highlight"/>
+                        or
+                        <button string="Cancel" class="oe_link" special="cancel"/>
+                    </footer>
+                </form>
+            </field>
+        </record>
+     
     </data>
 </openerp>
