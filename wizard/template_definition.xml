@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="utf-8"?>
+<openerp>
+    <data>
+        <!--   pos.details -->
+        <record id="view_template_def" model="ir.ui.view">
+            <field name="name">Template definition</field>
+            <field name="model">rdef.template.definition</field>
+            <field name="arch" type="xml">
+                <form string="Template defintion" version="7.0">
+                    <group col="4" >
+                        <field name="module_id"  on_change="on_change_module(module_id)" />
+                    </group>
+                    <group col="4" >
+                    	<field name="file_ids"/>
+                    </group>
+                    
+                    <footer>
+                        <button name="to_define" type="object" string="Execute" class="oe_highlight"/>
+                        or
+                        <button string="Cancel" class="oe_link" special="cancel"/>
+                    </footer>
+                </form>
+            </field>
+        </record>
+
+		<record model="ir.ui.view" id="rdef_module_temp_tree">
+		
+			<field name="name">module template</field>
+			<field name="model">rdef.module.templates</field>
+			<field name="arch" type="xml">
+				<tree string="module templates">
+					<field name="file_name"/>
+					<field name="file_size"/>
+					<field name="last_update"/>
+				</tree>
+		
+			</field>
+		
+		</record>
+    </data>
+</openerp>

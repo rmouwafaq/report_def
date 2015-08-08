@@ -180,12 +180,12 @@ class report_def(osv.osv):
             template_name = template_name + '.html'
         return module_folder_name + template_name
             
-    def create(self,cr,uid,vals,context=None):
-        id_rep_def = super(report_def,self).create(cr, uid, vals, context)
-        path_template = self.get_path_template_name(cr,uid,vals['module_id'],vals['template_file_name'],context=None)
-        if(vals['auto_generate']) and path_template:
-            self.auto_create_fields(cr, uid,path_template,id_rep_def,context)
-        return id_rep_def
+#    def create(self,cr,uid,vals,context=None):
+#        id_rep_def = super(report_def,self).create(cr, uid, vals, context)
+#        path_template = self.get_path_template_name(cr,uid,vals['module_id'],vals['template_file_name'],context=None)
+#        if(vals['auto_generate']) and path_template:
+#            self.auto_create_fields(cr, uid,path_template,id_rep_def,context)
+#        return id_rep_def
     
     def auto_create_fields(self,cr,uid,template_dir,id_rep_def,context):
         sections=['Report_header','Page_header','Details','Page_footer','Report_footer']
