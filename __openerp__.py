@@ -36,6 +36,7 @@
               "def_report_view.xml",
               "wizard/assistant_view.xml",
               "wizard/export_rep_def_view.xml",
+              "wizard/template_definition.xml",
               "menu_action.xml",
               ],
     "js": ["static/lib/engine_report.js","static/src/js/report_viewer_template.js"],

@@ -1,2 +1,3 @@
 import assistant
 import assistant_export_xml
+import template_definition
