@@ -20,6 +20,7 @@
 ##############################################################################
 import os
 import time
+from openerp.tools.translate import _
 from openerp.addons.ao_basic_module import ao_register
 from Agil_Template import Template
 from openerp.osv import osv, fields
@@ -73,7 +74,7 @@ class template_definition(osv.osv_memory):
             temp = Template()
             temp.read(self.templates_dir + file['file_name'])
             def_report = temp.get_definition_report()
-            if(def_report['name']):
+            if(def_report.has_key('name')):
                 report_id = report_def_obj.search(cr,uid,[('name','=',def_report['name'])],context=context)
                 vals={
                           'name':def_report['name'],
@@ -92,7 +93,8 @@ class template_definition(osv.osv_memory):
                     #add new report definition
                     id_rep_def=report_def_obj.create(cr,uid,vals,context=context)
                     self.create_report_def(cr,uid,temp,id_rep_def,context=context)
-                    
+            else:
+                raise osv.except_osv('Action Error !',"No report definition in template " + file['file_name'])        
         return True
     
     def on_change_module(self,cr,uid,ids,module_id,context=None):
@@ -100,7 +102,10 @@ class template_definition(osv.osv_memory):
             module_obj=self.pool.get("ir.module.module").read(cr,uid,module_id,context=context)
             self.templates_dir = ao_register.CD_ODOO_ADDONS + module_obj['name'] + '/templates/'
             files_ids=self.pool.get("rdef.module.templates").create_list_file(cr,uid,self.templates_dir,context=context)
-            return True
+            return {'value': {
+                'file_ids': [],
+                }
+            }
         except:
             return False   
     
