@@ -183,7 +183,6 @@ class report_def(osv.osv):
     def create(self,cr,uid,vals,context=None):
         id_rep_def = super(report_def,self).create(cr, uid, vals, context)
         path_template = self.get_path_template_name(cr,uid,vals['module_id'],vals['template_file_name'],context=None)
-        print "vals:",vals
         if(vals.get('auto_generate',False)) and path_template:
             self.auto_create_fields(cr, uid,path_template,id_rep_def,context)
         return id_rep_def
