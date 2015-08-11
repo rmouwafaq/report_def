@@ -23,9 +23,9 @@ from openerp.osv import fields, osv
 import ho.pisa as pisa
 import os
 import time
-import netsvc
+import openerp.netsvc
 import datetime
-from tools.translate import _
+from openerp.tools.translate import _
 from Agil_Template import Template
 from checkbox.lib.transport import create_connection
 from mock import self
