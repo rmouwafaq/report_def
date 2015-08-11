@@ -160,6 +160,16 @@
 		
 		</record>
 		
+		
+		
+		<!-- Declaration des fichiers js/css -->
+		
+        <template id="assets_backend" inherit_id="web.assets_backend">
+            <xpath expr="." position="inside">
+            	<script type="text/javascript" src="/report_def/static/lib/engine_report.js"></script>
+                <script type="text/javascript" src="/report_def/static/src/js/report_viewer_template.js"></script>
+            </xpath>
+        </template>
 	</data>
 
 </openerp>
