@@ -22,7 +22,7 @@ import os
 import time
 from openerp.tools.translate import _
 from openerp.addons.ao_basic_module import ao_register
-from Agil_Template import Template
+from agilreport.Agil_Template import Template
 from openerp.osv import osv, fields
 
 class module_templates(osv.osv):

@@ -26,7 +26,7 @@ import time
 import openerp.netsvc
 import datetime
 from openerp.tools.translate import _
-from Agil_Template import Template
+from agilreport.Agil_Template import Template
 from checkbox.lib.transport import create_connection
 from mock import self
 from asyncore import write

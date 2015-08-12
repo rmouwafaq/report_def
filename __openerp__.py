@@ -34,7 +34,6 @@
     "demo" : [],
     "data" : ["report_viewer.xml",
               "def_report_view.xml",
-              "wizard/assistant_view.xml",
               "wizard/export_rep_def_view.xml",
               "wizard/template_definition.xml",
               "menu_action.xml",

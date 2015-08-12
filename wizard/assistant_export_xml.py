@@ -23,7 +23,6 @@ import time
 import json
 import collections
 import os
-from report_api import report_api
 import logging
 import openerp
 from openerp.osv import osv, fields
