@@ -183,11 +183,16 @@ class xml_to_report(osv.osv_memory):
                 obj_xml_odoo =  odoo_xml(fp)
                 my_models = obj_xml_odoo.get_xml_all_models()
                 # Completion of  external 
+                appended_dict={}
                 for name_model in my_models:
                     lst_models = self.external_models(cr,uid,name_model)
                     for elet in lst_models.values():
                         if not my_models.has_key(elet):
-                            my_models[elet] = lst_models[elet]
+                            appended_dict[elet] = lst_models[elet]
+                            
+                for item in appended_dict.values():
+                    if not my_models.has_key(item):
+                        my_models[item]=item
                 
                 pool_ir_data = self.pool.get('ir.model.data')
                 for rec_model in my_models:
