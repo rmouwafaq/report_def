@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<openerp>
+    <data>
+
+        <record id="view_model_export_xml" model="ir.ui.view">
+            <field name="name">Export Model</field>
+            <field name="model">rdef.model.export.xml</field>
+            <field name="arch" type="xml">
+                <form string="Export model" >
+                    <field invisible="1" name="state"/>
+                    <field invisible="1" name="name"/>
+                    <group states="choose"  string="Select Models">
+                    	<field name="name" />
+                        <field name="model_ids"/>
+                    </group>
+                    
+                    <div states="get">
+                    	<p>Click here for download file : <field name="xml_file" readonly="1" filename="name" /></p>
+                    </div>
+                    
+                    <footer states="choose">
+                        <button name="export_models" type="object" string="Export Models" class="oe_highlight"/>
+                        or
+                        <button string="Cancel" class="oe_link" special="cancel"/>
+                    </footer>
+                    <footer states="get">
+                        <button special="cancel" string="Close" type="object"/>
+                    </footer>
+                </form>
+            </field>
+        </record>
+     
+     	
+    </data>
+</openerp>

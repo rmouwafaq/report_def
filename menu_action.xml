@@ -45,6 +45,15 @@
             <field name="view_mode">form</field>
             <field name="target">new</field>
         </record>
+        
+        <record id="action_wiz_export_model" model="ir.actions.act_window">
+            <field name="name">Assistant Export Model</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="res_model">rdef.model.export.xml</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">form</field>
+            <field name="target">new</field>
+        </record>
 		
 		<!-- menu -->
 		<menuitem id="report_def_root" name="Gestion Rapports"/>
@@ -52,6 +61,7 @@
 		<menuitem id="config_rap" name="rapport" sequence="100" parent="rep_config" action="action_report_def"/>
 		<menuitem id="template_def" name="Import Template Definition" sequence="110" parent="rep_config" action="action_template_def"/>
 		<menuitem id="export_wiz" name="Export XML Report Definition" sequence="120" parent="rep_config" action="action_wiz_export_report"/>
+		<menuitem id="export_model_wiz" name="Export XML Model" sequence="121" parent="rep_config" action="action_wiz_export_model"/>
 		<menuitem id="import_wiz" name="Import XML Report Definition" sequence="122" parent="rep_config" action="action_wiz_import_report"/>
 		
 				

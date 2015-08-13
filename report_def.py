@@ -20,7 +20,6 @@
 ##############################################################################
 
 from openerp.osv import fields, osv
-import ho.pisa as pisa
 import os
 import time
 import openerp.netsvc
