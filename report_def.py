@@ -20,15 +20,9 @@
 ##############################################################################
 
 from openerp.osv import fields, osv
-import os
-import time
-import openerp.netsvc
-import datetime
 from openerp.tools.translate import _
 from agilreport.Agil_Template import Template
-from checkbox.lib.transport import create_connection
 from mock import self
-from asyncore import write
 from openerp.addons.ao_basic_module import ao_register
 from openerp.addons.ao_basic_module.ao_class import model_key
 
