@@ -72,7 +72,11 @@ class ir_model_data(osv.osv):
         all_model_ids = pool_data.search(cr, uid, [])
         result        = pool_data.read(cr, uid, all_model_ids)
         for record in result:
-            key_value =  key_name.val_to_string(record)
+            if type(key_name) is model_key:
+                key_value =  key_name.val_to_string(record)
+            else :
+                key_value=str(record[key_name])
+                
             values = {  'name': key_value,
                         'model': rec_model,
                         'module': module.name,
@@ -83,7 +87,6 @@ class ir_model_data(osv.osv):
             if not ir_id:
                 ir_id = pool_ir_data.create(cr,uid,values,context=None)
                 
-            print 'key_value',rec_model,key_value
              
 ir_model_data()
 

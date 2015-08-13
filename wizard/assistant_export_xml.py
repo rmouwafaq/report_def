@@ -46,14 +46,15 @@ class odoo_xml(object):
     
     def get_xml_all_models(self):
         record_tags = {'record': self._get_models}
-        self.models = ['ir.module.module']
+        self.models = {'ir.module.module':'ir.module.module'}
         if self.xml_doc:
             self.parse(self.xml_doc.getroot(),record_tags)
         return self.models
             
     def _get_models(self,rec,data_node=None):
         rec_model = rec.get("model").encode('ascii')
-        self.models.append(rec_model) 
+        if not self.models.has_key(rec_model):
+            self.models[rec_model] = rec_model
          
     def parse(self, de,tags):
         if not de.tag in ['terp', 'openerp']:
@@ -146,6 +147,16 @@ class xml_to_report(osv.osv_memory):
     _defaults = {
       
     }
+    
+    def external_models(self,cr,uid,name_model):
+        lst_models = {}
+        pool_model = self.pool.get(name_model)
+        desc  = pool_model.fields_get(cr,uid)
+        for value in desc.values():
+            if value['type'] == 'many2one':
+                if not lst_models.has_key(value['relation']):
+                    lst_models[value['relation']] = value['relation']
+        return lst_models 
 
     def xml_import_report(self, cr, uid, ids, context=None):
         """
@@ -171,6 +182,18 @@ class xml_to_report(osv.osv_memory):
                 fp = tools.file_open(open_file)
                 obj_xml_odoo =  odoo_xml(fp)
                 my_models = obj_xml_odoo.get_xml_all_models()
+                # Completion of  external 
+                appended_dict={}
+                for name_model in my_models:
+                    lst_models = self.external_models(cr,uid,name_model)
+                    for elet in lst_models.values():
+                        if not my_models.has_key(elet):
+                            appended_dict[elet] = lst_models[elet]
+                            
+                for item in appended_dict.values():
+                    if not my_models.has_key(item):
+                        my_models[item]=item
+                
                 pool_ir_data = self.pool.get('ir.model.data')
                 for rec_model in my_models:
                     pool_ir_data.export_external_ids(cr,uid,rec_model,module_id)
@@ -191,6 +214,14 @@ class xml_to_report(osv.osv_memory):
                     
 report_to_xml()    
 
+class model_info(object):
+    
+    def __init__(self,model,desc):
+        self.model = model 
+        self.desc = desc 
+    
+    
+        
 class xml_gen_model(object):
     
     def __init__(self,pool,cr,uid,path_file_name=None):
@@ -255,17 +286,18 @@ class xml_gen_model(object):
         std_temp += '        <record id="'+ key_value + '" model="' + my_model['model'] + '">' + '\n' 
         for field_name,value in my_model['desc'].iteritems():
             if value['type'] not in ['one2many','many2one','many2many']:
-               field_value = getattr(my_model['value'], field_name)
-               if field_value :
-                   std_temp = std_temp  + '            <field name="' + field_name + '">'+'@'+ model_name + '.'+field_name + '</field>' + '\n'
-                   #std_temp = std_temp  + '            <field name="' + field_name + '">'+str(field_value) + '</field>' + '\n'
+                
+                field_value = getattr(my_model['value'], field_name)
+                if field_value :
+                    std_temp = std_temp  + '            <field name="' + field_name + '">'+'@'+ model_name + '.'+field_name + '</field>' + '\n'
+                    #std_temp = std_temp  + '            <field name="' + field_name + '">'+str(field_value) + '</field>' + '\n'
             if value['type'] == 'many2one':
-               relation_model = value['relation'] 
-               rel_model = relation_model.replace('.','_')
-               field_value = getattr(my_model['value'], field_name)
-               if(field_value):
-                   str_value = self.relation_set_value(relation_model,field_value)
-                   std_temp = std_temp  + '            <field name="'+field_name+ '" ref="'+str_value+'"/>'+ '\n' 
+                relation_model = value['relation'] 
+                rel_model = relation_model.replace('.','_')
+                field_value = getattr(my_model['value'], field_name)
+                if(field_value):
+                    str_value = self.relation_set_value(relation_model,field_value)
+                    std_temp = std_temp  + '            <field name="'+field_name+ '" ref="'+str_value+'"/>'+ '\n' 
      
         return std_temp
 
