@@ -46,15 +46,15 @@ class odoo_xml(object):
     
     def get_xml_all_models(self):
         record_tags = {'record': self._get_models}
-        self.models = {'ir.module.module':'ir.module.module'}
+        self.models = ['ir.module.module']
         if self.xml_doc:
             self.parse(self.xml_doc.getroot(),record_tags)
         return self.models
             
     def _get_models(self,rec,data_node=None):
         rec_model = rec.get("model").encode('ascii')
-        if not self.models.has_key(rec_model):
-            self.models[rec_model] = rec_model
+        if not (rec_model in self.models):
+            self.models.append(rec_model)
          
     def parse(self, de,tags):
         if not de.tag in ['terp', 'openerp']:
@@ -148,14 +148,13 @@ class xml_to_report(osv.osv_memory):
       
     }
     
-    def external_models(self,cr,uid,name_model):
-        lst_models = {}
+    def external_models(self,cr,uid,name_model,lst_models):
         pool_model = self.pool.get(name_model)
         desc  = pool_model.fields_get(cr,uid)
         for value in desc.values():
             if value['type'] == 'many2one':
-                if not lst_models.has_key(value['relation']):
-                    lst_models[value['relation']] = value['relation']
+                if not (value['relation'] in lst_models):
+                    lst_models.append(value['relation'])
         return lst_models 
 
     def xml_import_report(self, cr, uid, ids, context=None):
@@ -182,18 +181,11 @@ class xml_to_report(osv.osv_memory):
                 fp = tools.file_open(open_file)
                 obj_xml_odoo =  odoo_xml(fp)
                 my_models = obj_xml_odoo.get_xml_all_models()
-                # Completion of  external 
-                appended_dict={}
-                for name_model in my_models:
-                    lst_models = self.external_models(cr,uid,name_model)
-                    for elet in lst_models.values():
-                        if not my_models.has_key(elet):
-                            appended_dict[elet] = lst_models[elet]
-                            
-                for item in appended_dict.values():
-                    if not my_models.has_key(item):
-                        my_models[item]=item
-                
+                # Completion of  external models
+                new_list_models = list(my_models)
+                for name_model in new_list_models:
+                    my_models = self.external_models(cr,uid,name_model,my_models)
+                   
                 pool_ir_data = self.pool.get('ir.model.data')
                 for rec_model in my_models:
                     pool_ir_data.export_external_ids(cr,uid,rec_model,module_id)
