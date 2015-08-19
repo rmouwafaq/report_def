@@ -10,7 +10,7 @@
 			
 		
 	      }).then(function(){
-		//get invisible data in page_footer and put in footer of table in section details
+		//get invisible data in page_footer and put them in footer of table in section details
 		 $(".Page_footer").each(function( index ) {
 			$(this).find("div[data-type='footer_data']").each(function( index2 ) {
 				var valeur=$(this).html();
@@ -22,7 +22,7 @@
 		 });
 		 $("table").attr('cellspacing','0');
 		 $("table").attr('cellpadding','0');
-		format_tags(target+" *");		
+		 format_tags(target+" *");		
 		});
 
 	

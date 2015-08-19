@@ -171,8 +171,10 @@ class report_def(osv.osv):
                 'section_bloc_ids':fields.one2many('report.section.bloc','report_id','Sections'),
                 'auto_generate':fields.boolean("Auto generate data"),
                 'out_template_file_name':fields.char('Output template file name',size=256),
-                'xml_file_name': fields.char('Xml File Name', size=128)
-                
+                'xml_file_name': fields.char('Xml File Name', size=128),
+                'viewer_type': fields.selection([('html', 'HTML'),
+                                                 ('pdf','PDF')],
+                                                'Viewer Type'),  
                 }
     
     def get_path_template_name(self,cr,uid,report_id,template_name,context=None):
@@ -252,7 +254,7 @@ class report_def(osv.osv):
             dict_report['template_html']=report.template_html
             dict_report['template_file_name']=report.template_file_name
             dict_report['json_file_name']=report.json_file_name
-            
+            dict_report['viewer_type']=report.viewer_type
             
             dict_report['col_fields']=[]
             for field_id in report.field_ids:
