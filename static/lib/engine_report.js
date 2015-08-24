@@ -1,15 +1,15 @@
-﻿function engine_report(template_path_name, target){
+﻿function engine_report(template_content, target){
 	    //Loading html file using Ajax 
-	    $.get(template_path_name,function(data){
+	    //$.get(template_path_name,function(data){
 			
-			content_html=$('<div>'+data+'</div>');
+			content_html=$('<div>'+template_content+'</div>');
 			content_html.find("meta").remove();
 
 			$("#viewer").html(content_html.html());	
 			 
 			
 		
-	      }).then(function(){
+	      //}).then(function(){
 		//get invisible data in page_footer and put them in footer of table in section details
 		 $(".Page_footer").each(function( index ) {
 			$(this).find("div[data-type='footer_data']").each(function( index2 ) {
@@ -23,7 +23,7 @@
 		 $("table").attr('cellspacing','0');
 		 $("table").attr('cellpadding','0');
 		 format_tags(target+" *");		
-		});
+		//});
 
 	
 	

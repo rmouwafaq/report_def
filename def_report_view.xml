@@ -56,6 +56,7 @@
 							<field name="title"/>
 							<field name="format"/>
 							<field name="type"/>
+							<field name="viewer_type" />
 						</group>
 						
 						<group>
@@ -140,6 +141,7 @@
 					<field name="module_id"/>
 					<field name="format"/>
 					<field name="template_file_name"/>
+					<field name="viewer_type" />
 				</tree>
 		
 			</field>
@@ -160,7 +162,22 @@
 		
 		</record>
 		
+		<record model="ir.ui.view" id="field_def_request_tree">
 		
+			<field name="name">report.def.request</field>
+			<field name="model">report.def.request</field>
+			<field name="arch" type="xml">
+				<tree string="Definition champs">
+					<field name="create_date" />
+					<field name="create_uid" />
+					<field name="report_id"/>
+					<field name="file_request" />
+					<button name="report_viewer" string="Aperçu" type="object" icon="gtk-find"/>
+				</tree>
+		
+			</field>
+		
+		</record>
 		
 		<!-- Declaration des fichiers js/css -->
 		

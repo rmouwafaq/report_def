@@ -18,7 +18,7 @@
 #    along with this program.  If not, see <http://www.gnu.org/licenses/>
 #
 ##############################################################################
-
+from openerp import tools
 from openerp.osv import fields, osv
 from openerp.tools.translate import _
 from agilreport.Agil_Template import Template
@@ -435,7 +435,54 @@ class report_def_json_files(osv.osv):
     
 report_def_json_files()
 
+class report_def_request(osv.osv):
 
+    _name = "report.def.request"
+    _description="Agilorg - Report definition request"
+    _columns ={
+               'report_id':fields.many2one('report.def','Report Definition'),
+               'file_request':fields.binary('Request file')
+               }
+    
+report_def_request()
 
+class report_request_view(osv.osv):
+    
+    _name = "report.request.view"
+    _description = "report request Sqlview"
+    _auto        = False
+    _columns = {
+        'id': fields.integer('report request id', readonly=True),
+        'report_id' :fields.integer('report_def id', readonly=True),
+        'name': fields.char('name',size=64, readonly=True),
+        'viewer_type':fields.char('viewer_type',size=64, readonly=True),
+        'file_request':fields.binary('file request', readonly=True),
+        'create_uid':fields.integer("create_uid", readonly=True),
+        'create_date':fields.datetime("create date", readonly=True),
+        'write_uid':fields.integer('write uid', readonly=True),
+        'write_date':fields.datetime("write date", readonly=True),
+        
+        
+    }
+    
 
+    def init(self, cr):
+        tools.drop_view_if_exists(cr, 'report_request_view')
+        cr.execute("""
+            create or replace view report_request_view as (
+            select 
+                rdr.id,
+                rdr.report_id,
+                rd.name,    
+                rd.viewer_type,
+                rdr.file_request,
+                rdr.create_uid,
+                rdr.create_date,
+                rdr.write_uid,
+                rdr.write_date
+            from report_def rd,report_def_request rdr
+            where rd.id=rdr.report_id
+            )""")
+        
+report_request_view()
 # vim:expandtab:smartindent:tabstop=4:softtabstop=4:shiftwidth=4:

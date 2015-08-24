@@ -17,7 +17,7 @@ openerp.report_def = function (instance) {
 	    console.log('arguments',arguments);
             this._start = null;
             this._watch = null;
-            this.model = new instance.web.Model('web_example.stopwatch');
+            //this.model = new instance.web.Model('web_example.stopwatch');
            
         },
 	to_print:function(){
@@ -25,14 +25,7 @@ openerp.report_def = function (instance) {
 	},
 	to_pdf:function(){
 	   
-	    var Partners = new instance.web.Model('report.def');
-	    Partners.call('hello_func',[$("#viewer").html()],undefined,{ shadow:true })
-	    .fail(function(datas){
-		    alert('erreur');
-		})
-		.done(function(datas){
-		    console.log(datas);
-		});
+	    
 		
 	},
 	zoom_back:function(){
@@ -56,10 +49,7 @@ openerp.report_def = function (instance) {
 	    $(".banner_printer").addClass("banner_hover_out");
 	},
     getData:function(){
-       		$(".banner_printer").hide();
-       		var viewerpdf = document.getElementById('viewer');
-			var height_div=screen.height-130;
-			viewerpdf.style.height = height_div+"px";
+       		
     		/*var template_path_name="";
     		
 			var query_string=document.location.href.split("#")[1];
@@ -97,6 +87,69 @@ openerp.report_def = function (instance) {
   			  	}
     		});*/
 			
+			function base64Encode(str) {
+			    var CHARS = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/";
+			    var out = "", i = 0, len = str.length, c1, c2, c3;
+			    while (i < len) {
+			        c1 = str.charCodeAt(i++) & 0xff;
+			        if (i == len) {
+			            out += CHARS.charAt(c1 >> 2);
+			            out += CHARS.charAt((c1 & 0x3) << 4);
+			            out += "==";
+			            break;
+			        }
+			        c2 = str.charCodeAt(i++);
+			        if (i == len) {
+			            out += CHARS.charAt(c1 >> 2);
+			            out += CHARS.charAt(((c1 & 0x3)<< 4) | ((c2 & 0xF0) >> 4));
+			            out += CHARS.charAt((c2 & 0xF) << 2);
+			            out += "=";
+			            break;
+			        }
+			        c3 = str.charCodeAt(i++);
+			        out += CHARS.charAt(c1 >> 2);
+			        out += CHARS.charAt(((c1 & 0x3) << 4) | ((c2 & 0xF0) >> 4));
+			        out += CHARS.charAt(((c2 & 0xF) << 2) | ((c3 & 0xC0) >> 6));
+			        out += CHARS.charAt(c3 & 0x3F);
+			    }
+			    return out;
+			}
+			
+			var query_string=document.location.href.split("#")[1];
+			console.log("query_string",query_string);   
+			query_string=query_string.split("&");
+			var report_request_id=query_string[0].split("=")[1];
+			
+			var viewer_type="html";
+			var report_request_bin;
+			console.log("report_request_id",report_request_id);
+			this.fetch("report.request.view",[],[['id','=',parseInt(report_request_id) ]]).then(function(reports){
+				
+	        		_.each(reports,function(report){
+						
+	        			report_request_bin=report.file_request;
+	        			viewer_type= report.viewer_type;
+	        			
+	        				
+	        		});
+				
+				
+	    	}).then(function(){
+	    			if(viewer_type=="html"){
+	    				var str_report_request= base64Encode(report_request_bin);
+	        			console.log(atob(str_report_request));
+	        			engine_report(atob(str_report_request),"#Report");
+	        			
+	        			format_rapport=$("#Report").attr("format");
+	  			  		page_format(format_rapport);
+	  			  	}else{
+	  			  		$(".banner_printer").hide();
+			       		var viewerpdf = document.getElementById('viewer');
+						var height_div=screen.height-130;
+						viewerpdf.style.height = height_div+"px";
+	  			  		$("#viewer #pdfviewer").attr("src","data:application/pdf;base64," + report_request_bin);
+	  			  	}
+    		});
 			
         		 
 		},
