@@ -18,12 +18,10 @@
 #    along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #
 ##############################################################################
-import os
-import time
-from openerp.tools.translate import _
-from openerp.addons.ao_basic_module import ao_register
-from agilreport.Agil_Template import Template
+from openerp.addons.ao_basic_module.ao_global import create_folder,end_file
 from openerp.osv import osv, fields
+from assistant_export_xml import xml_gen_model
+import base64
 
 class model_export_xml(osv.osv):
     _name = 'rdef.model.export.xml'
@@ -46,15 +44,33 @@ class model_export_xml(osv.osv):
         }
     def export_models(self, cr, uid, ids, context=None):
         this = self.browse(cr, uid, ids, context=context)[0]
+        xml_file_name=end_file(this.name,'.xml')
+        my_xml = xml_gen_model(self.pool,cr,uid,xml_file_name)
         for model_id in this.model_ids:
             ir_model = self.pool.get('ir.model').read(cr, uid, model_id.id, context=context)
-            pool_model = self.pool.get(ir_model['model'])
+            model_name=ir_model['model']
+            pool_model = self.pool.get(model_name)
             model_ids = pool_model.search(cr,uid,[],context=context)
-            for record_model in pool_model.browse(cr,uid,model_ids):
-                print record_model
-                
-                
-        this.write({ 'state': 'get'})
+            records=pool_model.browse(cr,uid,model_ids,context=context)
+            my_xml.add_model(model_name,'report')
+            
+            for record in records:
+                my_xml.xml += my_xml.xml_generate(model_name,record)
+                # generate childs models
+                #my_xml.scan_field_one2many(model_name)
+        
+        my_xml.xml_terminate()
+        print my_xml.xml
+    
+        # Save file binary
+        encoded_string = base64.b64encode(my_xml.xml) 
+        set_data={
+                  'xml_file':encoded_string,
+                  'name':xml_file_name,
+                  'state':'get'
+                  }  
+        this.write(set_data)
+        
         return {
             'type': 'ir.actions.act_window',
             'res_model': 'rdef.model.export.xml',

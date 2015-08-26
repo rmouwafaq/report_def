@@ -244,6 +244,14 @@ class xml_gen_model(object):
         self.xml_to_file(self.path_file_name,module_name)
         return self.xml 
     
+    def xml_gen_generic(self,model,obj_value):
+        self.xml += self.xml_generate(model,obj_value)
+        # generate childs models
+        self.scan_field_one2many(model)
+        self.xml_terminate()
+        print self.xml
+        return self.xml 
+    
     def xml_generate(self,model,obj_value):
         # generate basic model
         self.col_model[model]['value'] = obj_value
@@ -266,7 +274,9 @@ class xml_gen_model(object):
         if ('_key_name' in def_model):
             key_name = model_key(pool_model._key_name,desc)
             return key_name 
-        return "id"
+        else:
+            key_name = model_key("id",desc)
+            return key_name 
     
     def standard_template(self,model,std_temp):
         
