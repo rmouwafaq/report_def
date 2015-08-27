@@ -224,6 +224,90 @@ class report_def(osv.osv):
                 
                 field.create(cr,uid,val_field,context)
     
+    def create_from_template(self,cr,uid,info_template,context=context):
+        
+        temp = Template()
+        temp.read(info_template['path_template'] + info_template['file_name'])
+        def_report = temp.get_definition_report()
+        if(def_report.has_key('name')):
+            report_id = self.search(cr,uid,[('name','=',def_report['name'])],context=context)
+            vals={
+                      'name':def_report['name'],
+                      'title':def_report['title'] or def_report['name'],
+                      'format': def_report['format'][0].upper() + def_report['format'][1:],
+                      'module_id':info_template['module_id'],
+                      'template_file_name':info_template['file_name'].split('.')[0],
+                      'json_file_name':info_template['file_name'].split('.')[0] + ".json"
+                      }
+            
+            if(report_id):
+                #set report definition 
+                self.write(cr,uid,report_id,vals,context=context)
+                self.write_report_def(cr,uid,temp,report_id[0],context=context)
+            else:
+                #add new report definition
+                id_rep_def = self.create(cr,uid,vals,context=context)
+                self.create_report_def(cr,uid,temp,id_rep_def,context=context)
+        else:
+            raise osv.except_osv('Action Error !',"No report definition in template " + file['file_name'])
+                
+    
+    def write_report_def(self,cr,uid,temp,id_rep_def,context):
+        
+        template_def = temp.get_data_template(temp)
+        sequence_field = 0
+        
+        for sect_key,sect_val in template_def.iteritems():
+            section = self.pool.get('report.section.bloc')
+            val_section={}
+            val_section['report_id'] = id_rep_def
+            val_section['section'] = sect_key
+            val_section['max_bloc_number'] = sect_val['max_bloc']
+            section_id = section.search(cr,uid,[('section','=',sect_key),('report_id','=',id_rep_def)])
+            if(section_id):
+                section.write(cr,uid,section_id,val_section,context)
+                for field_key,field_val in sect_val['fields'].iteritems():  
+                    sequence_field+=1      
+                    field = self.pool.get('report.def.field')
+                    val_field={}
+                    val_field['report_id']=id_rep_def
+                    val_field['template_id']=field_key
+                    val_field['name']=field_key
+                    val_field['sequence']=sequence_field
+                    val_field['section']=sect_key
+                    val_field['source_data']=field_val['source_data']
+                    val_field['field_type']=field_val['type']
+                    field_id = section.search(cr,uid,[('name','=',sect_key),('report_id','=',id_rep_def)])
+                    if(field_id):
+                        field.write(cr,uid,field_id,val_field,context)
+        return True
+    
+    def create_report_def(self,cr,uid,temp,id_rep_def,context):
+
+        template_def = temp.get_data_template(temp)
+        sequence_field = 0
+        
+        for sect_key,sect_val in template_def.iteritems():
+            section=self.pool.get('report.section.bloc')
+            val_section = {}
+            val_section['report_id'] = id_rep_def
+            val_section['section'] = sect_key
+            val_section['max_bloc_number'] = sect_val['max_bloc']
+            
+            section.create(cr,uid,val_section,context)
+            for field_key,field_val in sect_val['fields'].iteritems():  
+                sequence_field+=1      
+                field=self.pool.get('report.def.field')
+                val_field={}
+                val_field['report_id']=id_rep_def
+                val_field['template_id']=field_key
+                val_field['name']=field_key
+                val_field['sequence']=sequence_field
+                val_field['section']=sect_key
+                val_field['source_data']=field_val['source_data']
+                val_field['field_type']=field_val['type']
+                
+                field.create(cr,uid,val_field,context)
     
     def to_dict(self,cr,uid,name=None,id=None):
         

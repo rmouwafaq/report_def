@@ -22,7 +22,6 @@ import os
 import time
 from openerp.tools.translate import _
 from openerp.addons.ao_basic_module import ao_register
-from agilreport.Agil_Template import Template
 from openerp.osv import osv, fields
 
 class module_templates(osv.osv):
@@ -65,38 +64,20 @@ class template_definition(osv.osv_memory):
     
     
     def to_define(self, cr, uid, ids, context=None):
-        report_def_obj = self.pool.get("report.def")
-        self_obj = self.read(cr,uid,ids,context=context)[0]
-        files_ids = self_obj['file_ids']
-        module_id = self_obj['module_id'] 
+        report_def_pool = self.pool.get("report.def")
+        this  = self.read(cr,uid,ids,context=context)[0]
+        files_ids = this['file_ids']
         files = self.pool.get("rdef.module.templates").read(cr,uid,files_ids,context=context)
+        info_template = {}
         for file in files:
-            temp = Template()
-            temp.read(self.templates_dir + file['file_name'])
-            def_report = temp.get_definition_report()
-            if(def_report.has_key('name')):
-                report_id = report_def_obj.search(cr,uid,[('name','=',def_report['name'])],context=context)
-                vals={
-                          'name':def_report['name'],
-                          'title':def_report['title'] or def_report['name'],
-                          'format': def_report['format'][0].upper() + def_report['format'][1:],
-                          'module_id':module_id[0],
-                          'template_file_name':file['file_name'].split('.')[0],
-                          'json_file_name':file['file_name'].split('.')[0] + ".json"
-                          }
-                
-                if(report_id):
-                    #set report definition 
-                    report_def_obj.write(cr,uid,report_id,vals,context=context)
-                    self.write_report_def(cr,uid,temp,report_id[0],context=context)
-                else:
-                    #add new report definition
-                    id_rep_def=report_def_obj.create(cr,uid,vals,context=context)
-                    self.create_report_def(cr,uid,temp,id_rep_def,context=context)
-            else:
-                raise osv.except_osv('Action Error !',"No report definition in template " + file['file_name'])        
+            info_template['file_name'] = file['file_name']
+            info_template['path_template'] = self.templates_dir
+            info_template['module_id'] = this['module_id'][0]
+            report_def_pool.create_from_template(cr,uid,info_template,context=context)
         return True
     
+    
+
     def on_change_module(self,cr,uid,ids,module_id,context=None):
         try:
             module_obj=self.pool.get("ir.module.module").read(cr,uid,module_id,context=context)
@@ -109,75 +90,7 @@ class template_definition(osv.osv_memory):
         except:
             return False   
     
-    def write_report_def(self,cr,uid,temp,id_rep_def,context):
-        template_def=self.get_data_template(temp)
-        sequence_field=0
-        
-        for sect_key,sect_val in template_def.iteritems():
-            section=self.pool.get('report.section.bloc')
-            val_section={}
-            val_section['report_id']=id_rep_def
-            val_section['section']=sect_key
-            val_section['max_bloc_number']=sect_val['max_bloc']
-            section_id=section.search(cr,uid,[('section','=',sect_key),('report_id','=',id_rep_def)])
-            if(section_id):
-                section.write(cr,uid,section_id,val_section,context)
-                for field_key,field_val in sect_val['fields'].iteritems():  
-                    sequence_field+=1      
-                    field=self.pool.get('report.def.field')
-                    val_field={}
-                    val_field['report_id']=id_rep_def
-                    val_field['template_id']=field_key
-                    val_field['name']=field_key
-                    val_field['sequence']=sequence_field
-                    val_field['section']=sect_key
-                    val_field['source_data']=field_val['source_data']
-                    val_field['field_type']=field_val['type']
-                    field_id=section.search(cr,uid,[('name','=',sect_key),('report_id','=',id_rep_def)])
-                    if(field_id):
-                        field.write(cr,uid,field_id,val_field,context)
-        return True
-    
-    def create_report_def(self,cr,uid,temp,id_rep_def,context):
-        template_def=self.get_data_template(temp)
-        
-        sequence_field=0
-        
-        for sect_key,sect_val in template_def.iteritems():
-            section=self.pool.get('report.section.bloc')
-            val_section={}
-            val_section['report_id']=id_rep_def
-            val_section['section']=sect_key
-            val_section['max_bloc_number']=sect_val['max_bloc']
-            
-            section.create(cr,uid,val_section,context)
-            for field_key,field_val in sect_val['fields'].iteritems():  
-                sequence_field+=1      
-                field=self.pool.get('report.def.field')
-                val_field={}
-                val_field['report_id']=id_rep_def
-                val_field['template_id']=field_key
-                val_field['name']=field_key
-                val_field['sequence']=sequence_field
-                val_field['section']=sect_key
-                val_field['source_data']=field_val['source_data']
-                val_field['field_type']=field_val['type']
                 
-                field.create(cr,uid,val_field,context)
-                
-    def get_data_template(self,temp):
-        
-        sections=['Report_header','Page_header','Details','Page_footer','Report_footer']
-        template_def={}
-        
-        for section_name in sections:
-            template_def[section_name]={'max_bloc':temp.get_max_bloc_section(section_name),'fields':{}}
-            
-            section=temp.get_section(section_name)
-            if(section.find(attrs={'class':'Bloc1'})):
-                bloc=section.find(attrs={'class':'Bloc1'})
-                template_def[section_name]['fields']=dict(temp.get_ids_bloc(bloc))
-        return template_def
         
                   
 template_definition()    
