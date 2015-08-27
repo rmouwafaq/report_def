@@ -224,7 +224,7 @@ class report_def(osv.osv):
                 
                 field.create(cr,uid,val_field,context)
     
-    def create_from_template(self,cr,uid,info_template,context=context):
+    def create_from_template(self,cr,uid,info_template,context=None):
         
         temp = Template()
         temp.read(info_template['path_template'] + info_template['file_name'])
