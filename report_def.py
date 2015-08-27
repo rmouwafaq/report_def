@@ -249,7 +249,7 @@ class report_def(osv.osv):
                 id_rep_def = self.create(cr,uid,vals,context=context)
                 self.create_report_def(cr,uid,temp,id_rep_def,context=context)
         else:
-            raise osv.except_osv('Action Error !',"No report definition in template " + file['file_name'])
+            raise osv.except_osv('Action Error !',"No report definition in template " + info_template['file_name'])
                 
     
     def write_report_def(self,cr,uid,temp,id_rep_def,context):
@@ -284,7 +284,7 @@ class report_def(osv.osv):
     
     def create_report_def(self,cr,uid,temp,id_rep_def,context):
 
-        template_def = temp.get_data_template(temp)
+        template_def = temp.get_data_template()
         sequence_field = 0
         
         for sect_key,sect_val in template_def.iteritems():
