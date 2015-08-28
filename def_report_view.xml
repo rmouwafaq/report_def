@@ -183,6 +183,7 @@
 		
         <template id="assets_backend" inherit_id="web.assets_backend">
             <xpath expr="." position="inside">
+            	<link rel="stylesheet" href="/report_def/static/src/css/base.css"/>
             	<script type="text/javascript" src="/report_def/static/lib/engine_report.js"></script>
                 <script type="text/javascript" src="/report_def/static/src/js/report_viewer_template.js"></script>
             </xpath>

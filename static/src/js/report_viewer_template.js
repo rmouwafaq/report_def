@@ -112,6 +112,7 @@ openerp.report_def = function (instance) {
 						viewerpdf.style.height = height_div+"px";
 	  			  		$("#viewer #pdfviewer").attr("src","data:application/pdf;base64," + report_request_bin);
 	  			  	}
+	  			  	$("#viewer").siblings('*').removeClass("openerp");
     		});
 			
         		 

@@ -1,0 +1,115 @@
+@charset "UTF-8";
+@font-face {
+  font-family: "mnmliconsRegular";
+  src: url("/web/static/src/font/mnmliconsv21-webfont.eot") format("eot");
+  src: url("/web/static/src/font/mnmliconsv21-webfont.woff") format("woff");
+  src: url("/web/static/src/font/mnmliconsv21-webfont.ttf") format("truetype");
+  src: url("/web/static/src/font/mnmliconsv21-webfont.svg") format("svg") active;
+  font-weight: normal;
+  font-style: normal;
+}
+@font-face {
+  font-family: "EntypoRegular";
+  src: url("/web/static/src/font/entypo-webfont.eot") format("eot");
+  src: url("/web/static/src/font/entypo-webfont.eot?#iefix") format("embedded-opentype");
+  src: url("/web/static/src/font/entypo-webfont.woff") format("woff");
+  src: url("/web/static/src/font/entypo-webfont.ttf") format("truetype");
+  src: url("/web/static/src/font/entypo-webfont.svg") format("svg") active;
+  font-weight: normal;
+  font-style: normal;
+}
+
+
+.openerp .ao_report_viewer a {
+  text-decoration: default;
+  cursor: pointer !important;
+}
+.openerp .ao_report_viewer  table {
+  padding: 0;
+  border-collapse: initial;
+}
+ .openerp .ao_report_viewer thead {
+  font-weight: initial;
+  background-color: initial;
+}
+.openerp .ao_report_viewer thead th {
+  border-left: initial;
+}
+.openerp .ao_report_viewer thead th:first-child {
+  border-left: initial;
+}
+
+.openerp .ao_report_viewer th, .openerp .ao_report_viewer td {
+  padding: 0;
+  text-align: initial;
+}
+.openerp .ao_report_viewer th {
+  font-weight: initial;
+  vertical-align: middle;
+}
+.openerp .ao_report_viewer td {
+  vertical-align: middle;
+}
+
+.openerp .ao_report_viewer input, .openerp .ao_report_viewer textarea, .openerp .ao_report_viewer select {
+  padding: 0;
+  border: initial;
+  -moz-border-radius: initial;
+  -webkit-border-radius: initial;
+  border-radius: initial;
+  background: initial;
+}
+.openerp .ao_report_viewer img {
+  vertical-align: initial;
+}
+.openerp .ao_report_viewer h4 {
+  margin: 0;
+  font-weight: initial;
+  font-size: inherit;
+}
+
+
+.openerp .oe_application .ao_report_viewer a {
+  color: initial;
+}
+
+.openerp .oe_application .ao_report_viewer > div {
+  position: normal;
+  height: initial;
+}
+
+
+
+
+
+.ao_report_viewer input[type="radio"],.ao_report_viewer  input[type="checkbox"] {
+  margin-right: 4px;
+  margin-left: 4px;
+}
+
+
+.ao_report_viewer label {
+	display: initial;
+	max-width: none;
+	margin-bottom: 0;
+	font-weight: initial;
+}
+
+.ao_report_viewer fieldset {
+	min-width: initial;
+	padding: inherit;
+	margin: initial;
+	border: 1px solid #000;
+}
+
+.ao_report_viewer legend {
+	display: initial;
+	width: initial;
+	padding: 0;
+	margin-bottom: 0;
+	font-size: initial;
+	line-height: inherit;
+	color: #000;
+	border: none;
+	border-bottom: none;
+}
