@@ -4,8 +4,8 @@ openerp.report_def = function (instance) {
     instance.report_def.Action = instance.web.Widget.extend({
         template: 'report_viewer_template.action',
         events: {
-	    'mouseover .banner_printer': 'opacity_mouse_in',
-	    'mouseout .banner_printer': 'opacity_mouse_out',
+	    /*'mouseover .banner_printer': 'opacity_mouse_in',
+	    'mouseout .banner_printer': 'opacity_mouse_out',*/
 	    'click #to_pdf': 'to_pdf',
 	    'click #to_print': 'to_print',
 	    'click #zoom_back': 'zoom_back',
@@ -30,23 +30,25 @@ openerp.report_def = function (instance) {
 	zoom_back:function(){
 	  if(zoom>25){  
 	    zoom=zoom-25;
-	    $("#Report").css('zoom',zoom+'%');	
+	    $("#Report").css('zoom',zoom+'%');
+	    $("#resolution-text").val(zoom+' %');	
 	  }
 	},
 	zoom_forward:function(){
 	  if(zoom<200){  
 	    zoom=zoom+25;
-	    $("#Report").css('zoom',zoom+'%');	
+	    $("#Report").css('zoom',zoom+'%');
+	    $("#resolution-text").val(zoom+' %');	
 	  }
 	},
-	opacity_mouse_in:function(){
+	/*opacity_mouse_in:function(){
 	    $(".banner_printer").removeClass("banner_hover_out");
 	    $(".banner_printer").addClass("banner_hover_in");	
 	},
 	opacity_mouse_out:function(){
 	    $(".banner_printer").removeClass("banner_hover_in");	
 	    $(".banner_printer").addClass("banner_hover_out");
-	},
+	},*/
     getData:function(){
        		
     		

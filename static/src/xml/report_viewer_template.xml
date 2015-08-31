@@ -3,12 +3,26 @@
 	<meta http-equiv="pragma" content="no-cache" />
 	
 	<div class="banner_printer" >
-		<center>
-			<img id="to_print"      src="report_def/static/src/img/printer.png" />
-			<img id="to_pdf"        src="report_def/static/src/img/save_pdf.png" />
-			<img id="zoom_forward"  src="report_def/static/src/img/zoom_p.png"  />
-			<img id="zoom_back"     src="report_def/static/src/img/zoom_m.png"  />
-		</center>
+			
+			
+			<table  style="width:100%" height="100%">
+				<tr>
+					
+					<td width="33%" align="left"></td>
+					
+					<td class="zoom-option">
+						<span class="glyphicon glyphicon-zoom-out" id="zoom_back" aria-hidden="true"></span>
+						<input type="text" name="resolution" value="100 %" id="resolution-text" disabled="disabled" />	
+						<span class="glyphicon glyphicon-zoom-in" id="zoom_forward"  aria-hidden="true"></span>					
+					</td>
+					
+					<td class="print-option" >
+						<span class="glyphicon glyphicon-print" id="to_print" aria-hidden="true"></span>
+						<span class="glyphicon glyphicon-floppy-save" id="to_pdf" aria-hidden="true"></span>
+					</td>
+					
+				</tr>
+			</table>
 	</div>
 	
     <div id="viewer" >	

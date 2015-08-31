@@ -41,7 +41,7 @@
 
 .openerp .ao_report_viewer th, .openerp .ao_report_viewer td {
   padding: 0;
-  text-align: initial;
+  /*text-align: initial;*/
 }
 .openerp .ao_report_viewer th {
   font-weight: initial;
@@ -73,10 +73,7 @@
   color: initial;
 }
 
-.openerp .oe_application .ao_report_viewer > div {
-  position: normal;
-  height: initial;
-}
+
 
 
 
