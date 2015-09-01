@@ -91,9 +91,17 @@ openerp.report_def = function (instance) {
 				
 	    	}).then(function(){
 	    			if(viewer_type=="html"){
-	    				var str_report_request= base64Encode(report_request_bin);
-	        			console.log(atob(str_report_request));
-	        			engine_report(atob(str_report_request),"#Report");
+	    				
+	        			var content_report="";
+	        			
+	        			try{
+	        				content_report=atob(report_request_bin);
+	        				//content_report=content_report.decode();
+	        			}catch(e){
+	        				var str_report_request= base64Encode(report_request_bin);
+	        				content_report=atob(str_report_request);
+	        			}
+	        			engine_report(content_report,"#Report");
 	        			
 	        			format_rapport=$("#Report").attr("format");
 	  			  		page_format(format_rapport);
