@@ -1,5 +1,6 @@
 .ao_report_viewer{
-	height:100%
+	height:542px;
+	height:100%;
 }
 
 /* style bannier d'impression et zoom du rapport */
@@ -13,8 +14,12 @@
 	
 }*/
 
+.openerp .oe_leftbar {
+	position:relative;
+	z-index:10;	
+}
 .banner_printer {
-	width: 83%;
+	width: 100%;
 	height: 40px;
 	position: fixed;
 	right: 0px;
@@ -22,7 +27,7 @@
 }
 .banner_printer .zoom-option{
 	width:33%;
-	text-align:center;
+	text-align:right;
 }
 .openerp .ao_report_viewer .banner_printer .print-option{
 	width:33%;
@@ -74,6 +79,7 @@
 	height: 100%;
 	width:100%;
 	padding-top:52px;
+	/*overflow: auto;*/
 }
 
 #viewer .company_name {

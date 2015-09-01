@@ -29,6 +29,7 @@
 		size: landscape;
 		margin: 0;
 	}
+	
 	#viewer .Page_container {
 		display: block;
 		margin: 0;
@@ -56,7 +57,7 @@
 		display: none;
 	}
 	#viewer {
-
+		
 		background-color: #fff;
 		margin: 0;
 		padding: 0;
