@@ -70,6 +70,11 @@ openerp.report_def = function (instance) {
 			    return out;
 			}
 			
+			function b64_to_utf8( str ) {
+			    return decodeURIComponent(escape(window.atob( str )));
+			}
+
+			
 			var query_string=document.location.href.split("#")[1];
 			console.log("query_string",query_string);   
 			query_string=query_string.split("&");
@@ -95,8 +100,8 @@ openerp.report_def = function (instance) {
 	        			var content_report="";
 	        			
 	        			try{
-	        				content_report=atob(report_request_bin);
-	        				//content_report=content_report.decode();
+	        				//content_report=atob(report_request_bin);
+	        				content_report=b64_to_utf8(report_request_bin);
 	        			}catch(e){
 	        				var str_report_request= base64Encode(report_request_bin);
 	        				content_report=atob(str_report_request);
