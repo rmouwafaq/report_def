@@ -287,20 +287,21 @@ class xml_gen_model(object):
         key_value = key_name.val_to_string(my_model['value'])
         std_temp += '        <record id="'+ key_value + '" model="' + my_model['model'] + '">' + '\n' 
         for field_name,value in my_model['desc'].iteritems():
-            if value['type'] not in ['one2many','many2one','many2many']:
-                
-                field_value = getattr(my_model['value'], field_name)
-                if field_value :
-                    std_temp = std_temp  + '            <field name="' + field_name + '">'+'@'+ model_name + '.'+field_name + '</field>' + '\n'
-                    #std_temp = std_temp  + '            <field name="' + field_name + '">'+str(field_value) + '</field>' + '\n'
-            if value['type'] == 'many2one':
-                relation_model = value['relation'] 
-                rel_model = relation_model.replace('.','_')
-                field_value = getattr(my_model['value'], field_name)
-                if(field_value):
-                    str_value = self.relation_set_value(relation_model,field_value)
-                    std_temp = std_temp  + '            <field name="'+field_name+ '" ref="'+str_value+'"/>'+ '\n' 
-     
+            if( field_name not in ['id','create_uid','write_uid','create_date','write_date','__last_update']):
+                if value['type'] not in ['one2many','many2one','many2many']:
+                    
+                    field_value = getattr(my_model['value'], field_name)
+                    if field_value :
+                        std_temp = std_temp  + '            <field name="' + field_name + '">'+'@'+ model_name + '.'+field_name + '</field>' + '\n'
+                        #std_temp = std_temp  + '            <field name="' + field_name + '">'+str(field_value) + '</field>' + '\n'
+                if value['type'] == 'many2one':
+                    relation_model = value['relation'] 
+                    rel_model = relation_model.replace('.','_')
+                    field_value = getattr(my_model['value'], field_name)
+                    if(field_value):
+                        str_value = self.relation_set_value(relation_model,field_value)
+                        std_temp = std_temp  + '            <field name="'+field_name+ '" ref="'+str_value+'"/>'+ '\n' 
+         
         return std_temp
 
     def relation_set_value(self,relation_model,field_value):

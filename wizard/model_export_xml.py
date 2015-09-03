@@ -60,7 +60,6 @@ class model_export_xml(osv.osv):
                 #my_xml.scan_field_one2many(model_name)
         
         my_xml.xml_terminate()
-        print my_xml.xml
     
         # Save file binary
         encoded_string = base64.b64encode(my_xml.xml) 
