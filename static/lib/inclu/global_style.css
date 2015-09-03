@@ -29,10 +29,16 @@
 	width:33%;
 	text-align:right;
 }
+.banner_printer .zoom-option span:hover{
+	color:#fff;
+}
 .openerp .ao_report_viewer .banner_printer .print-option{
 	width:33%;
 	text-align:right;
 	padding-right:20px;
+}
+.banner_printer .print-option span:hover{
+	color:#fff;
 }
 .banner_printer img {
 	margin-top: 20px;
@@ -86,6 +92,8 @@
 	max-width: 200px;
 	border-radius: 10px;
 	float: left;
+	height: 30px;
+	padding: 5px 0px 0px 5px;
 }
 
 /* style de fieldset central (Titre de document) */
@@ -343,4 +351,22 @@
 }
 #viewer .size-niv-14, #viewer .size-niv-14 td{
 	font-size:14px;
+}
+#viewer .numeric{
+	text-align:right;
+	padding-right:5px;
+}
+#viewer .numeric-bold{
+	text-align:right;
+	padding-right:5px;
+	font-weight:bolder;
+}
+#viewer .string{
+	text-align:left;
+	padding-right:5px;
+}
+#viewer .string-bold{
+	text-align:left;
+	padding-right:5px;
+	font-weight:bolder;
 }
