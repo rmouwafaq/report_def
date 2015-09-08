@@ -70,7 +70,7 @@ class template_definition(osv.osv_memory):
         files = self.pool.get("rdef.module.templates").read(cr,uid,files_ids,context=context)
         info_template = {}
         for file in files:
-            info_template['file_name'] = file['file_name']
+            info_template['template_file_name'] = file['file_name']
             info_template['path_template'] = self.templates_dir
             info_template['module_id'] = this['module_id'][0]
             report_def_pool.create_from_template(cr,uid,info_template,context=context)

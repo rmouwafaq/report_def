@@ -227,17 +227,20 @@ class report_def(osv.osv):
     def create_from_template(self,cr,uid,info_template,context=None):
         
         temp = Template()
-        temp.read(info_template['path_template'] + info_template['file_name'])
-        def_report = temp.get_definition_report()
-        if(def_report.has_key('name')):
-            report_id = self.search(cr,uid,[('name','=',def_report['name'])],context=context)
+        temp.read(info_template['path_template'] + info_template['template_file_name'])
+        
+        if not info_template.has_key('name'):
+            info_template = temp.get_definition_report(info_template)
+        
+        if(info_template.has_key('name')):
+            report_id = self.search(cr,uid,[('name','=',info_template['name'])],context=context)
             vals={
-                      'name':def_report['name'],
-                      'title':def_report['title'] or def_report['name'],
-                      'format': def_report['format'][0].upper() + def_report['format'][1:],
+                      'name':info_template['name'],
+                      'title':info_template['title'] or info_template['name'],
+                      'format': info_template['format'],
                       'module_id':info_template['module_id'],
-                      'template_file_name':info_template['file_name'].split('.')[0],
-                      'json_file_name':info_template['file_name'].split('.')[0] + ".json"
+                      'template_file_name':info_template['template_file_name'].split('.')[0],
+                      'json_file_name':info_template['template_file_name'].split('.')[0] + ".json"
                       }
             
             if(report_id):
@@ -249,12 +252,12 @@ class report_def(osv.osv):
                 id_rep_def = self.create(cr,uid,vals,context=context)
                 self.create_report_def(cr,uid,temp,id_rep_def,context=context)
         else:
-            raise osv.except_osv('Action Error !',"No report definition in template " + info_template['file_name'])
+            raise osv.except_osv('Action Error !',"No report definition in template " + info_template['template_file_name'])
                 
     
     def write_report_def(self,cr,uid,temp,id_rep_def,context):
         
-        template_def = temp.get_data_template(temp)
+        template_def = temp.get_data_template()
         sequence_field = 0
         
         for sect_key,sect_val in template_def.iteritems():
@@ -285,9 +288,11 @@ class report_def(osv.osv):
     def create_report_def(self,cr,uid,temp,id_rep_def,context):
 
         template_def = temp.get_data_template()
+        print 'template definition ',template_def
         sequence_field = 0
         
         for sect_key,sect_val in template_def.iteritems():
+            
             section=self.pool.get('report.section.bloc')
             val_section = {}
             val_section['report_id'] = id_rep_def
@@ -296,6 +301,7 @@ class report_def(osv.osv):
             
             section.create(cr,uid,val_section,context)
             for field_key,field_val in sect_val['fields'].iteritems():  
+                print 'fields',field_key,field_val
                 sequence_field+=1      
                 field=self.pool.get('report.def.field')
                 val_field={}
