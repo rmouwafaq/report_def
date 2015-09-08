@@ -534,6 +534,15 @@ class report_def_request(osv.osv):
                'file_request':fields.binary('Request file')
                }
     
+    def report_viewer(self,cr,uid,ids,context=None):
+        return {
+                    'type' : 'ir.actions.client',
+                    'name' : 'report_def.Report Viewer Action',
+                    'tag' : 'report.viewer.action',
+                    'params' : {'id':ids[0]},
+                    
+                }
+        
 report_def_request()
 
 class report_request_view(osv.osv):
