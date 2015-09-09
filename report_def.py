@@ -25,6 +25,7 @@ from agilreport.Agil_Template import Template
 from mock import self
 from openerp.addons.ao_basic_module import ao_register
 from openerp.addons.ao_basic_module.ao_class import model_key
+from openerp.addons.ao_basic_module.ao_global import end_file
 
 
 class ir_module(osv.osv):
@@ -234,23 +235,26 @@ class report_def(osv.osv):
         
         if(info_template.has_key('name')):
             report_id = self.search(cr,uid,[('name','=',info_template['name'])],context=context)
-            vals={
-                      'name':info_template['name'],
+            vals={    'name':info_template['name'],
                       'title':info_template['title'] or info_template['name'],
                       'format': info_template['format'],
                       'module_id':info_template['module_id'],
-                      'template_file_name':info_template['template_file_name'].split('.')[0],
-                      'json_file_name':info_template['template_file_name'].split('.')[0] + ".json"
+                      'template_file_name':end_file(info_template['template_file_name'],'.html'),
+                      'json_file_name':end_file(info_template['template_file_name'],".json"),
+                      'type':info_template['type'],
+                      'viewer_type':info_template['viewer_type'],
                       }
             
             if(report_id):
                 #set report definition 
                 self.write(cr,uid,report_id,vals,context=context)
                 self.write_report_def(cr,uid,temp,report_id[0],context=context)
+                return report_id[0]
             else:
                 #add new report definition
-                id_rep_def = self.create(cr,uid,vals,context=context)
-                self.create_report_def(cr,uid,temp,id_rep_def,context=context)
+                report_id = self.create(cr,uid,vals,context=context)
+                self.create_report_def(cr,uid,temp,report_id,context=context)
+                return report_id
         else:
             raise osv.except_osv('Action Error !',"No report definition in template " + info_template['template_file_name'])
                 
