@@ -106,6 +106,7 @@ openerp.report_def = function (instance) {
 	        				var str_report_request= base64Encode(report_request_bin);
 	        				content_report=atob(str_report_request);
 	        			}
+	        			$("#viewer").addClass("viewer-padding");
 	        			engine_report(content_report,"#Report");
 	        			
 	        			format_rapport=$("#Report").attr("format");
@@ -115,9 +116,10 @@ openerp.report_def = function (instance) {
 			       		var viewerpdf = document.getElementById('viewer');
 						var height_div=screen.height-130;
 						viewerpdf.style.height = height_div+"px";
-	  			  		$("#viewer #pdfviewer").attr("src","data:application/pdf;base64," + report_request_bin);
+	  			  		$("#viewer").removeClass("viewer-padding");
+	  			  		$("#viewer").html("<embed id='pdfviewer' width='100%' height='100%' name='plugin' type='application/pdf' src='data:application/pdf;base64," + report_request_bin +"'  />");
 	  			  	}
-	  			  	$("#viewer").siblings('*').removeClass("openerp");
+	  			  	
     		});
 			
         		 
