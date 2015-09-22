@@ -54,6 +54,7 @@
 	}
 
 	#viewer {
+		background-color:#fff;
 		height: initial;
 		width:100%;
 		height:auto;
