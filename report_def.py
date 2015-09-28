@@ -175,17 +175,36 @@ class report_def(osv.osv):
     def get_path_template_name(self,cr,uid,report_id,template_name,context=None):
         module_rep = self.pool.get("ir.module.module").browse(cr,uid,report_id,context) 
         module_folder_name  = ao_register.CD_ODOO_ADDONS + module_rep.name + '/templates/'
-        if not template_name.endswith('.html'):
-            template_name = template_name + '.html'
+        template_name = end_file(template_name,'.html')
         return module_folder_name + template_name
             
-#     def create(self,cr,uid,vals,context=None):
+#     def create(self,cr,uid,vals,context=None():
 #         id_rep_def = super(report_def,self).create(cr, uid, vals, context)
 #         path_template = self.get_path_template_name(cr,uid,vals['module_id'],vals['template_file_name'],context=None)
 #         if(vals.get('auto_generate',False)) and path_template:
 #             self.auto_create_fields(cr, uid,path_template,id_rep_def,context)
 #         return id_rep_def
 
+    
+    def create_dynamic_report(self,cr,uid,report_name,context):
+
+        report_def_ids = self.search(cr,uid,[('name','=',report_name)],context=context)
+        report_def_id = None
+        if(report_def_ids):
+            report_def_id = report_def_ids[0]
+        else:
+            info_template = {
+                  'name':report_name,
+                  'title':context.get('title',report_name),
+                  'module_id':context.get('module_id',0),
+                  'template_file_name':end_file(report_name,'.html'),
+                  'json_file_name':end_file(report_name,".json"),
+                  'format':context.get('type_doc','Portrait'),
+                  'type':context.get('type_doc','form'),
+                  'viewer_type':context.get('viewer_type','html'),
+                  }
+            report_def_id = self.create(cr,uid,info_template,context=context)
+        return report_def_id
     
     def auto_create_fields(self,cr,uid,template_dir,id_rep_def,context):
         sections=['Report_header','Page_header','Details','Page_footer','Report_footer']
@@ -240,7 +259,7 @@ class report_def(osv.osv):
                       'format': info_template['format'],
                       'module_id':info_template['module_id'],
                       'template_file_name':end_file(info_template['template_file_name'],'.html'),
-                      'json_file_name':end_file(info_template['template_file_name'],".json"),
+                      'json_file_name':end_file(info_template['template_file_name'],'.json'),
                       'type':info_template['type'],
                       'viewer_type':info_template['viewer_type'],
                       }
@@ -339,10 +358,10 @@ class report_def(osv.osv):
             dict_report['query']=report.query
             dict_report['format']=report.format
             dict_report['type']=report.type
-            dict_report['template_html']=report.template_html
-            dict_report['template_file_name']=report.template_file_name
-            dict_report['json_file_name']=report.json_file_name
-            dict_report['viewer_type']=report.viewer_type
+            dict_report['template_html'] = report.template_html
+            dict_report['template_file_name'] = end_file(report.template_file_name,'.html')
+            dict_report['json_file_name'] = end_file(report.json_file_name,'.json')
+            dict_report['viewer_type'] = report.viewer_type
             
             dict_report['col_fields']=[]
             for field_id in report.field_ids:
@@ -521,7 +540,7 @@ class report_def_json_files(osv.osv):
             dict_report['query']=report.query
             dict_report['format']=report.format
             dict_report['template_html']=report.template_html
-            dict_report['template_file_name']=report.template_file_name
+            dict_report['template_file_name'] = end_file(report.template_file_name,'.html')
              
             return dict_report
         else:
@@ -537,6 +556,19 @@ class report_def_request(osv.osv):
                'report_id':fields.many2one('report.def','Report Definition'),
                'file_request':fields.binary('Request file')
                }
+    
+    def set_action_request_report(self,cr,uid,report_def_id,bin_report,context):
+        rep_request_id = self.create(cr,uid,
+                                          {'report_id':report_def_id,
+                                           'file_request':bin_report
+                                           },context=context)
+                     
+        return {
+                'type' : 'ir.actions.client',
+                'name' : 'report_def.Report Viewer Action',
+                'tag' : 'report.viewer.action',
+                'params' : {'id':rep_request_id},
+                }
     
     def report_viewer(self,cr,uid,ids,context=None):
         return {
