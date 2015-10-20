@@ -41,7 +41,7 @@
 
 .openerp .ao_report_viewer th, .openerp .ao_report_viewer td {
   padding: 0;
-  /*text-align: initial;*/
+  text-align:inherit
 }
 .openerp .ao_report_viewer th {
   font-weight: initial;
@@ -89,7 +89,15 @@
 	display: initial;
 	max-width: none;
 	margin-bottom: 0;
-	font-weight: initial;
+	font-weight: normal;
+}
+
+.ao_report_viewer strong label {
+	font-weight: bolder;
+}
+
+.ao_report_viewer .numeric-bold label {
+	font-weight: bolder;
 }
 
 .ao_report_viewer fieldset {

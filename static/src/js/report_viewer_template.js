@@ -1,5 +1,7 @@
 openerp.report_def = function (instance) {
 	var zoom=100;
+	var state_thumbnails= false;
+	var load_thumnails_pages=false;
     instance.web.client_actions.add('report.viewer.action', 'instance.report_def.Action');
     instance.report_def.Action = instance.web.Widget.extend({
         template: 'report_viewer_template.action',
@@ -8,12 +10,17 @@ openerp.report_def = function (instance) {
 	    'click #to_print': 'to_print',
 	    'click #zoom_back': 'zoom_back',
 	    'click #zoom_forward': 'zoom_forward',
+	    'click #fullscreen': 'fullscreen',
+	    'click #mode-large': 'mode_large',
+	    'click #mode-normal': 'mode_normal',
+	    'click #thumbnails': 'thumbnails_pages',
         },
         init: function () {
             this._super.apply(this, arguments);
-	    console.log('arguments',arguments);
+	    	console.log('arguments',arguments);
             this._start = null;
             this._watch = null;
+            
            
         },
 	to_print:function(){
@@ -39,6 +46,63 @@ openerp.report_def = function (instance) {
 	  }
 	},
 	
+	fullscreen:function(){
+	 	var el = document.documentElement
+    	, rfs = // for newer Webkit and Firefox
+           el.requestFullScreen
+        || el.webkitRequestFullScreen
+        || el.mozRequestFullScreen
+        || el.msRequestFullscreen
+		;
+		if(typeof rfs!="undefined" && rfs){
+		  rfs.call(el);
+		} else if(typeof window.ActiveXObject!="undefined"){
+		  // for Internet Explorer
+		  var wscript = new ActiveXObject("WScript.Shell");
+		  if (wscript!=null) {
+		     wscript.SendKeys("{F11}");
+		  }
+		}
+	},
+	mode_large:function(){
+	  $(".oe_leftbar").css('display','none');
+	  $("#mode-large").hide();
+	  $("#mode-normal").show();
+	  $("#screen-option").removeClass("to-right");
+	  $("#screen-option").addClass("to-left");
+	  
+	  $("#zoom-option").removeClass("to-right");
+	  $("#zoom-option").addClass("to-center");
+	},
+	mode_normal:function(){
+	  $(".oe_leftbar").css('display','table-cell');
+	  $("#mode-normal").hide();
+	  $("#mode-large").show();
+	  $("#screen-option").removeClass("to-left");
+	  $("#screen-option").addClass("to-right");
+	  
+	  $("#zoom-option").removeClass("to-center");
+	  $("#zoom-option").addClass("to-right");
+	},
+	thumbnails_pages:function(){
+		
+		if(state_thumbnails){
+			$("#thumbnails-pages").removeClass("active-thumbnails");
+			$("#thumbnails-pages").addClass("disabled-thumbnails");
+			state_thumbnails=false;
+		}else{
+			$("#thumbnails-pages").removeClass("disabled-thumbnails");
+			$("#thumbnails-pages").addClass("active-thumbnails");
+			state_thumbnails=true;
+			var page_thumnails = "<div class='page-thumbnails' ></div>";
+			if(load_thumnails_pages==false){
+				$(".Page").each(function(index) {
+				  $("#thumbnails-pages").html($("#thumbnails-pages").html() + page_thumnails);
+				});
+				load_thumnails_pages=true;
+			}
+		}
+	},
     getData:function(){
        		
     		
@@ -111,6 +175,9 @@ openerp.report_def = function (instance) {
 	        			
 	        			format_rapport=$("#Report").attr("format");
 	  			  		page_format(format_rapport);
+	  			  		
+	  			  		
+	  			  		
 	  			  	}else{
 	  			  		$(".banner_printer").hide();
 			       		var viewerpdf = document.getElementById('viewer');
@@ -130,7 +197,7 @@ openerp.report_def = function (instance) {
         },
       
         start: function () {
-        	
+        	$("#mode-normal").hide();
 		this.getData();
         },
         current: function () {

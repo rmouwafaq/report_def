@@ -6,15 +6,20 @@
 			<table  style="width:100%" height="100%">
 				<tr>
 					
-					<td width="33%" align="left"></td>
+					<td id="screen-option" class="to-right">
+						<span class="glyphicon glyphicon-chevron-left" id="mode-large" ></span>
+						<span class="glyphicon glyphicon-chevron-right" id="mode-normal" ></span>
+						<span class="glyphicon glyphicon-file" id="thumbnails" aria-hidden="true"></span>
+						<span class="glyphicon glyphicon-fullscreen" id="fullscreen" aria-hidden="true"></span>
+					</td>
 					
-					<td class="zoom-option">
+					<td id="zoom-option" class="to-right">
 						<span class="glyphicon glyphicon-zoom-out" id="zoom_back" aria-hidden="true"></span>
 						<input type="text" name="resolution" value="100 %" id="resolution-text" disabled="disabled" />	
 						<span class="glyphicon glyphicon-zoom-in" id="zoom_forward"  aria-hidden="true"></span>					
 					</td>
 					
-					<td class="print-option" >
+					<td id="print-option" class="to-right">
 						<span class="glyphicon glyphicon-print" id="to_print" aria-hidden="true"></span>
 						<span class="glyphicon glyphicon-floppy-save" id="to_pdf" aria-hidden="true"></span>
 					</td>
@@ -22,10 +27,18 @@
 				</tr>
 			</table>
 	</div>
-	
-    <div id="viewer" >	
-    	
-    </div>
+	<table style="width:100%;height:100%">
+		<tr>
+			<td id="thumbnails-pages" class="disabled-thumbnails" >
+				
+			</td>
+			<td>
+				<div id="viewer" >	
+    				
+    			</div>
+			</td>
+		</tr>
+	</table>
     
 </div>
 </templates>
