@@ -119,9 +119,7 @@
 					<field name="section"/>
 					<field name="source_data"/>
 					<field name="field_type"/>
-					
-					<field name="reset_after_print"/>
-					<field name="reset_repeat_section"/>
+					<field name="field_format_id"/>
 					<field name="expression"/>
 					<field name="formula"/>
 				</tree>
@@ -136,7 +134,6 @@
 			<field name="model">report.def</field>
 			<field name="arch" type="xml">
 				<tree string="Definition Report">
-					<field name="name"/>
 					<field name="title"/>
 					<field name="module_id"/>
 					<field name="format"/>

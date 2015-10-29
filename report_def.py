@@ -383,12 +383,10 @@ report_def()
 class report_field_format(osv.osv):
     _name = "report.field.format"
     _description = "DefReport field Format"
-    _key_name = 'format'
     _columns = {
                 'name':fields.char('name',size=64), 
                 'format':fields.char('format',size=64),
-                'function':fields.char('format',size=64),
-                
+                'function':fields.char('function',size=64),
                 }
     
     _defaults = {'format': '{:>5,.2f}' }
@@ -396,15 +394,13 @@ class report_field_format(osv.osv):
     def to_dict(self,cr,uid,id=None):
         
         dict_report_format={}
-        
         id = self.search(cr,uid, [('id','=',id)])
-        
         if id:
             report_format = self.browse(cr,uid, id)[0] 
-            dict_report_format['id'] = report_format.id
-            dict_report_format['name']=report_format.name
-            dict_report_format['format']=report_format.format
-            
+            dict_report_format['id']   = report_format.id
+            dict_report_format['name'] = report_format.name
+            dict_report_format['format'] = report_format.format
+            dict_report_format['function'] = report_format.function
             return dict_report_format
         else:
             return dict_report_format   
@@ -518,6 +514,14 @@ class report_def_field(osv.osv):
                  'section' : 'Details'
                  
                  }
+    
+    def name_get(self, cr, uid, ids, context=None):
+        res = []
+        for record in self.browse(cr, uid, ids, context=context):
+            name = record.name + ' - ' + record.field_type + ' - ' + record.source_data  
+            res.append((record.id, name))
+        return res
+
                  
     def to_dict(self,cr,uid,id):
         
