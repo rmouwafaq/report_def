@@ -38,6 +38,7 @@
               "wizard/template_definition.xml",
               "wizard/model_export_xml_view.xml",
               "menu_action.xml",
+              "data/init_data.xml",
               ],
     "js": ["static/lib/engine_report.js","static/src/js/report_viewer_template.js"],
     "css":[],

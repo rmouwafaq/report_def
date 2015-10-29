@@ -199,7 +199,7 @@ class report_def(osv.osv):
                   'module_id':context.get('module_id',0),
                   'template_file_name':end_file(report_name,'.html'),
                   'json_file_name':end_file(report_name,".json"),
-                  'format':context.get('type_doc','Portrait'),
+                  'format':context.get('type_doc','Landscape'),
                   'type':context.get('type_doc','form'),
                   'viewer_type':context.get('viewer_type','html'),
                   }
@@ -249,8 +249,8 @@ class report_def(osv.osv):
         temp = Template()
         temp.read(info_template['path_template'] + info_template['template_file_name'])
         
-        if not info_template.has_key('name'):
-            info_template = temp.get_definition_report(info_template)
+        #if not info_template.has_key('name'):
+        info_template = temp.get_definition_report(info_template)
         
         if(info_template.has_key('name')):
             report_id = self.search(cr,uid,[('name','=',info_template['name'])],context=context)
@@ -282,9 +282,10 @@ class report_def(osv.osv):
         
         template_def = temp.get_data_template()
         sequence_field = 0
+        section = self.pool.get('report.section.bloc')
+        field = self.pool.get('report.def.field')
         
         for sect_key,sect_val in template_def.iteritems():
-            section = self.pool.get('report.section.bloc')
             val_section={}
             val_section['report_id'] = id_rep_def
             val_section['section'] = sect_key
@@ -294,7 +295,7 @@ class report_def(osv.osv):
                 section.write(cr,uid,section_id,val_section,context)
                 for field_key,field_val in sect_val['fields'].iteritems():  
                     sequence_field+=1      
-                    field = self.pool.get('report.def.field')
+                    
                     val_field={}
                     val_field['report_id']=id_rep_def
                     val_field['template_id']=field_key
@@ -378,6 +379,37 @@ class report_def(osv.osv):
 
 report_def()
         
+
+class report_field_format(osv.osv):
+    _name = "report.field.format"
+    _description = "DefReport field Format"
+    _key_name = 'format'
+    _columns = {
+                'name':fields.char('name',size=64), 
+                'format':fields.char('format',size=64),
+                'function':fields.char('format',size=64),
+                
+                }
+    
+    _defaults = {'format': '{:>5,.2f}' }
+    
+    def to_dict(self,cr,uid,id=None):
+        
+        dict_report_format={}
+        
+        id = self.search(cr,uid, [('id','=',id)])
+        
+        if id:
+            report_format = self.browse(cr,uid, id)[0] 
+            dict_report_format['id'] = report_format.id
+            dict_report_format['name']=report_format.name
+            dict_report_format['format']=report_format.format
+            
+            return dict_report_format
+        else:
+            return dict_report_format   
+        
+report_field_format()
 
 class report_section_bloc(osv.osv):
     _name = "report.section.bloc"
@@ -466,6 +498,8 @@ class report_def_field(osv.osv):
                                         ('Image','Image'),
                                         ('Static Image','Static Image'),
                                         ],'Field Type'),
+        'field_format_id':fields.many2one('report.field.format', 'Field Format'),
+        
         'expression':fields.text('Expression'),
         'formula':fields.text('formule'),
         

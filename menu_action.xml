@@ -62,6 +62,14 @@
 			<field name="view_id" ref="field_def_request_tree"/>
 		</record>
 		
+		<record id="action_field_format" model="ir.actions.act_window">
+            <field name="name">Field format</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="res_model">report.field.format</field>
+            <field name="view_mode">tree,form</field>
+        </record>
+
+        
 		<!-- menu -->
 		<menuitem id="report_def_root" name="Gestion Rapports"/>
 			<menuitem id="rep_config" name="Configuration " sequence="0" parent="report_def_root"/>
@@ -70,6 +78,8 @@
 				<menuitem id="export_wiz" name="Export XML Report Definition" sequence="120" parent="rep_config" action="action_wiz_export_report"/>
 				<menuitem id="export_model_wiz" name="Export XML Model" sequence="121" parent="rep_config" action="action_wiz_export_model"/>
 				<menuitem id="import_wiz" name="Import XML Report Definition" sequence="122" parent="rep_config" action="action_wiz_import_report"/>
+				<menuitem id="field_format" name="Field Format" sequence="125" parent="rep_config" action="action_field_format"/>
+							
 			<menuitem id="report_archive" name="Archive Rapports" sequence="1" parent="report_def_root"/>
 				<menuitem id="list_report" name="Liste rapports" sequence="100" parent="report_archive" action="action_report_def_request"/>
 				

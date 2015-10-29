@@ -4,14 +4,12 @@
 
 	<data> 
 		<!-- views Form -->
-		
-		
 		<record model="ir.ui.view" id="field_def_form">
 			<field name="name">report.def.field.form</field>
 			<field name="model">report.def.field</field>
 			<field name="arch" type="xml">		
 		
-				<form version="7.0" string="Field">
+				<form string="Field">
 					<group col="2">
 						<group>
 							<field name="sequence"/>
@@ -23,6 +21,7 @@
 							<field name="section"/>
 							<field name="source_data"/>
 							<field name="field_type"/>
+							<field name="field_format_id"/>
 						</group>
 						<group>
 							<field name="expression" />
@@ -49,7 +48,7 @@
 			<field name="name">report.def.form</field>
 			<field name="model">report.def</field>
 			<field name="arch" type="xml">
-				<form version="7.0" string="Reports">
+				<form string="Reports">
 					<group col="2">
 						<group>
 							<field name="name"/>
@@ -120,6 +119,7 @@
 					<field name="section"/>
 					<field name="source_data"/>
 					<field name="field_type"/>
+					
 					<field name="reset_after_print"/>
 					<field name="reset_repeat_section"/>
 					<field name="expression"/>
@@ -178,6 +178,38 @@
 			</field>
 		
 		</record>
+		
+		<!--  TREE field format  -->
+		<record model="ir.ui.view" id="view_field_format_tree">
+			<field name="name">Field Format</field>
+			<field name="model">report.field.format</field>
+			<field name="type">tree</field>
+			<field name="arch" type="xml">
+				<tree string="Field Format">	
+					<field name="name" />
+					<field name="format" />
+					<field name="function" />
+			   </tree>					
+			</field>
+			</record>
+			
+			
+			<!-- FORM Report field format-->	
+			<record model="ir.ui.view" id="view_field_format_form">
+				<field name="name">Field Format</field>
+				<field name="model">report.field.format</field>
+				<field name="type">form</field>
+				<field name="arch" type="xml">
+					<form string="Field Format">	
+						<group col="2">	
+							<field name="name" />
+							<field name="format" />
+							<field name="function" />
+						</group>
+					</form>
+				</field>
+			</record>
+		 	
 		
 		<!-- Declaration des fichiers js/css -->
 		

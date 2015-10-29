@@ -1,2 +1,3 @@
 *.pyc
 wizard/*.pyc
+/i18n
