@@ -29,8 +29,11 @@
 						<group>
 							<field name="formula" />
 						</group>
-						<group>
+						<group attrs="{'invisible': [
+											('source_data', '!=', 'Total'),
+											]}">
 							<field name="function"/>
+							<field name="total_field_id" domain="[('report_id','=','parent.id')]"/>
 							<field name="reset_after_print"/>
 							<field name="reset_repeat_section"/>					
 						</group>
@@ -63,18 +66,61 @@
 							<field name="template_file_name"/>
 							<field name="json_file_name"/>
 							<field name="xml_file_name"/>
-							<field name="auto_generate" />
+							<field name="deferred_total" />
 						</group>
 					</group>
 		
 		
 					<notebook colspan="3">
 						<page string="Fields">
-							<field name="field_ids"/>
+							<field name="field_ids">
+								<form string="Field">
+									<group col="2">
+										<group>
+											<field name="sequence"/>
+											<field name="template_id"/>
+											<field name="name"/>
+											<field name="group"/>
+										</group>
+										<group>
+											<field name="section"/>
+											<field name="source_data"/>
+											<field name="field_type"/>
+											<field name="field_format_id"/>
+										</group>
+										<group>
+											<field name="expression" />
+										</group>
+										<group>
+											<field name="formula" />
+										</group>
+										<group attrs="{'invisible': [
+															('source_data', '!=', 'Total'),
+															]}">
+											<field name="function"/>
+											<field name="total_field_id" domain="[('report_id','=',parent.id)]"/>
+											<field name="reset_after_print"/>
+											<field name="reset_repeat_section"/>					
+										</group>
+										
+									</group>
+									
+								</form>
+							</field>
 						</page>
 						<page string="Sections">
 							<field name="section_bloc_ids"/>
 						</page>
+						
+						<page string="Totals">
+							<group col="2">
+								<field name="deferred_total"/>
+								<field name="deferred_label_field"/>
+								<field name="deferred_label"/>
+								<field name="reset_total_by_group"/>
+							</group>
+						</page>
+						
 						<page string="Query">
 							<field name="query"/>
 						</page>

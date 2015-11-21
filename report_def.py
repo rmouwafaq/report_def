@@ -169,8 +169,16 @@ class report_def(osv.osv):
                 'xml_file_name': fields.char('Xml File Name', size=128),
                 'viewer_type': fields.selection([('html', 'HTML'),
                                                  ('pdf','PDF')],
-                                                'Viewer Type'),  
+                                                'Viewer Type'),
+                
+                'deferred_total':fields.boolean("Deferred totals"),
+                'deferred_label_field': fields.many2one('report.def.field','Label in field'),
+                'deferred_label': fields.char('Deferred Label', size=64),
+                'reset_total_by_group':fields.boolean("Reset total by group"),  
                 }
+    
+    _defaults = {'deferred_label': 'Report' }
+    
     
     def get_path_template_name(self,cr,uid,report_id,template_name,context=None):
         module_rep = self.pool.get("ir.module.module").browse(cr,uid,report_id,context) 
@@ -476,6 +484,10 @@ class report_def_field(osv.osv):
                                         ('Form','Form'),
                                         ('Context','Context'),
                                         ('Total','Total'),
+                                        ('Page','Current Page'),
+                                        ('Folio','Current folio'),
+                                        ('Pages','Total Pages'),
+                                        ('Folios','Total folios'),
                                         ('Computed','Computed'),
                                         ('Function','Function'),
                                         ('Html','Html'),
@@ -506,7 +518,7 @@ class report_def_field(osv.osv):
                                       ],'Total function'),
          'reset_after_print':fields.boolean('Reset after print'),
          'reset_repeat_section':fields.boolean('Reset for repeated section'),        
-        
+         'total_field_id': fields.many2one('report.def.field','Related Total Field'),
     }    
     
     _defaults = {'field_type': 'String',
