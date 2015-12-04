@@ -28,12 +28,24 @@
 						</group>
 						<group>
 							<field name="formula" />
+							<field name="function"/>
+						</group>
+			
+						<group attrs="{'invisible': [
+											('source_data', 'not in', ['Global','Total'])
+											]}">
+							<field name="total_field_id" />
 						</group>
 						<group attrs="{'invisible': [
-											('source_data', '!=', 'Total'),
+											('source_data', 'not in', ['Global'])
 											]}">
-							<field name="function"/>
-							<field name="total_field_id" domain="[('report_id','=','parent.id')]"/>
+							<field name="related_field_id" />
+						</group>
+						
+						
+						<group attrs="{'invisible': [
+											('source_data', 'not in', ['Total'])
+											]}">
 							<field name="reset_after_print"/>
 							<field name="reset_repeat_section"/>					
 						</group>
@@ -72,40 +84,7 @@
 		
 					<notebook colspan="3">
 						<page string="Fields">
-							<field name="field_ids">
-								<form string="Field">
-									<group col="2">
-										<group>
-											<field name="sequence"/>
-											<field name="template_id"/>
-											<field name="name"/>
-											<field name="group"/>
-										</group>
-										<group>
-											<field name="section"/>
-											<field name="source_data"/>
-											<field name="field_type"/>
-											<field name="field_format_id"/>
-										</group>
-										<group>
-											<field name="expression" />
-										</group>
-										<group>
-											<field name="formula" />
-										</group>
-										<group attrs="{'invisible': [
-															('source_data', '!=', 'Total'),
-															]}">
-											<field name="function"/>
-											<field name="total_field_id" domain="[('report_id','=',parent.id)]"/>
-											<field name="reset_after_print"/>
-											<field name="reset_repeat_section"/>					
-										</group>
-										
-									</group>
-									
-								</form>
-							</field>
+							<field name="field_ids"/>
 						</page>
 						<page string="Sections">
 							<field name="section_bloc_ids"/>

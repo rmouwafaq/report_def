@@ -484,6 +484,7 @@ class report_def_field(osv.osv):
                                         ('Form','Form'),
                                         ('Context','Context'),
                                         ('Total','Total'),
+                                        ('Global','Global'),
                                         ('Page','Current Page'),
                                         ('Folio','Current folio'),
                                         ('Pages','Total Pages'),
@@ -518,7 +519,9 @@ class report_def_field(osv.osv):
                                       ],'Total function'),
          'reset_after_print':fields.boolean('Reset after print'),
          'reset_repeat_section':fields.boolean('Reset for repeated section'),        
-         'total_field_id': fields.many2one('report.def.field','Related Total Field'),
+         'total_field_id': fields.many2one('report.def.field','Related - Total Field'),
+         'related_field_id': fields.many2one('report.def.field','Related Field (2)'),
+    
     }    
     
     _defaults = {'field_type': 'String',
