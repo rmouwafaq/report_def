@@ -71,7 +71,7 @@
 
         
 		<!-- menu -->
-		<menuitem id="report_def_root" name="Gestion Rapports"/>
+		<menuitem id="report_def_root" name="Gestion Rapports" groups="base.group_system"/>
 			<menuitem id="rep_config" name="Configuration " sequence="0" parent="report_def_root"/>
 				<menuitem id="config_rap" name="rapport" sequence="100" parent="rep_config" action="action_report_def"/>
 				<menuitem id="template_def" name="Import Template Definition" sequence="110" parent="rep_config" action="action_template_def"/>
