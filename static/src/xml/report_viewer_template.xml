@@ -14,6 +14,7 @@
 					</td>
 					
 					<td id="zoom-option" class="to-right">
+						<!--<select id="bookmarks" style="width:175px;margin-right:35px;background: #464444;color:#eee;"><option>test</option></select>-->
 						<span class="glyphicon glyphicon-zoom-out" id="zoom_back" aria-hidden="true"></span>
 						<input type="text" name="resolution" value="100 %" id="resolution-text" disabled="disabled" />	
 						<span class="glyphicon glyphicon-zoom-in" id="zoom_forward"  aria-hidden="true"></span>					

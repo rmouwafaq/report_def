@@ -19,7 +19,12 @@
   font-style: normal;
 }
 
-
+/*.openerp .ao_report_viewer{
+	overflow: auto;
+	height: 100%;
+	width: 100%;
+	position:absolute;
+}*/
 .openerp .ao_report_viewer a {
   text-decoration: default;
   cursor: pointer !important;

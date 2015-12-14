@@ -123,8 +123,17 @@
 #thumbnails-pages{
 	vertical-align: top;
 	padding-top: 50px;
-	background-color:#807B7B;
+	background-color:#FFFFFF;
 	width:150px;
+	border:1px solid #ccc;
+}
+#thumbnails-pages ul{
+	margin-left: -20px;
+}
+#thumbnails-pages ul li:hover{
+	text-decoration:underline;
+	font-weight:bold;
+	
 }
 .page-thumbnails{
 	width:130px;
