@@ -240,6 +240,10 @@
             	<script type="text/javascript" src="/report_def/static/lib/engine_report.js"></script>
                 <script type="text/javascript" src="/report_def/static/src/js/report_viewer_template.js"></script>
             </xpath>
+            
+            <xpath expr="//link[@href='/web/static/lib/bootstrap/css/bootstrap.css']" position="replace">
+            	<link rel="stylesheet" href="/report_def/static/lib/bootstrap/css/bootstrap.css"/>
+            </xpath>
         </template>
 	</data>
 

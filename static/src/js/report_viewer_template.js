@@ -94,13 +94,13 @@ openerp.report_def = function (instance) {
 			$("#thumbnails-pages").removeClass("disabled-thumbnails");
 			$("#thumbnails-pages").addClass("active-thumbnails");
 			state_thumbnails=true;
-			var page_thumnails = "<div class='page-thumbnails' ></div>";
+			/*var page_thumnails = "<div class='page-thumbnails' ></div>";
 			if(load_thumnails_pages==false){
 				$(".Page").each(function(index) {
 				  $("#thumbnails-pages").html($("#thumbnails-pages").html() + page_thumnails);
 				});
 				load_thumnails_pages=true;
-			}
+			}*/
 		}
 	},
     getData:function(){
@@ -175,8 +175,14 @@ openerp.report_def = function (instance) {
 	        			
 	        			format_rapport=$("#Report").attr("format");
 	  			  		page_format(format_rapport);
-	  			  		
-	  			  		
+	  			  		list_bookmarks = "";
+	  			  		$(".Page_container").each(function(index) {
+						  book_marks = $(this).attr("id");
+						  if(book_marks != undefined){
+						  	list_bookmarks += "<li><a href='#"+ book_marks +"'>" + book_marks + "</a></li>";
+						  }
+						});
+	  			  		$("#thumbnails-pages").html("<ul>"+list_bookmarks +"</ul>");
 	  			  		
 	  			  	}else{
 	  			  		$(".banner_printer").hide();
