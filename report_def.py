@@ -27,6 +27,8 @@ from openerp.addons.ao_basic_module import ao_register
 from openerp.addons.ao_basic_module.ao_class import model_key
 from openerp.addons.ao_basic_module.ao_global import end_file
 
+RDEF_FORMAT_SELECTION = [('Portrait', 'Portrait'),
+                         ('Landscape','Landscape')]
 
 class ir_module(osv.osv):
     _inherit = "ir.module.module"
@@ -151,9 +153,7 @@ class report_def(osv.osv):
                 'title': fields.char('Title', size=128, required=True, select=True),
                 'module_id':fields.many2one('ir.module.module', 'Module',required=True),
                 'query' : fields.text('Query'),
-                'format':fields.selection([('Portrait', 'Portrait'),
-                                           ('Landscape','Landscape')],
-                                           'Format'),
+                'format':fields.selection(RDEF_FORMAT_SELECTION,'Format'),
                 'type':fields.selection([('normal', 'Normal'),
                                          ('user', 'User'),
                                          ('form','Formulary')],
@@ -259,7 +259,6 @@ class report_def(osv.osv):
         
         #if not info_template.has_key('name'):
         info_template = temp.get_definition_report(info_template)
-        
         if(info_template.has_key('name')):
             report_id = self.search(cr,uid,[('name','=',info_template['name'])],context=context)
             vals={    'name':info_template['name'],
