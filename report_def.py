@@ -311,6 +311,8 @@ class report_def(osv.osv):
                     val_field['section']=sect_key
                     val_field['source_data']=field_val['source_data']
                     val_field['field_type']=field_val['type']
+                    val_field['formula']=field_val['formula']
+                    
                     field_id = section.search(cr,uid,[('name','=',sect_key),('report_id','=',id_rep_def)])
                     if(field_id):
                         field.write(cr,uid,field_id,val_field,context)
