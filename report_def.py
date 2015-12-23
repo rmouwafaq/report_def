@@ -26,10 +26,14 @@ from mock import self
 from openerp.addons.ao_basic_module import ao_register
 from openerp.addons.ao_basic_module.ao_class import model_key
 from openerp.addons.ao_basic_module.ao_global import end_file
+
 import os
 import datetime
 import base64
 from openerp.addons.ao_basic_module.ao_register import CD_AO_FIN_REPORT,CD_REPORT_DEF
+
+RDEF_FORMAT_SELECTION = [('Portrait', 'Portrait'),
+                         ('Landscape','Landscape')]
 
 class ir_module(osv.osv):
     _inherit = "ir.module.module"
@@ -154,9 +158,7 @@ class report_def(osv.osv):
                 'title': fields.char('Title', size=128, required=True, select=True),
                 'module_id':fields.many2one('ir.module.module', 'Module',required=True),
                 'query' : fields.text('Query'),
-                'format':fields.selection([('Portrait', 'Portrait'),
-                                           ('Landscape','Landscape')],
-                                           'Format'),
+                'format':fields.selection(RDEF_FORMAT_SELECTION,'Format'),
                 'type':fields.selection([('normal', 'Normal'),
                                          ('user', 'User'),
                                          ('form','Formulary')],
@@ -262,7 +264,6 @@ class report_def(osv.osv):
         
         #if not info_template.has_key('name'):
         info_template = temp.get_definition_report(info_template)
-        
         if(info_template.has_key('name')):
             report_id = self.search(cr,uid,[('name','=',info_template['name'])],context=context)
             vals={    'name':info_template['name'],
@@ -315,6 +316,8 @@ class report_def(osv.osv):
                     val_field['section']=sect_key
                     val_field['source_data']=field_val['source_data']
                     val_field['field_type']=field_val['type']
+                    val_field['formula']=field_val['formula']
+                    
                     field_id = section.search(cr,uid,[('name','=',sect_key),('report_id','=',id_rep_def)])
                     if(field_id):
                         field.write(cr,uid,field_id,val_field,context)
@@ -618,7 +621,7 @@ class report_def_request(osv.osv):
                                           {'report_id':report_def_id,
                                            'file_request':bin_report
                                            },context=context)
-        print context
+        
         action ={
                 'type' : 'ir.actions.client',
                 'name' : 'report_def.Report Viewer Action',
