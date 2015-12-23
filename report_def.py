@@ -26,7 +26,10 @@ from mock import self
 from openerp.addons.ao_basic_module import ao_register
 from openerp.addons.ao_basic_module.ao_class import model_key
 from openerp.addons.ao_basic_module.ao_global import end_file
-
+import os
+import datetime
+import base64
+from openerp.addons.ao_basic_module.ao_register import CD_AO_FIN_REPORT,CD_REPORT_DEF
 
 class ir_module(osv.osv):
     _inherit = "ir.module.module"
@@ -610,18 +613,21 @@ class report_def_request(osv.osv):
                'file_request':fields.binary('Request file')
                }
     
-    def set_action_request_report(self,cr,uid,report_def_id,bin_report,context):
+    def set_action_request_report(self,cr,uid,report_def_id,bin_report,context=None):
         rep_request_id = self.create(cr,uid,
                                           {'report_id':report_def_id,
                                            'file_request':bin_report
                                            },context=context)
-                     
-        return {
+        print context
+        action ={
                 'type' : 'ir.actions.client',
                 'name' : 'report_def.Report Viewer Action',
                 'tag' : 'report.viewer.action',
                 'params' : {'id':rep_request_id},
-                }
+                #'context':context
+                } 
+       
+        return action
     
     def report_viewer(self,cr,uid,ids,context=None):
         return {
@@ -671,6 +677,23 @@ class report_request_view(osv.osv):
             from report_def rd,report_def_request rdr
             where rd.id=rdr.report_id
             )""")
+    def report_to_pdf(self,cr,uid,id_report):
+        report_request   = self.pool.get("report.def.request")
+        current_request_rep = report_request.browse(cr,uid,id_report,context=None)
         
+        today = datetime.datetime.now()
+        file_name = "tmp_"+str(uid)+"_"+str(today.date())+"_"+str(today.time())
+        path_dir = CD_REPORT_DEF+"/static/lib/temp/"
+        
+        temp=Template()
+        file_content=current_request_rep.file_request
+        temp.set_content_html(file_content.decode("utf-8"))
+        temp.copie(path_dir+file_name+".html")
+         
+        save_pdf = temp.save_pdf_from_file(path_dir+file_name+".html",path_dir+file_name+".pdf","portrait")
+        return path_dir+file_name+".pdf"
+        
+#         with open(path_dir+"test.pdf", 'r+') as template_file:
+#             return template_file 
 report_request_view()
 # vim:expandtab:smartindent:tabstop=4:softtabstop=4:shiftwidth=4:
