@@ -1,5 +1,5 @@
 <templates>
-<div t-name="report_viewer_template.action" class="ao_report_viewer">
+<div t-name="report_viewer_template.action" class="ao_report_viewer" oncontextmenu="return false">
 	<meta http-equiv="pragma" content="no-cache" />
 	
 	<div class="banner_printer" >

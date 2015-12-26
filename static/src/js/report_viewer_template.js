@@ -36,7 +36,8 @@ openerp.report_def = function (instance) {
            
         },
     home:function(){
-	    document.location.href="/web#id=" + this.active_id + "&view_type=form&model=" + this.active_model + "&action=" + this.active_action;	
+	    //document.location.href="/web#id=" + this.active_id + "&view_type=form&model=" + this.active_model + "&action=" + this.active_action;
+	    history.back();	
 	},
 	to_print:function(){
 	    window.print();	

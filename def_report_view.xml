@@ -239,11 +239,6 @@
             	<link rel="stylesheet" href="/report_def/static/src/css/base.css"/>
             	<script type="text/javascript" src="/report_def/static/lib/engine_report.js"></script>
                 <script type="text/javascript" src="/report_def/static/src/js/report_viewer_template.js"></script>
-                
-                <script type="text/javascript" src="/report_def/static/lib/jsPDF/jspdf.js"></script>
-                <script type="text/javascript" src="/report_def/static/lib/jsPDF/from_html.js"></script>
-                <script type="text/javascript" src="/report_def/static/lib/jsPDF/split_text_to_size.js"></script>
-                <script type="text/javascript" src="/report_def/static/lib/jsPDF/standard_fonts_metrics.js"></script>
             </xpath>
             
             <xpath expr="//link[@href='/web/static/lib/bootstrap/css/bootstrap.css']" position="replace">
