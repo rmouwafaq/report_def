@@ -45,18 +45,24 @@
             <field name="model">rdef.csv2xml</field>
             <field name="arch" type="xml">
                 <form string="Convertisseur CSV to XML">
-                    <group string="Convertisseur CSV to XML">
+                	<field invisible="1" name="state"/>
+                    <field invisible="1" name="name"/>
+                    <group states="choose" string="Convertisseur CSV to XML">
                     	 <field name="model_id"/>
                    		 <field name="data"/>
                     	 <field name="name"/>
-                    	 <field name="xml_file"/>
-                    	 
                     </group>
+                    <div states="get">
+                    	<p>Click here for download file : <field name="xml_file" readonly="1" filename="name" /></p>
+                    </div>
                     
-                    <footer>
+                    <footer states="choose">
                         <button name="csv_convert_xml" type="object" string="Convertir XML" class="oe_highlight"/>
                         or
                         <button string="Cancel" class="oe_link" special="cancel"/>
+                    </footer>
+                    <footer states="get">
+                        <button special="cancel" string="Close" type="object"/>
                     </footer>
                 </form>
             </field>
