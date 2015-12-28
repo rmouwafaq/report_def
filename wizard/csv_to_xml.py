@@ -197,9 +197,9 @@ class xml_from_csv(object):
         
         if is_id or is_field:
             if is_field:
-                desc_field = '          <field name="' + field_name + '">' + field_value + '</>'
+                desc_field = '          <field name="' + field_name + '">' + field_value + '</field>'
             if is_id:
-                desc_field = '          <field ref="' + ref_value + '" name="' + field_name + '"</>'
+                desc_field = '          <field ref="' + ref_value + '" name="' + field_name + '" />'
             
             std_temp += desc_field + '\n' 
         return std_temp
