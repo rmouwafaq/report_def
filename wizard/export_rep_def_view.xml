@@ -39,6 +39,28 @@
                 </form>
             </field>
         </record>
-     
+ 		
+ 		<record id="view_csv_xml" model="ir.ui.view">
+            <field name="name">Convertisseur CSV to XML</field>
+            <field name="model">rdef.csv2xml</field>
+            <field name="arch" type="xml">
+                <form string="Convertisseur CSV to XML">
+                    <group string="Convertisseur CSV to XML">
+                    	 <field name="model_id"/>
+                   		 <field name="data"/>
+                    	 <field name="name"/>
+                    	 <field name="xml_file"/>
+                    	 
+                    </group>
+                    
+                    <footer>
+                        <button name="csv_convert_xml" type="object" string="Convertir XML" class="oe_highlight"/>
+                        or
+                        <button string="Cancel" class="oe_link" special="cancel"/>
+                    </footer>
+                </form>
+            </field>
+        </record>
+ 		    
     </data>
 </openerp>
