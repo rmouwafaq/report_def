@@ -68,6 +68,11 @@
 	text-align: center;
 	color: #fff;
 }
+#home-link{
+	cursor:pointer;
+	font-size: 20px;
+	color: #ccc;
+}
 #zoom_back{
 	cursor:pointer;
 	font-size: 20px;
@@ -129,6 +134,10 @@
 }
 #thumbnails-pages ul{
 	margin-left: -20px;
+}
+#thumbnails-pages ul li{
+	border-bottom:1px solid #777;
+	margin-left: -37px;
 }
 #thumbnails-pages ul li:hover{
 	text-decoration:underline;

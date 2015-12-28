@@ -1,5 +1,5 @@
 <templates>
-<div t-name="report_viewer_template.action" class="ao_report_viewer">
+<div t-name="report_viewer_template.action" class="ao_report_viewer" oncontextmenu="return false">
 	<meta http-equiv="pragma" content="no-cache" />
 	
 	<div class="banner_printer" >
@@ -7,14 +7,15 @@
 				<tr>
 					
 					<td id="screen-option" class="to-right">
+						<span class="glyphicon glyphicon-home" id="home-link" ></span>
 						<span class="glyphicon glyphicon-chevron-left" id="mode-large" ></span>
 						<span class="glyphicon glyphicon-chevron-right" id="mode-normal" ></span>
-						<span class="glyphicon glyphicon-file" id="thumbnails" aria-hidden="true"></span>
+						<!--<span class="glyphicon glyphicon-file" id="thumbnails" aria-hidden="true"></span>-->
 						<span class="glyphicon glyphicon-fullscreen" id="fullscreen" aria-hidden="true"></span>
 					</td>
 					
 					<td id="zoom-option" class="to-right">
-						<!--<select id="bookmarks" style="width:175px;margin-right:35px;background: #464444;color:#eee;"><option>test</option></select>-->
+						<select id="bookmarks" style="width:175px;margin-right:35px;background: #464444;color:#eee;"></select>
 						<span class="glyphicon glyphicon-zoom-out" id="zoom_back" aria-hidden="true"></span>
 						<input type="text" name="resolution" value="100 %" id="resolution-text" disabled="disabled" />	
 						<span class="glyphicon glyphicon-zoom-in" id="zoom_forward"  aria-hidden="true"></span>					

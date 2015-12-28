@@ -2,10 +2,12 @@ openerp.report_def = function (instance) {
 	var zoom=100;
 	var state_thumbnails= false;
 	var load_thumnails_pages=false;
+	var report_request_id;
     instance.web.client_actions.add('report.viewer.action', 'instance.report_def.Action');
     instance.report_def.Action = instance.web.Widget.extend({
         template: 'report_viewer_template.action',
         events: {
+        'click #home-link': 'home',
 	    'click #to_pdf': 'to_pdf',
 	    'click #to_print': 'to_print',
 	    'click #zoom_back': 'zoom_back',
@@ -14,21 +16,57 @@ openerp.report_def = function (instance) {
 	    'click #mode-large': 'mode_large',
 	    'click #mode-normal': 'mode_normal',
 	    'click #thumbnails': 'thumbnails_pages',
+	    'change #bookmarks':'get_bookmark',
         },
         init: function () {
             this._super.apply(this, arguments);
 	    	console.log('arguments',arguments);
+	    	
+	    	this.active_id=arguments[1].context.active_id;
+	    	console.log("active id is =",this.active_id);
+	    	if(this.active_id == undefined){
+	    		this.active_id=arguments[1].params.active_id;
+	    	}
+	    	this.active_model=arguments[1].context.active_model;
+	    	console.log("active id is =",this.active_model);
+	    	this.active_action=arguments[1].context.params.action;
             this._start = null;
             this._watch = null;
             
            
         },
+    home:function(){
+	    //document.location.href="/web#id=" + this.active_id + "&view_type=form&model=" + this.active_model + "&action=" + this.active_action;
+	    history.back();	
+	},
 	to_print:function(){
 	    window.print();	
 	},
 	to_pdf:function(){
 	   
-	    
+	  /*  var doc = new jsPDF();          
+		var elementHandler = {
+		  '#ignorePDF': function (element, renderer) {
+		    return true;
+		  }
+		};
+		var source = window.document.getElementsByTagName("body")[0];
+		doc.fromHTML(
+		    source,
+		    15,
+		    15,
+		    {
+		      'width': 180,'elementHandlers': elementHandler
+		    });
+		
+		doc.output("dataurlnewwindow");*/
+		
+		new instance.web.Model('report.request.view').call('report_to_pdf',[parseInt(report_request_id)],undefined,{ shadow:true })
+			 .then(function(report_info){
+			 	alert(report_info);
+			 	return report_info;
+			 });
+		
 		
 	},
 	zoom_back:function(){
@@ -103,6 +141,12 @@ openerp.report_def = function (instance) {
 			}*/
 		}
 	},
+	get_bookmark:function(){
+		var id = "#"+$("#bookmarks option:selected").val();
+	    var offset = $(id).offset().top ;
+	    $('html,.openerp').animate({scrollTop: offset}, 'slow'); 
+	    return false; 
+	},
     getData:function(){
        		
     		
@@ -142,7 +186,7 @@ openerp.report_def = function (instance) {
 			var query_string=document.location.href.split("#")[1];
 			console.log("query_string",query_string);   
 			query_string=query_string.split("&");
-			var report_request_id=query_string[0].split("=")[1];
+			report_request_id=query_string[0].split("=")[1];
 			
 			var viewer_type="html";
 			var report_request_bin;
@@ -179,10 +223,11 @@ openerp.report_def = function (instance) {
 	  			  		$(".Page_container").each(function(index) {
 						  book_marks = $(this).attr("id");
 						  if(book_marks != undefined){
-						  	list_bookmarks += "<li><a href='#"+ book_marks +"'>" + book_marks + "</a></li>";
+						  	target_name = book_marks.split('_').join(' ');
+						  	list_bookmarks += "<option value='"+ book_marks +"'>" + target_name + "</option>";
 						  }
 						});
-	  			  		$("#thumbnails-pages").html("<ul>"+list_bookmarks +"</ul>");
+	  			  		$("#bookmarks").html(list_bookmarks);
 	  			  		
 	  			  	}else{
 	  			  		$(".banner_printer").hide();
