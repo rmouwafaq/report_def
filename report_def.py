@@ -26,7 +26,8 @@ from mock import self
 from openerp.addons.ao_basic_module import ao_register
 from openerp.addons.ao_basic_module.ao_class import model_key
 from openerp.addons.ao_basic_module.ao_global import end_file
-
+# from openerp.addons.web.http import Response
+import pdfkit
 import os
 import datetime
 import base64
@@ -680,23 +681,40 @@ class report_request_view(osv.osv):
             from report_def rd,report_def_request rdr
             where rd.id=rdr.report_id
             )""")
+
+    def save_to_pdf(self,input,output,orientation):
+        options = {
+            'page-size':'A4',
+            'margin-top':'0cm',
+            'margin-right':'0cm',
+            'margin-bottom':'0cm',
+            'margin-left':'0cm',
+            'orientation':orientation,    
+            'print-media-type':'',
+        }
+        inclu_folder = CD_REPORT_DEF+"/static/lib/inclu/"
+        css=[inclu_folder+'style_zone_text.css',inclu_folder+'global_style.css',inclu_folder+'style_portrait.css']
+        input=input.replace("../inclu/jquery.js",inclu_folder+"jquery.js")
+        input=input.replace("../inclu/etat_script.js",inclu_folder+"etat_script.js")
+        
+        config = pdfkit.configuration(wkhtmltopdf='/usr/bin/wkhtmltopdf')
+        pdf_result=pdfkit.from_string(input,output,options=options,css=css,configuration=config)
+        return pdf_result    
+    
     def report_to_pdf(self,cr,uid,id_report):
-        report_request   = self.pool.get("report.def.request")
+        report_request = self.pool.get("report.def.request")
         current_request_rep = report_request.browse(cr,uid,id_report,context=None)
+        reportname="report_test"
         
-        today = datetime.datetime.now()
-        file_name = "tmp_"+str(uid)+"_"+str(today.date())+"_"+str(today.time())
-        path_dir = CD_REPORT_DEF+"/static/lib/temp/"
-        
-        temp=Template()
         file_content=current_request_rep.file_request
-        temp.set_content_html(file_content.decode("utf-8"))
-        temp.copie(path_dir+file_name+".html")
-         
-        save_pdf = temp.save_pdf_from_file(path_dir+file_name+".html",path_dir+file_name+".pdf","portrait")
-        return path_dir+file_name+".pdf"
+        report_string=file_content.decode("utf-8")
         
-#         with open(path_dir+"test.pdf", 'r+') as template_file:
-#             return template_file 
+        pdf_result =self.save_to_pdf(report_string,False,'portrait')
+       
+        return base64.b64encode(pdf_result)
+#         pdfhttpheaders = [('Content-Type', 'application/pdf'), ('Content-Length', len(pdf_result))]
+#         response = Response(pdf_result, headers=pdfhttpheaders)
+#         response.headers.add('Content-Disposition', 'attachment; filename=%s.pdf;' % reportname)
+#         return response
 report_request_view()
 # vim:expandtab:smartindent:tabstop=4:softtabstop=4:shiftwidth=4:

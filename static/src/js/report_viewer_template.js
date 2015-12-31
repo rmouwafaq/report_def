@@ -44,27 +44,111 @@ openerp.report_def = function (instance) {
 	},
 	to_pdf:function(){
 	   
-	  /*  var doc = new jsPDF();          
-		var elementHandler = {
-		  '#ignorePDF': function (element, renderer) {
-		    return true;
-		  }
-		};
-		var source = window.document.getElementsByTagName("body")[0];
-		doc.fromHTML(
-		    source,
-		    15,
-		    15,
-		    {
-		      'width': 180,'elementHandlers': elementHandler
-		    });
+	  function downloadPDF( data, fileName, fileType ) {
+		    // Set objects for file generation.
+		    var blob, url, a, extension;
+		    
+		    // Get time stamp for fileName.
+		    var stamp = new Date().getTime();
+		    
+		    // Set MIME type and encoding.
+		    fileType = ( fileType || "application/pdf;base64,");
+		    extension = fileType.split( "/" )[1].split( ";" )[0];
+		    // Set file name.
+		    fileName = ( fileName || "ActiveVoice_" + stamp + "." + extension );
+		    
+		    // Set data on blob.
+		    blob = new Blob( [ data ], { type: fileType } );
+		    
+		    // Set view.
+		    if ( blob ) {
+		        // Read blob.
+		        url = window.URL.createObjectURL( blob );
+		    
+		        // Create link.
+		        a = document.createElement( "a" );
+		        // Set link on DOM.
+		        document.body.appendChild( a );
+		        // Set link's visibility.
+		        a.style = "display: none";
+		        // Set href on link.
+		        a.href = url;
+		        // Set file name on link.
+		        a.download = fileName;
+		    
+		        // Trigger click of link.
+		        a.click();
+		    
+		        // Clear.
+		        window.URL.revokeObjectURL( url );
+		    } else {
+		        // Handle error.
+		    }
+		}
 		
-		doc.output("dataurlnewwindow");*/
 		
+		
+		function utf8Decode(bytes) {
+			  var chars = [], offset = 0, length = bytes.length, c, c2, c3;
+			
+			  while (offset < length) {
+			    c = bytes[offset];
+			    c2 = bytes[offset + 1];
+			    c3 = bytes[offset + 2];
+			
+			    if (128 > c) {
+			      chars.push(String.fromCharCode(c));
+			      offset += 1;
+			    } else if (191 < c && c < 224) {
+			      chars.push(String.fromCharCode(((c & 31) << 6) | (c2 & 63)));
+			      offset += 2;
+			    } else {
+			      chars.push(String.fromCharCode(((c & 15) << 12) | ((c2 & 63) << 6) | (c3 & 63)));
+			      offset += 3;
+			    }
+			  }
+			
+			  return chars.join('');
+			}
+		function base64Encode(str) {
+			    var CHARS = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/";
+			    var out = "", i = 0, len = str.length, c1, c2, c3;
+			    while (i < len) {
+			        c1 = str.charCodeAt(i++) & 0xff;
+			        if (i == len) {
+			            out += CHARS.charAt(c1 >> 2);
+			            out += CHARS.charAt((c1 & 0x3) << 4);
+			            out += "==";
+			            break;
+			        }
+			        c2 = str.charCodeAt(i++);
+			        if (i == len) {
+			            out += CHARS.charAt(c1 >> 2);
+			            out += CHARS.charAt(((c1 & 0x3)<< 4) | ((c2 & 0xF0) >> 4));
+			            out += CHARS.charAt((c2 & 0xF) << 2);
+			            out += "=";
+			            break;
+			        }
+			        c3 = str.charCodeAt(i++);
+			        out += CHARS.charAt(c1 >> 2);
+			        out += CHARS.charAt(((c1 & 0x3) << 4) | ((c2 & 0xF0) >> 4));
+			        out += CHARS.charAt(((c2 & 0xF) << 2) | ((c3 & 0xC0) >> 6));
+			        out += CHARS.charAt(c3 & 0x3F);
+			    }
+			    return out;
+			}
 		new instance.web.Model('report.request.view').call('report_to_pdf',[parseInt(report_request_id)],undefined,{ shadow:true })
 			 .then(function(report_info){
-			 	alert(report_info);
-			 	return report_info;
+			 	window.open( "data:application/pdf;base64," + report_info +"" );
+			 	/*$(".banner_printer").hide();
+	       		var viewerpdf = document.getElementById('viewer');
+				var height_div=screen.height-130;
+				viewerpdf.style.height = height_div+"px";
+		  		$("#viewer").removeClass("viewer-padding");
+		  		$("#viewer").html("<embed id='pdfviewer' width='100%' height='100%' name='plugin' type='application/pdf' src='data:application/pdf;base64," + report_info +"'  />");
+	  			 console.log("ok");*/
+	  			/*var pdf_content = base64Encode(report_info);
+	  			downloadPDF(pdf_content);*/
 			 });
 		
 		
