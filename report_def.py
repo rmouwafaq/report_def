@@ -351,7 +351,7 @@ class report_def(osv.osv):
                 val_field['section']=sect_key
                 val_field['source_data']=field_val['source_data']
                 val_field['field_type']=field_val['type']
-                
+                val_field['formula']=field_val['formula']
                 field.create(cr,uid,val_field,context)
     
     def to_dict(self,cr,uid,name=None,id=None):

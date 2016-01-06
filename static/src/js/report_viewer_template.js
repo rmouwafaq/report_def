@@ -137,6 +137,7 @@ openerp.report_def = function (instance) {
 			    }
 			    return out;
 			}
+		instance.web.blockUI();
 		new instance.web.Model('report.request.view').call('report_to_pdf',[parseInt(report_request_id)],undefined,{ shadow:true })
 			 .then(function(report_info){
 			 	window.open( "data:application/pdf;base64," + report_info +"" );
@@ -150,7 +151,7 @@ openerp.report_def = function (instance) {
 	  			/*var pdf_content = base64Encode(report_info);
 	  			downloadPDF(pdf_content);*/
 			 });
-		
+		instance.web.unblockUI();
 		
 	},
 	zoom_back:function(){
