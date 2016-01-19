@@ -115,18 +115,23 @@ class xml_from_csv(object):
         for col in self.col_fields:
             is_field = False
             is_id = False
+            is_ref = False
+            key_prefix = ''
             lst_def_field =  col.split('-')
-            if len(lst_def_field)>1:
-                if lst_def_field[1] == 'id':
-                    is_id = True
-                if lst_def_field[1] == 'field':
-                    is_field = True
+            nb_parm = len(lst_def_field)
             
+            for myfield in lst_def_field:
+                if myfield == 'id':is_id = True
+                if myfield == 'field':is_field = True
+                if myfield == 'ref':is_ref = True
+                    
             self.header.append(lst_def_field[0])
             
             self.def_col[numcol] = {'name':lst_def_field[0],
                                     'is_id':is_id,
-                                    'is_field': is_field
+                                    'is_ref':is_ref,
+                                    'is_field': is_field,
+                                    'key_prefix':key_prefix
                                     }
             self.row_model[numcol] = ''
             numcol +=1
@@ -185,20 +190,25 @@ class xml_from_csv(object):
             numcol +=1 
         return key_value
     
-        
-       
-        
     def xml_set_record(self,std_temp,row_number,numcol):
+        
         field_value = self.items[row_number][numcol]
         field_name  = self.def_col[numcol]['name']
+        key_prefix  = self.def_col[numcol]['key_prefix']
         is_field    = self.def_col[numcol]['is_field']
-        ref_value   = field_name + '_' + field_value 
+        is_ref      = self.def_col[numcol]['is_ref']
         is_id = self.def_col[numcol]['is_id']
         
-        if is_id or is_field:
-            if is_field:
+        if len(key_prefix)>0:
+            ref_value   = key_prefix + '_' + field_value
+        else:
+            ref_value   = field_value  
+        
+        
+        if is_field or is_ref or is_id:
+            if is_field or is_id:
                 desc_field = '          <field name="' + field_name + '">' + field_value + '</field>'
-            if is_id:
+            if is_ref:
                 desc_field = '          <field ref="' + ref_value + '" name="' + field_name + '" />'
             
             std_temp += desc_field + '\n' 
