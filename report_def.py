@@ -253,8 +253,9 @@ class report_def(osv.osv):
                 val_field['name']=field_key
                 val_field['sequence']=sequence_field
                 val_field['section']=sect_key
-                val_field['source_data']=field_val['source_data']
-                val_field['field_type']=field_val['type']
+                val_field['source_data'] = field_val['source_data']
+                val_field['field_type'] = field_val['type']
+                val_field['group']=field_val['group']
                 
                 field.create(cr,uid,val_field,context)
     
@@ -317,6 +318,7 @@ class report_def(osv.osv):
                     val_field['section']=sect_key
                     val_field['source_data']=field_val['source_data']
                     val_field['field_type']=field_val['type']
+                    val_field['group']=field_val['group']
                     val_field['formula']=field_val['formula']
                     
                     field_id = section.search(cr,uid,[('name','=',sect_key),('report_id','=',id_rep_def)])
@@ -351,6 +353,7 @@ class report_def(osv.osv):
                 val_field['section']=sect_key
                 val_field['source_data']=field_val['source_data']
                 val_field['field_type']=field_val['type']
+                val_field['group']=field_val['group']
                 val_field['formula']=field_val['formula']
                 field.create(cr,uid,val_field,context)
     
@@ -563,7 +566,7 @@ class report_def_field(osv.osv):
             dict_report_def_field['source_data']=report_def_field.source_data
             dict_report_def_field['field_type']=report_def_field.field_type
             dict_report_def_field['expression']=report_def_field.expression
-            
+            dict_report_def_field['group']=report_def_field.group
             return dict_report_def_field
         else:
             return dict_report_def_field   
