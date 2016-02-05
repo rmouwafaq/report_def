@@ -32,7 +32,7 @@
 						</group>
 			
 						<group attrs="{'invisible': [
-											('source_data', 'not in', ['Global','Total'])
+											('source_data', 'not in', ['Global','Total','Deferred'])
 											]}">
 							<field name="total_field_id" />
 						</group>
@@ -44,7 +44,7 @@
 						
 						
 						<group attrs="{'invisible': [
-											('source_data', 'not in', ['Total'])
+											('source_data', 'not in', ['Total','Deferred'])
 											]}">
 							<field name="reset_after_print"/>
 							<field name="reset_repeat_section"/>					
@@ -143,6 +143,7 @@
 					<field name="section"/>
 					<field name="source_data"/>
 					<field name="field_type"/>
+					<field name="reset_after_print"/>
 					<field name="field_format_id"/>
 					<field name="expression"/>
 					<field name="formula"/>
@@ -208,6 +209,7 @@
 			<field name="arch" type="xml">
 				<tree string="Field Format">	
 					<field name="name" />
+					<field name="code" />
 					<field name="format" />
 					<field name="function" />
 			   </tree>					
@@ -224,6 +226,7 @@
 					<form string="Field Format">	
 						<group col="2">	
 							<field name="name" />
+							<field name="code" />
 							<field name="format" />
 							<field name="function" />
 						</group>

@@ -298,7 +298,8 @@ class report_def(osv.osv):
         sequence_field = 0
         section = self.pool.get('report.section.bloc')
         field = self.pool.get('report.def.field')
-        
+        col_formats = self.pool.get('report.field.format').get_all_formats(cr,uid)
+ 
         for sect_key,sect_val in template_def.iteritems():
             val_section={}
             val_section['report_id'] = id_rep_def
@@ -310,26 +311,44 @@ class report_def(osv.osv):
                 for field_key,field_val in sect_val['fields'].iteritems():  
                     sequence_field+=1      
                     
-                    val_field={}
+                    val_field= self.set_val_field(field_val)
+                    code_format = field_val['format']
+                    val_field['field_format_id'] = self.get_format_id(col_formats,code_format)
+                
                     val_field['report_id']=id_rep_def
                     val_field['template_id']=field_key
                     val_field['name']=field_key
                     val_field['sequence']=sequence_field
                     val_field['section']=sect_key
-                    val_field['source_data']=field_val['source_data']
-                    val_field['field_type']=field_val['type']
-                    val_field['group']=field_val['group']
-                    val_field['formula']=field_val['formula']
-                    
+                         
                     field_id = section.search(cr,uid,[('name','=',sect_key),('report_id','=',id_rep_def)])
                     if(field_id):
                         field.write(cr,uid,field_id,val_field,context)
         return True
     
+    def set_val_field(self,field_val):
+        val_field= {}
+        val_field['source_data'] = field_val['source_data']
+        val_field['field_type'] = field_val['type']
+        val_field['group'] = field_val['group']
+        val_field['formula'] = field_val['formula']
+        val_field['reset_after_print']= field_val['reset_after_print']
+        return val_field
+    
+    def get_format_id(self,col_formats,code_format):
+        if col_formats.has_key(code_format):
+            format = col_formats[code_format]
+            return format['id']
+        else:
+            return 0 
+            
+            
     def create_report_def(self,cr,uid,temp,id_rep_def,context):
 
         template_def = temp.get_data_template()
         print 'template definition ',template_def
+        col_formats = self.pool.get('report.field.format').get_all_formats(cr,uid)
+        print col_formats
         sequence_field = 0
         
         for sect_key,sect_val in template_def.iteritems():
@@ -342,19 +361,19 @@ class report_def(osv.osv):
             
             section.create(cr,uid,val_section,context)
             for field_key,field_val in sect_val['fields'].iteritems():  
-                print 'fields',field_key,field_val
+                #print 'fields',field_key,field_val
                 sequence_field+=1      
                 field=self.pool.get('report.def.field')
-                val_field={}
-                val_field['report_id']=id_rep_def
-                val_field['template_id']=field_key
-                val_field['name']=field_key
-                val_field['sequence']=sequence_field
+
+                val_field= self.set_val_field(field_val)
+                code_format = field_val['format']
+                val_field['field_format_id'] = self.get_format_id(col_formats,code_format)
+                val_field['report_id'] = id_rep_def
+                val_field['template_id'] = field_key
+                val_field['name'] = field_key
+                val_field['sequence'] = sequence_field
                 val_field['section']=sect_key
-                val_field['source_data']=field_val['source_data']
-                val_field['field_type']=field_val['type']
-                val_field['group']=field_val['group']
-                val_field['formula']=field_val['formula']
+                
                 field.create(cr,uid,val_field,context)
     
     def to_dict(self,cr,uid,name=None,id=None):
@@ -402,13 +421,25 @@ class report_field_format(osv.osv):
     _name = "report.field.format"
     _description = "DefReport field Format"
     _columns = {
-                'name':fields.char('name',size=64), 
+                'name':fields.char('name',size=64),
+                'code':fields.char('code',size=64), 
                 'format':fields.char('format',size=64),
                 'function':fields.char('function',size=64),
                 }
     
     _defaults = {'format': '{:>5,.2f}' }
     
+    def get_all_formats(self,cr,uid,domain=[]):
+        col_format = {}
+        ids = self.search(cr,uid,domain)
+        if ids:
+            formats = self.browse(cr,uid,ids)
+            for format in formats:
+                col_format[format.code] = {'id':format.id,
+                                           'format':format.format,
+                                           }
+        return col_format
+        
     def to_dict(self,cr,uid,id=None):
         
         dict_report_format={}
@@ -494,6 +525,7 @@ class report_def_field(osv.osv):
                                         ('Form','Form'),
                                         ('Context','Context'),
                                         ('Total','Total'),
+                                        ('Deferred','Deferred'),
                                         ('Global','Global'),
                                         ('Page','Current Page'),
                                         ('Folio','Current folio'),

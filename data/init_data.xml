@@ -2,27 +2,32 @@
 	<data noupdate="0">
 		<record id="decimal_2" model="report.field.format">
             <field name="name">2 decimal places  </field>
+            <field name="code">decimal_2</field>
             <field name="format">{:.2f}</field>
             <field name="function"></field>
         </record>
         <record id="decimal_2_sign" model="report.field.format">
             <field name="name">2 decimal places with sign</field>
+            <field name="code">decimal_2_sign</field>
             <field name="format">{:+.2f}</field>
             <field name="function"></field>
         </record>
         <record id="no_decimal" model="report.field.format">
             <field name="name">no decimal places</field>
+            <field name="code">no_decimal</field>
             <field name="format">{:.0f}</field>
             <field name="function"></field>
         </record>
         <record id="number_separator" model="report.field.format">
             <field name="name">Number with separator</field>
+            <field name="code">number_separator</field>
             <field name="format">{:,}</field>
             <field name="function"></field>
         </record>
         
         <record id="decimal_separator" model="report.field.format">
             <field name="name">Decimal with separator</field>
+            <field name="code">decimal_separator</field>
             <field name="format">{:>,.2f}</field>
             <field name="function"></field>
         </record>
