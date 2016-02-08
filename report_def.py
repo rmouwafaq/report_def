@@ -346,9 +346,7 @@ class report_def(osv.osv):
     def create_report_def(self,cr,uid,temp,id_rep_def,context):
 
         template_def = temp.get_data_template()
-        print 'template definition ',template_def
         col_formats = self.pool.get('report.field.format').get_all_formats(cr,uid)
-        print col_formats
         sequence_field = 0
         
         for sect_key,sect_val in template_def.iteritems():
@@ -368,12 +366,13 @@ class report_def(osv.osv):
                 val_field= self.set_val_field(field_val)
                 code_format = field_val['format']
                 val_field['field_format_id'] = self.get_format_id(col_formats,code_format)
+                print "valfield",val_field
+
                 val_field['report_id'] = id_rep_def
                 val_field['template_id'] = field_key
                 val_field['name'] = field_key
                 val_field['sequence'] = sequence_field
                 val_field['section']=sect_key
-                
                 field.create(cr,uid,val_field,context)
     
     def to_dict(self,cr,uid,name=None,id=None):
@@ -561,7 +560,7 @@ class report_def_field(osv.osv):
                                       ],'Total function'),
          'reset_after_print':fields.boolean('Reset after print'),
          'reset_repeat_section':fields.boolean('Reset for repeated section'),        
-         'total_field_id': fields.many2one('report.def.field','Related - Total Field'),
+         'total_field_id': fields.many2one('report.def.field','Related - Total Field',domain = "[('source_data','in',['Total']),('report_id','in',[parent.id])]"),
          'related_field_id': fields.many2one('report.def.field','Related Field (2)'),
     
     }    
@@ -571,6 +570,12 @@ class report_def_field(osv.osv):
                  'section' : 'Details'
                  
                  }
+    
+    def onchange_related_total(self, cr, uid, ids, context=None):
+        ids = self.search(cr,uid,['field_type','in',['Total']])
+        return {'domain': {'id': [('id','in',ids)]}
+                }
+    
     
     def name_get(self, cr, uid, ids, context=None):
         res = []
