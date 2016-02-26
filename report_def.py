@@ -186,6 +186,26 @@ class report_def(osv.osv):
     _defaults = {'deferred_label': 'Report' }
     
     
+    def upadate_deferred_totals(self,cr,uid,report_id,col_deferreds):
+        if report_id:
+            field_pool = self.pool.get('report.def.field')
+            report = self.browse(cr,uid, report_id)
+            col_totals = {}
+            for field in report.field_ids:
+                if field.source_data == 'Total' or field.source_data == 'Deferred':
+                    col_totals[field.name] = field
+            
+            # update deferred fields 
+            print 'col_deferreds : ',col_deferreds
+            for ref_key,related_total in col_deferreds.iteritems():
+                if col_totals.has_key(related_total):
+                    print related_total
+                    field_total = col_totals[related_total]
+                    if col_totals.has_key(ref_key):
+                        field_deferred = col_totals[ref_key]
+                        field_pool.write(cr,uid,field_deferred.id,{'total_field_id':field_total.id})
+                        
+        
     def get_path_template_name(self,cr,uid,report_id,template_name,context=None):
         module_rep = self.pool.get("ir.module.module").browse(cr,uid,report_id,context) 
         module_folder_name  = ao_register.CD_ODOO_ADDONS + module_rep.name + '/templates/'
@@ -286,7 +306,9 @@ class report_def(osv.osv):
             else:
                 #add new report definition
                 report_id = self.create(cr,uid,vals,context=context)
-                self.create_report_def(cr,uid,temp,report_id,context=context)
+                col_deferreds = self.create_report_def(cr,uid,temp,report_id,context=context)
+                if len(col_deferreds):
+                    self.pool.get('report.def').upadate_deferred_totals(cr,uid,report_id,col_deferreds)
                 return report_id
         else:
             raise osv.except_osv('Action Error !',"No report definition in template " + info_template['template_file_name'])
@@ -311,7 +333,7 @@ class report_def(osv.osv):
                 for field_key,field_val in sect_val['fields'].iteritems():  
                     sequence_field+=1      
                     
-                    val_field= self.set_val_field(field_val)
+                    val_field = self.set_val_field(field_val)
                     code_format = field_val['format']
                     val_field['field_format_id'] = self.get_format_id(col_formats,code_format)
                 
@@ -348,10 +370,10 @@ class report_def(osv.osv):
         template_def = temp.get_data_template()
         col_formats = self.pool.get('report.field.format').get_all_formats(cr,uid)
         sequence_field = 0
-        
+        col_deferreds = {}
         for sect_key,sect_val in template_def.iteritems():
             
-            section=self.pool.get('report.section.bloc')
+            section = self.pool.get('report.section.bloc')
             val_section = {}
             val_section['report_id'] = id_rep_def
             val_section['section'] = sect_key
@@ -363,17 +385,20 @@ class report_def(osv.osv):
                 sequence_field+=1      
                 field=self.pool.get('report.def.field')
 
-                val_field= self.set_val_field(field_val)
+                val_field = self.set_val_field(field_val)
+                if field_val['source_data'] == 'Deferred' and field_val['related_total']:
+                    col_deferreds[field_key] =  field_val['related_total']
                 code_format = field_val['format']
                 val_field['field_format_id'] = self.get_format_id(col_formats,code_format)
                 print "valfield",val_field
-
+                        
                 val_field['report_id'] = id_rep_def
                 val_field['template_id'] = field_key
                 val_field['name'] = field_key
                 val_field['sequence'] = sequence_field
                 val_field['section']=sect_key
                 field.create(cr,uid,val_field,context)
+        return col_deferreds
     
     def to_dict(self,cr,uid,name=None,id=None):
         
