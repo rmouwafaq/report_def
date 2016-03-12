@@ -767,11 +767,7 @@ class report_request_view(osv.osv):
         
         config = pdfkit.configuration(wkhtmltopdf='/usr/bin/wkhtmltopdf')
         
-        print 'inclu_folder >>>>>>>>>>>>>>>>>',inclu_folder
-        print 'CSS          >>>>>>>>>>>>>>>>>',css
-        print 'Config       >>>>>>>>>>>>>>>>>',config
-       
-        pdf_result = pdfkit.from_string(str_input,output,options=options,css=None,configuration=config)
+        pdf_result = pdfkit.from_string(str_input,output,options=options,css=css,configuration=config)
         return pdf_result    
     
     
