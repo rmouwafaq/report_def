@@ -444,6 +444,7 @@ report_def()
 class report_field_format(osv.osv):
     _name = "report.field.format"
     _description = "DefReport field Format"
+    _key_name = 'code'
     _columns = {
                 'name':fields.char('name',size=64),
                 'code':fields.char('code',size=64), 
@@ -747,7 +748,7 @@ class report_request_view(osv.osv):
             where rd.id=rdr.report_id
             )""")
 
-    def save_to_pdf(self,input,output,orientation):
+    def save_to_pdf(self,str_input,output,orientation):
         options = {
             'page-size':'A4',
             'margin-top':'0cm',
@@ -758,25 +759,33 @@ class report_request_view(osv.osv):
             'print-media-type':'',
         }
         inclu_folder = CD_REPORT_DEF+"/static/lib/inclu/"
-        css=[inclu_folder+'style_zone_text.css',inclu_folder+'global_style.css',inclu_folder+'style_portrait.css']
-        input=input.replace("../inclu/jquery.js",inclu_folder+"jquery.js")
-        input=input.replace("../inclu/etat_script.js",inclu_folder+"etat_script.js")
+        css = [inclu_folder + 'style_zone_text.css',
+               inclu_folder + 'global_style.css',
+               inclu_folder + 'style_portrait.css']
+        str_input = str_input.replace("../inclu/jquery.js",inclu_folder+"jquery.js")
+        str_input = str_input.replace("../inclu/etat_script.js",inclu_folder+"etat_script.js")
         
         config = pdfkit.configuration(wkhtmltopdf='/usr/bin/wkhtmltopdf')
-        pdf_result=pdfkit.from_string(input,output,options=options,css=css,configuration=config)
+        
+        print 'inclu_folder >>>>>>>>>>>>>>>>>',inclu_folder
+        print 'CSS          >>>>>>>>>>>>>>>>>',css
+        print 'Config       >>>>>>>>>>>>>>>>>',config
+       
+        pdf_result = pdfkit.from_string(str_input,output,options=options,css=None,configuration=config)
         return pdf_result    
+    
     
     def report_to_pdf(self,cr,uid,id_report):
         report_request = self.pool.get("report.def.request")
         current_request_rep = report_request.browse(cr,uid,id_report,context=None)
-        reportname="report_test"
+
+        file_content = current_request_rep.file_request
+        report_string = file_content.decode("utf-8")
         
-        file_content=current_request_rep.file_request
-        report_string=file_content.decode("utf-8")
-        
-        pdf_result =self.save_to_pdf(report_string,False,'portrait')
+        pdf_result = self.save_to_pdf(report_string,False,'portrait')
        
         return base64.b64encode(pdf_result)
+
 #         pdfhttpheaders = [('Content-Type', 'application/pdf'), ('Content-Length', len(pdf_result))]
 #         response = Response(pdf_result, headers=pdfhttpheaders)
 #         response.headers.add('Content-Disposition', 'attachment; filename=%s.pdf;' % reportname)

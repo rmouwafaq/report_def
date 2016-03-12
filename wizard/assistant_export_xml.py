@@ -174,27 +174,37 @@ class xml_to_report(osv.osv_memory):
         if module_id:
             module = self.pool.get('ir.module.module').browse(cr,uid, module_id)
             pathname = CD_ODOO_ADDONS + module.name + "/Report_def/"
+            print 'PathName : ',pathname
             list_report = listdir(pathname)
+            
+            print 'liste des rapports à importer ', list_report 
        
             for filename in list_report:
                 open_file = pathname + filename
                 fp = tools.file_open(open_file)
                 obj_xml_odoo =  odoo_xml(fp)
                 my_models = obj_xml_odoo.get_xml_all_models()
+                print my_models 
                 # Completion of  external models
                 new_list_models = list(my_models)
                 for name_model in new_list_models:
+                    print 'name model ', name_model
                     my_models = self.external_models(cr,uid,name_model,my_models)
-                   
+                
+                print 'export des Id', my_models   
                 pool_ir_data = self.pool.get('ir.model.data')
                 for rec_model in my_models:
+                    print 'model exporte ',rec_model
                     pool_ir_data.export_external_ids(cr,uid,rec_model,module_id)
                 fp.close()
             
+            print 'conversion des fichiers XML'
             for filename in list_report:
                 open_file = pathname + filename
+                print ' open_file ',open_file
                 fp = tools.file_open(open_file)
                 try:
+                    print 'XML to report',module.name
                     tools.convert_xml_import(cr, module.name,
                                              fp, 
                                              None, 
