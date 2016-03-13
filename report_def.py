@@ -680,13 +680,22 @@ class report_def_request(osv.osv):
     _description="Agilorg - Report definition request"
     _columns ={
                'report_id':fields.many2one('report.def','Report Definition'),
+               'title': fields.char('Title', size=128),
                'file_request':fields.binary('Request file')
                }
     
-    def set_action_request_report(self,cr,uid,report_def_id,bin_report,context=None):
+    def set_action_request_report(self,
+                                  cr,
+                                  uid,
+                                  report_def_id,
+                                  bin_report,
+                                  title_doc,
+                                  context=None):
+        
         rep_request_id = self.create(cr,uid,
                                           {'report_id':report_def_id,
-                                           'file_request':bin_report
+                                           'file_request':bin_report,
+                                           'title':title_doc,
                                            },context=context)
         
         action ={
@@ -748,7 +757,7 @@ class report_request_view(osv.osv):
             where rd.id=rdr.report_id
             )""")
 
-    def save_to_pdf(self,str_input,output,orientation):
+    def save_to_pdf(self,str_input,output,orientation,title='Sans Titre'):
         options = {
             'page-size':'A4',
             'margin-top':'0cm',
@@ -757,7 +766,7 @@ class report_request_view(osv.osv):
             'margin-left':'0cm',
             'orientation':orientation,    
             'print-media-type':'',
-            'title':'Titre du document',
+            'title':title,
         }
         inclu_folder = CD_REPORT_DEF+"/static/lib/inclu/"
         css = [inclu_folder + 'style_zone_text.css',
@@ -779,7 +788,7 @@ class report_request_view(osv.osv):
         file_content = current_request_rep.file_request
         report_string = file_content.decode("utf-8")
         
-        pdf_result = self.save_to_pdf(report_string,False,'portrait')
+        pdf_result = self.save_to_pdf(report_string,False,'portrait',title = current_request_rep.title)
        
         return base64.b64encode(pdf_result)
 
