@@ -757,6 +757,7 @@ class report_request_view(osv.osv):
             'margin-left':'0cm',
             'orientation':orientation,    
             'print-media-type':'',
+            'title':'Titre du document',
         }
         inclu_folder = CD_REPORT_DEF+"/static/lib/inclu/"
         css = [inclu_folder + 'style_zone_text.css',
