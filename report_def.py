@@ -287,6 +287,7 @@ class report_def(osv.osv):
         #if not info_template.has_key('name'):
         info_template = temp.get_definition_report(info_template)
         if(info_template.has_key('name')):
+            print 'info_template ',info_template
             report_id = self.search(cr,uid,[('name','=',info_template['name'])],context=context)
             vals={    'name':info_template['name'],
                       'title':info_template['title'] or info_template['name'],
@@ -294,10 +295,10 @@ class report_def(osv.osv):
                       'module_id':info_template['module_id'],
                       'template_file_name':end_file(info_template['template_file_name'],'.html'),
                       'json_file_name':end_file(info_template['template_file_name'],'.json'),
-                      'type':info_template['type'],
+                      'type':info_template.get('type','form'),
                       'viewer_type':info_template['viewer_type'],
                       }
-            
+            print 'etat record report ', report_id
             if(report_id):
                 #set report definition 
                 self.write(cr,uid,report_id,vals,context=context)

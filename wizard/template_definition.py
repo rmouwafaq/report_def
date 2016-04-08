@@ -23,6 +23,7 @@ import time
 from openerp.tools.translate import _
 from openerp.addons.ao_basic_module import ao_register
 from openerp.osv import osv, fields
+from openerp.modules import module
 
 class module_templates(osv.osv):
     _name="rdef.module.templates"
@@ -81,9 +82,9 @@ class template_definition(osv.osv_memory):
     def on_change_module(self,cr,uid,ids,module_id,context=None):
         try:
             if(module_id):
-                module_obj=self.pool.get("ir.module.module").read(cr,uid,module_id,['name'],context=context)
-                self.templates_dir = ao_register.CD_ODOO_ADDONS + module_obj['name'] + '/templates/'
-                files_ids=self.pool.get("rdef.module.templates").create_list_file(cr,uid,self.templates_dir,context=context)
+                module_obj = self.pool.get("ir.module.module").browse(cr,uid,module_id,context=context)
+                self.templates_dir = module.get_module_path(module_obj.name)+ '/templates/'
+                files_ids = self.pool.get("rdef.module.templates").create_list_file(cr,uid,self.templates_dir,context=context)
                 return {'value': {
                     'file_ids': [],
                     'module_id':module_id,
