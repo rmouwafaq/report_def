@@ -1,5 +1,6 @@
 @import url("style_zone_text.css");
 @import url("global_style.css");
+@import url("pcf_style.css");
 
 #viewer .Page_container {
 	background-color: #fff;
