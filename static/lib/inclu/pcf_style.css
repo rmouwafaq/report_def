@@ -1,0 +1,301 @@
+body
+{
+ margin-right : 100px;	
+}
+#case
+{
+	font-size:25px;
+	vertical-align:super;
+}
+#bor
+ {
+	border-left : 1px solid black;
+ }
+#bord-0
+{
+	border-left : 0px white;
+}
+#bord
+{
+	border-left : 0px gray;
+	border-bottom : 0px gray;
+	border-top:0px gray;
+}
+#couleur 
+{
+	color : white;
+	border-left : 0px black;
+	border-bottom : 0px black;
+	border-top:0px black;
+}
+#table
+{
+	border-left-style: 2px solid black;
+	border-right-style: 2px solid black;
+}
+#col1
+{
+	vertical-align:text-top;
+}
+.A{
+	float:right;
+}
+.accolade
+{
+	font-size:40px;
+}
+.accolade-60
+{
+	font-size:60px;
+}
+.align
+{
+	float:center-right;
+}
+.alig
+{
+	float:top;
+}
+.B
+{
+	font-size:50px;
+}
+.B-80
+{
+	font-size:80px;
+}
+.bord
+{
+	border-top:none;
+	border-top-color:white;
+	border-bottom:0px solid white;
+}
+.bor
+{	
+	border-top:2px solid black;
+}
+.bore
+{
+	border-bottom:0px solid white;
+	border-top:0px solid white;
+}
+.bord-2
+{
+	border-style: 2px solid black;
+}
+.bor-0
+{
+	border-left:0px solid white;
+	border-right:0px solid white;
+	border-bottom:0px solid white;
+	border-top:0px solid white;
+}
+.border
+{
+	border-left:none;
+	border-top-color:white;
+	border-left:1px solid white;
+	border-right:1px solid white;
+}
+.bor-2
+{
+	border-bottom:2px solid black;
+	border-top:2px solid black;
+}
+.bord-2
+{
+	border-top:none;
+	border-top-color:white;
+	border-bottom:2px solid black;
+	border-left-style:none;
+	border-right-style:none;
+}
+.br
+{
+	border-right-style:2px solid white;
+}
+.tab1
+{
+	font-size:12px;
+}
+.border
+{
+	border:none;
+	border-color:white;
+}
+.cercle
+{
+  border : 2px solid black;
+  width : 10px;
+  height : 10px;
+  border-radius : 10px;
+}
+.cercle-1
+{
+  border : 2px solid black;
+  width : 10px;
+  height : 10px;
+  border-radius : 20px;
+}
+.cercle-2
+{
+border : 2px solid black;
+  font-size:25px;
+  border-radius : 50%;
+}
+ .cercle-30
+{
+  border : 2px solid black;
+  font-size:30px;
+  border-radius : 50%;
+}
+.cercle-10
+{
+  border : 2px solid black;
+  width : 10px;
+  height : 10px;
+  border-radius : 10px;
+}
+.Cercle-50
+{
+  border : 2px solid black;
+  font-size:10px;
+  border-radius : 50%;
+  background-color:black;
+  color:white;
+}
+.cer
+{
+	border : 2px solid black;
+	border-radius : 10px;
+	color :white;
+	background-color : black;
+	height : 5px;
+	width : 10px;
+}
+
+.carre
+{
+	Border: 1px solid black;
+	width : 50px;
+}
+.carre-1
+{
+	Border: 1px solid black;
+}
+.carre-2
+{
+	border : 2px solid black;
+  width : 100px;
+  height : 100px;
+}
+.car
+{
+	 border : 2px solid black;
+  width : 20px;
+  height : 20px;
+  border-radius : 0px;
+  float:right;
+}
+.carr
+{
+	 border : 2px solid black;
+  width : 20px;
+  height : 20px;
+  border-radius : 0px;
+  float:center;
+}
+.car-va
+{
+	Border: 1px solid black;
+	vertical-align:super;
+}
+.min
+{
+	size : 5px;
+	font-size :11px;
+}
+.mine
+{
+	size : 20	px;
+	font-size :15px;
+}
+.mine-10
+{
+	size : 10px;
+	font-size :15px;
+}
+
+.p
+{
+	font-size : 15px;
+writing-mode: vertical-rl;
+  text-orientation: sideways-right;
+  -webkit-transform: rotate(180deg); 
+    transform: rotate(180deg);
+}
+.pp
+{
+	font-size : 15px;
+writing-mode: vertical-rl;
+  text-orientation: sideways-right;
+  -webkit-transform: rotate(180deg); 
+    transform: rotate(180deg);
+}
+.pp-nr
+{
+	font-size : 15px;
+writing-mode: vertical-rl;
+  text-orientation: sideways-right;
+}
+
+.size
+{
+	font-size:12px;
+}
+.size-10
+{
+	font-size:10px;
+}
+.TD
+{
+	border:none;
+}
+.tre
+{
+  border : 1px solid rgba(0, 0, 0, 0.22);
+  width : 1px;
+  height : 2px;
+}
+.tre-0
+{
+  border : 1px solid black;
+  width : 0px;
+  height : 2px;
+}
+.text
+{
+	font-size:13px;
+	border-style:none;
+}
+.rotate
+{
+ border : 0;
+  -ms-transform:rotate(270deg); /* IE 9 */
+
+  -moz-transform:rotate(270deg); /* Firefox */
+
+  -webkit-transform:rotate(270deg); /* Safari and Chrome */
+
+  -o-transform:rotate(270deg); /* Opera */
+}
+.rot
+{
+	font-size : 13px;
+writing-mode: vertical-rl;
+  text-orientation: sideways-right;
+  -webkit-transform: rotate(180deg); 
+    transform: rotate(180deg);
+}
+
+
