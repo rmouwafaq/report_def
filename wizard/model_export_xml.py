@@ -22,6 +22,9 @@ from openerp.addons.ao_basic_module.ao_global import create_folder,end_file
 from openerp.osv import osv, fields
 from assistant_export_xml import xml_gen_model
 import base64
+import xml.etree.ElementTree as ET
+from lxml import etree
+
 
 class model_export_xml(osv.osv):
     _name = 'rdef.model.export.xml'
@@ -53,14 +56,23 @@ class model_export_xml(osv.osv):
             model_ids = pool_model.search(cr,uid,[],context=context)
             records=pool_model.browse(cr,uid,model_ids,context=context)
             my_xml.add_model(model_name,'report')
-            
+
             for record in records:
-                my_xml.xml += my_xml.xml_generate(model_name,record)
+                val = my_xml.xml_generate(model_name,record)
+                
+                node = etree.fromstring(str(val))
+                id_val = model_name.replace('.','_')+"_"+node.get('id')
+                node.set('id',id_val)
+                
+                xmlstr = ET.tostring(node,  method='xml')
+                
+                my_xml.xml += xmlstr
+#                 print "my_xml : ",my_xml.xml
                 # generate childs models
                 #my_xml.scan_field_one2many(model_name)
-        
+         
         my_xml.xml_terminate()
-    
+     
         # Save file binary
         encoded_string = base64.b64encode(my_xml.xml) 
         set_data={
@@ -69,7 +81,7 @@ class model_export_xml(osv.osv):
                   'state':'get'
                   }  
         this.write(set_data)
-        
+         
         return {
             'type': 'ir.actions.act_window',
             'res_model': 'rdef.model.export.xml',
