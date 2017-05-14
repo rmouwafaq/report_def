@@ -51,6 +51,12 @@ class model_export_xml(osv.osv):
         my_xml = xml_gen_model(self.pool,cr,uid,xml_file_name)
         for model_id in this.model_ids:
             ir_model = self.pool.get('ir.model').read(cr, uid, model_id.id, context=context)
+            field_id_model = {}
+            for field in model_id.field_id:
+                field_id_model.update({field.name:field.relation})
+            
+#             print "d : ",field_id_model
+            
             model_name=ir_model['model']
             pool_model = self.pool.get(model_name)
             model_ids = pool_model.search(cr,uid,[],context=context)
@@ -63,16 +69,21 @@ class model_export_xml(osv.osv):
                 node = etree.fromstring(str(val))
                 id_val = model_name.replace('.','_')+"_"+node.get('id')
                 node.set('id',id_val)
-                
+                              
+                for child in node:
+                    if child.attrib.get('ref',''):
+                        mod_name = field_id_model.get(child.attrib.get('name',''))
+                        ref_val = mod_name.replace('.','_')+"_"+child.attrib.get('ref','')
+                        child.set('ref',ref_val)
                 xmlstr = ET.tostring(node,  method='xml')
-                
                 my_xml.xml += xmlstr
+                        
 #                 print "my_xml : ",my_xml.xml
                 # generate childs models
                 #my_xml.scan_field_one2many(model_name)
          
         my_xml.xml_terminate()
-     
+      
         # Save file binary
         encoded_string = base64.b64encode(my_xml.xml) 
         set_data={
@@ -81,7 +92,7 @@ class model_export_xml(osv.osv):
                   'state':'get'
                   }  
         this.write(set_data)
-         
+          
         return {
             'type': 'ir.actions.act_window',
             'res_model': 'rdef.model.export.xml',
