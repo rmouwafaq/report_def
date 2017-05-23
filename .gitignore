@@ -1,3 +1,5 @@
 *.pyc
 wizard/*.pyc
 /i18n
+/.project
+/.pydevproject
