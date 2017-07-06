@@ -295,6 +295,7 @@ class xml_gen_model(object):
         model_name = my_model['name']
 
         key_value = key_name.val_to_string(my_model['value'])
+        
         std_temp += '        <record id="'+ key_value + '" model="' + my_model['model'] + '">' + '\n' 
         for field_name,value in my_model['desc'].iteritems():
             if( field_name not in ['id','create_uid','write_uid','create_date','write_date','__last_update']):

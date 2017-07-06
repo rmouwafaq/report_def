@@ -62,14 +62,15 @@ class model_export_xml(osv.osv):
             model_ids = pool_model.search(cr,uid,[],context=context)
             records=pool_model.browse(cr,uid,model_ids,context=context)
             my_xml.add_model(model_name,'report')
-
             for record in records:
                 val = my_xml.xml_generate(model_name,record)
-                
+
                 node = etree.fromstring(str(val))
-                id_val = model_name.replace('.','_')+"_"+node.get('id')
+
+#                id_val = model_name.replace('.','_')+"_"+node.get('id')
+                id_val = node.get('id')
                 node.set('id',id_val)
-                              
+                       
                 for child in node:
                     if child.attrib.get('ref',''):
                         mod_name = field_id_model.get(child.attrib.get('name',''))
@@ -77,13 +78,13 @@ class model_export_xml(osv.osv):
                         child.set('ref',ref_val)
                 xmlstr = ET.tostring(node,  method='xml')
                 my_xml.xml += xmlstr
+   
                         
 #                 print "my_xml : ",my_xml.xml
                 # generate childs models
                 #my_xml.scan_field_one2many(model_name)
          
         my_xml.xml_terminate()
-      
         # Save file binary
         encoded_string = base64.b64encode(my_xml.xml) 
         set_data={

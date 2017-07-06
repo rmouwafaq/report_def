@@ -22,7 +22,7 @@ from openerp import tools
 from openerp.osv import fields, osv
 from openerp.tools.translate import _
 from agilreport.Agil_Template import Template
-from mock import self
+#from mock import self
 from openerp.addons.ao_basic_module import ao_register
 from openerp.addons.ao_basic_module.ao_class import model_key
 from openerp.addons.ao_basic_module.ao_global import end_file
@@ -31,7 +31,7 @@ import pdfkit
 import os
 import datetime
 import base64
-from openerp.addons.ao_basic_module.ao_register import CD_AO_FIN_REPORT,CD_REPORT_DEF
+from openerp.addons.ao_basic_module.ao_register import CD_REPORT_DEF
 
 RDEF_FORMAT_SELECTION = [('Portrait', 'Portrait'),
                          ('Landscape','Landscape')]
@@ -153,8 +153,22 @@ class report_def(osv.osv):
     
     _name = "report.def"
     _description = "Agilorg report Definition"
-    _key_name = 'name'
+    _key_name = 'id_unique'
+    
+    
+    def _get_id_unique(self, cr, uid, ids,field_name, arg,context=None):
+        res = dict(map(lambda x: (x,"report_def_"), ids))
+        model = "report_def_"
+        try:
+            for report_def in self.browse(cr, uid, ids, context):
+                seq=report_def.id
+                res[report_def.id] = model + str(seq)
+        except:
+            pass
+        return res
+    
     _columns = { 
+                'id_unique': fields.function(_get_id_unique, string='ID unique', type='char', store=True),
                 'name': fields.char('Report Name', size=64, required=True, select=True),
                 'title': fields.char('Title', size=128, required=True, select=True),
                 'module_id':fields.many2one('ir.module.module', 'Module',required=True),
@@ -180,7 +194,8 @@ class report_def(osv.osv):
                 'deferred_total':fields.boolean("Deferred totals"),
                 'deferred_label_field': fields.many2one('report.def.field','Label in field'),
                 'deferred_label': fields.char('Deferred Label', size=64),
-                'reset_total_by_group':fields.boolean("Reset total by group"),  
+                'reset_total_by_group':fields.boolean("Reset total by group"), 
+                
                 }
     
     _defaults = {'deferred_label': 'Report' }
@@ -445,8 +460,21 @@ report_def()
 class report_field_format(osv.osv):
     _name = "report.field.format"
     _description = "DefReport field Format"
-    _key_name = 'code'
+    _key_name = 'id_unique'
+    
+    def _get_id_unique(self, cr, uid, ids,field_name, arg,context=None):
+        res = dict(map(lambda x: (x,"report_field_format_"), ids))
+        model = "report_field_format_"
+        try:
+            for report_def in self.browse(cr, uid, ids, context):
+                seq=report_def.id
+                res[report_def.id] = model + str(seq)
+        except:
+            pass
+        return res
+    
     _columns = {
+                'id_unique': fields.function(_get_id_unique, string='ID unique', type='char', store=True),
                 'name':fields.char('name',size=64),
                 'code':fields.char('code',size=64), 
                 'format':fields.char('format',size=64),
@@ -485,8 +513,22 @@ report_field_format()
 class report_section_bloc(osv.osv):
     _name = "report.section.bloc"
     _description = "DefReport section Bloc"
-    _key_name = 'section'
+    _key_name = 'id_unique'
+    
+    
+    def _get_id_unique(self, cr, uid, ids,field_name, arg,context=None):
+        res = dict(map(lambda x: (x,"report_section_bloc_"), ids))
+        model = "report_section_bloc_"
+        try:
+            for report_def in self.browse(cr, uid, ids, context):
+                seq=report_def.id
+                res[report_def.id] = model + str(seq)
+        except:
+            pass
+        return res
+    
     _columns = {
+                'id_unique': fields.function(_get_id_unique, string='ID unique', type='char', store=True),
                 'name':fields.char('name',size=64), 
                 'report_id':fields.many2one('report.def', 'Report Definition'),
                 'section' : fields.selection([('Report_header', 'Report_header'),
@@ -532,8 +574,22 @@ class report_def_field(osv.osv):
     _name = "report.def.field"
     _description = "Agilorg Report Definition fields"
     _order =  "sequence,section"
-    _key_name = 'name'
+    _key_name = 'id_unique'
+    
+    def _get_id_unique(self, cr, uid, ids,field_name, arg,context=None):
+        res = dict(map(lambda x: (x,"report_def_field_"), ids))
+        model = "report_def_field_"
+        try:
+            for report_def in self.browse(cr, uid, ids, context):
+                seq=report_def.id
+                res[report_def.id] = model + str(seq)
+        except:
+            pass
+        return res
+    
+    
     _columns = { 
+        'id_unique': fields.function(_get_id_unique, string='ID unique', type='char', store=True),
         'template_id':fields.char('Template html id', size=64, required=True, select=True),        
         'name': fields.char('Field Name', size=64, required=True, select=True),        
         'report_id':fields.many2one('report.def', 'Report Definition'),
@@ -645,8 +701,22 @@ class report_def_json_files(osv.osv):
 
     _name = "report.def.json_files"
     _description="Agilorg - Report definition files name json"
-    _key_name = 'name'
+    _key_name = 'id_unique'
+    
+    
+    def _get_id_unique(self, cr, uid, ids,field_name, arg,context=None):
+        res = dict(map(lambda x: (x,"report_def_json_files_"), ids))
+        model = "report_def_json_files_"
+        try:
+            for report_def in self.browse(cr, uid, ids, context):
+                seq=report_def.id
+                res[report_def.id] = model + str(seq)
+        except:
+            pass
+        return res
+    
     _columns ={
+               'id_unique': fields.function(_get_id_unique, string='ID unique', type='char', store=True),
                'name':fields.char('Json Name',size=128,required=True),
                'report_id':fields.many2one('report.def','Report Definition'),
                }
