@@ -200,7 +200,23 @@ class report_def(osv.osv):
     
     _defaults = {'deferred_label': 'Report' }
     
-    
+    def copy(self, cr, uid, id, default=None, context=None):
+      
+        if default is None:
+            default = {}
+        pool_def_field = self.pool.get('report.def.field')
+        rep_def = self.browse(cr, uid, id, context=context)
+        default['name'] = _("%s (copy)") % rep_def['name']
+        new_id = super(report_def, self).copy(cr, uid, id, default=default, context=context)
+        default_field = pool_def_field.default_get(cr, uid, [], context)
+        for def_field in rep_def.field_ids:
+            #def_field_copy = pool_def_field.copy_data(cr, uid, def_field.id, default_field,context=context)
+            #def_field_copy['report_id'] = [new_id]
+            field_id = pool_def_field.copy(cr, uid, def_field.id, default_field,context)
+            pool_def_field.write(cr, uid, field_id,{'report_id':new_id})
+ 
+        return new_id 
+
     def upadate_deferred_totals(self,cr,uid,report_id,col_deferreds):
         if report_id:
             field_pool = self.pool.get('report.def.field')
